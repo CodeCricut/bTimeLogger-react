@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
 
+import StartActivityDialog from "./StartActivityDialog";
+
 const activityTypes = ["Sleep", "Reading", "Coding"];
 
 const useStyles = makeStyles((theme) => ({
@@ -36,46 +38,61 @@ const InlineStartActivity = () => {
     const classes = useStyles();
 
     const [selectedType, setSelectedType] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const startActivity = () => {};
 
-    const tuneActivity = () => {};
+    const tuneActivity = () => {
+        console.log("tune");
+        setIsDialogOpen(true);
+    };
+
     return (
-        <Paper variant="outlined" className={classes.outline}>
-            <FormControl className={classes.formControl}>
-                <InputLabel id="activity-type-label">Activity Type</InputLabel>
-                <Select
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    labelId="activity-type-label"
-                    className={classes.select}
-                >
-                    {activityTypes.map((actType, index) => (
-                        <MenuItem value={actType} key={index}>
-                            {actType}
-                        </MenuItem>
-                    ))}
-                </Select>
-                <Box className={classes.formButtons}>
-                    <IconButton
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="start activity"
-                        onClick={startActivity()}
+        <React.Fragment>
+            <StartActivityDialog
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+            />
+            <Paper variant="outlined" className={classes.outline}>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="activity-type-label">
+                        Activity Type
+                    </InputLabel>
+                    <Select
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                        labelId="activity-type-label"
+                        className={classes.select}
                     >
-                        <AddIcon />
-                    </IconButton>
-                    <IconButton
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="tune activity"
-                        onClick={tuneActivity}
-                    >
-                        <TuneIcon />
-                    </IconButton>
-                </Box>
-            </FormControl>
-        </Paper>
+                        {activityTypes.map((actType, index) => (
+                            <MenuItem value={actType} key={index}>
+                                {actType}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <Box className={classes.formButtons}>
+                        <IconButton
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="start activity"
+                            onClick={startActivity()}
+                        >
+                            <AddIcon />
+                        </IconButton>
+                        <IconButton
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="tune activity"
+                            onClick={tuneActivity}
+                        >
+                            <TuneIcon />
+                        </IconButton>
+                    </Box>
+                </FormControl>
+            </Paper>
+        </React.Fragment>
     );
 };
 
