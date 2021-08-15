@@ -22,6 +22,7 @@ import {
 import { makeStyles, alpha } from "@material-ui/core";
 import InlineStartActivity from "./InlineStartActivity";
 import RunningActivity from "./RunningActivity";
+import CompletedActivity from "./CompletedActivity";
 
 const runningActivities = [
     {
@@ -37,6 +38,22 @@ const runningActivities = [
         duration: null,
     },
 ];
+
+const completedActivities = [
+    {
+        name: "Coding",
+        startTime: "10:00 AM",
+        endTime: "11:00 AM",
+        duration: "1 hour",
+    },
+    {
+        name: "Hooping wit da boys",
+        startTime: "10:30 AM",
+        endTime: "12:00 PM",
+        duration: "1.5 hours",
+    },
+];
+
 const useStyles = makeStyles((theme) => ({
     list: {
         width: 250,
@@ -221,6 +238,22 @@ const Layout = () => {
             </List>
         );
     };
+
+    const completedActivityList = () => {
+        return (
+            <List>
+                {completedActivities.map((act, index) => (
+                    <React.Fragment>
+                        <ListItem key={index}>
+                            <CompletedActivity activity={act} />
+                        </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                ))}
+            </List>
+        );
+    };
+
     return (
         <React.Fragment>
             {appBar()}
@@ -234,6 +267,7 @@ const Layout = () => {
             <Container>
                 <InlineStartActivity />
                 {runningActivityList()}
+                {completedActivityList()}
             </Container>
         </React.Fragment>
     );

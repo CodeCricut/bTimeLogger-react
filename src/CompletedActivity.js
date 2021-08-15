@@ -10,7 +10,7 @@ import {
     Paper,
     Typography,
 } from "@material-ui/core";
-import { Stop as StopIcon } from "@material-ui/icons";
+import { MoreVert as VerticalDotsIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     activityBox: {
@@ -24,14 +24,12 @@ const useStyles = makeStyles((theme) => ({
     activityName: {
         gridColumn: "title-start",
     },
-    stopButton: {
+    moreButton: {
         gridRow: "1 / 3",
         gridColumn: "3",
         margin: 0,
         height: "fit-content",
         alignSelf: "center",
-        // color: theme.palette.secondary,
-        color: "#f44336",
     },
     time: {
         gridRow: "2",
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RunningActivity = ({ activity }) => {
+const CompletedActivity = ({ activity }) => {
     const classes = useStyles();
 
     return (
@@ -51,21 +49,17 @@ const RunningActivity = ({ activity }) => {
             <Typography variant="h6" className={classes.activityName}>
                 {activity.name}
             </Typography>
-            <IconButton className={classes.stopButton}>
-                <StopIcon />
+            <IconButton className={classes.moreButton}>
+                <VerticalDotsIcon />
             </IconButton>
             <Typography variant="subtitle1" className={classes.time}>
-                {activity.startTime} - TODO
+                {activity.startTime} - {activity.endTime}
             </Typography>
-            <Typography
-                variant="subtitle1"
-                className={classes.duration}
-                aria-rowcount
-            >
-                10 hours
+            <Typography variant="subtitle1" className={classes.duration}>
+                {activity.duration}
             </Typography>
         </Box>
     );
 };
 
-export default RunningActivity;
+export default CompletedActivity;
