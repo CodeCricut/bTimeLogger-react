@@ -23,6 +23,7 @@ import { makeStyles, alpha } from "@material-ui/core";
 import InlineStartActivity from "./InlineStartActivity";
 import RunningActivity from "./RunningActivity";
 import CompletedActivity from "./CompletedActivity";
+import TuneSearchDialog from "./TuneSearchDialog";
 
 const runningActivities = [
     {
@@ -152,10 +153,7 @@ const Layout = () => {
     const classes = useStyles();
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-    const handleTuneSearch = () => {
-        console.log("tuning");
-    };
+    const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
     const appBar = () => (
         <AppBar position="static">
@@ -192,7 +190,7 @@ const Layout = () => {
 
                     <IconButton
                         className={classes.tuneIcon}
-                        onClick={handleTuneSearch}
+                        onClick={() => setIsSearchDialogOpen(true)}
                     >
                         <TuneIcon />
                     </IconButton>
@@ -264,6 +262,10 @@ const Layout = () => {
             >
                 {drawerList()}
             </Drawer>
+            <TuneSearchDialog
+                isOpen={isSearchDialogOpen}
+                onClose={() => setIsSearchDialogOpen(false)}
+            />
             <Container>
                 <InlineStartActivity />
                 {runningActivityList()}

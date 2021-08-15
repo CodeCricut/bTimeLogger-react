@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         height: "fit-content",
         alignSelf: "center",
+        color: "inherit",
     },
     time: {
         gridRow: "2",
