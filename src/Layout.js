@@ -11,11 +11,32 @@ import {
     Typography,
     InputBase,
     IconButton,
+    Container,
 } from "@material-ui/core";
-import { Search as SearchIcon, Menu as MenuIcon } from "@material-ui/icons";
+import {
+    Search as SearchIcon,
+    Menu as MenuIcon,
+    Tune as TuneIcon,
+} from "@material-ui/icons";
 
 import { makeStyles, alpha } from "@material-ui/core";
+import InlineStartActivity from "./InlineStartActivity";
+import RunningActivity from "./RunningActivity";
 
+const runningActivities = [
+    {
+        name: "Coding",
+        startTime: "10:00 AM",
+        endTime: null,
+        duration: null,
+    },
+    {
+        name: "Hooping wit da boys",
+        startTime: "4:19 PM",
+        endTime: null,
+        duration: null,
+    },
+];
 const useStyles = makeStyles((theme) => ({
     list: {
         width: 250,
@@ -52,8 +73,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     search: {
-        // margin: "auto",
-        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "space-between",
+
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(theme.palette.common.white, 0.15),
         "&:hover": {
@@ -70,34 +95,50 @@ const useStyles = makeStyles((theme) => ({
     searchIcon: {
         padding: theme.spacing(0, 2),
         height: "100%",
-        position: "absolute",
+        // position: "absolute",
         pointerEvents: "none",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
     },
+    tuneIcon: {
+        padding: theme.spacing(0, 2),
+        height: "100%",
+        // position: "absolute",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "inherit",
+    },
     inputRoot: {
         color: "inherit",
+        width: "100%",
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        // paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create("width"),
         width: "100%",
-        [theme.breakpoints.up("sm")]: {
-            width: "12ch",
-            "&:focus": {
-                width: "20ch",
-            },
-        },
+    },
+    searchStart: {
+        display: "flex",
+        flexDirection: "row",
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        flexGrow: 1,
     },
 }));
 
 const Layout = () => {
     const classes = useStyles();
 
-    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    const handleTuneSearch = () => {
+        console.log("tuning");
+    };
 
     const appBar = () => (
         <AppBar position="static">
@@ -117,17 +158,27 @@ const Layout = () => {
                     </Typography>
                 </div>
                 <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
+                    <div className={classes.searchStart}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            fullWidth={true}
+                            inputProps={{ "aria-label": "search" }}
+                        />
                     </div>
-                    <InputBase
-                        placeholder="Search…"
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ "aria-label": "search" }}
-                    />
+
+                    <IconButton
+                        className={classes.tuneIcon}
+                        onClick={handleTuneSearch}
+                    >
+                        <TuneIcon />
+                    </IconButton>
                 </div>
             </Toolbar>
         </AppBar>
@@ -155,6 +206,21 @@ const Layout = () => {
             </List>
         </div>
     );
+
+    const runningActivityList = () => {
+        return (
+            <List>
+                {runningActivities.map((act, index) => (
+                    <React.Fragment>
+                        <ListItem key={index}>
+                            <RunningActivity activity={act} />
+                        </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                ))}
+            </List>
+        );
+    };
     return (
         <React.Fragment>
             {appBar()}
@@ -165,7 +231,10 @@ const Layout = () => {
             >
                 {drawerList()}
             </Drawer>
-            <Button onClick={() => setIsDrawerOpen(true)}>Open Sidebar</Button>
+            <Container>
+                <InlineStartActivity />
+                {runningActivityList()}
+            </Container>
         </React.Fragment>
     );
 };
