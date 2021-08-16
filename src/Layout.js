@@ -18,6 +18,8 @@ import {
     Search as SearchIcon,
     Menu as MenuIcon,
     Tune as TuneIcon,
+    Settings as SettingsIcon,
+    Close as CloseIcon,
 } from "@material-ui/icons";
 
 import InlineStartActivity from "./InlineStartActivity";
@@ -27,12 +29,14 @@ import TuneSearchDialog from "./TuneSearchDialog";
 import useLayoutStyles from "./hooks/useLayoutStyles";
 
 import { completedActivities, runningActivities } from "./data/activities";
+import SettingsDialog from "./SettingsDialog";
 
 const Layout = () => {
     const classes = useLayoutStyles();
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+    const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
     const appBar = () => (
         <AppBar position="static">
@@ -74,6 +78,14 @@ const Layout = () => {
                         <TuneIcon />
                     </IconButton>
                 </div>
+                <Box className={classes.barRight}>
+                    <IconButton
+                        className={classes.tuneIcon}
+                        onClick={() => setIsSettingsDialogOpen(true)}
+                    >
+                        <SettingsIcon />
+                    </IconButton>
+                </Box>
             </Toolbar>
         </AppBar>
     );
@@ -86,7 +98,9 @@ const Layout = () => {
             onKeyDown={() => setIsDrawerOpen(false)}
         >
             <div className={classes.drawerHeader}>
-                <Button onClick={() => setIsDrawerOpen(false)}>Close</Button>
+                <IconButton onClick={() => setIsDrawerOpen(false)}>
+                    <CloseIcon color="secondary" />
+                </IconButton>
             </div>
             <Divider />
             <List>
@@ -103,8 +117,8 @@ const Layout = () => {
         return (
             <List>
                 {runningActivities.map((act, index) => (
-                    <React.Fragment>
-                        <ListItem key={index}>
+                    <React.Fragment key={index}>
+                        <ListItem>
                             <RunningActivity activity={act} />
                         </ListItem>
                         <Divider />
@@ -118,8 +132,8 @@ const Layout = () => {
         return (
             <List>
                 {completedActivities.map((act, index) => (
-                    <React.Fragment>
-                        <ListItem key={index}>
+                    <React.Fragment key={index}>
+                        <ListItem>
                             <CompletedActivity activity={act} />
                         </ListItem>
                         <Divider />
@@ -142,6 +156,10 @@ const Layout = () => {
             <TuneSearchDialog
                 isOpen={isSearchDialogOpen}
                 onClose={() => setIsSearchDialogOpen(false)}
+            />
+            <SettingsDialog
+                isOpen={isSettingsDialogOpen}
+                onClose={() => setIsSettingsDialogOpen(false)}
             />
             <Container>
                 <Box className={classes.startActivityBox}>

@@ -14,9 +14,9 @@ const useLayoutStyles = makeStyles((theme) => ({
     },
     toolBar: {
         display: "grid",
-        gridTemplateColumns: "1fr 2fr 1fr",
+        gridTemplateColumns: "1fr 2fr 1fr auto",
         [theme.breakpoints.down("sm")]: {
-            gridTemplateColumns: "1fr 11fr",
+            gridTemplateColumns: "1fr 11fr auto",
         },
     },
     toolBarHeader: {
@@ -99,6 +99,10 @@ const useLayoutStyles = makeStyles((theme) => ({
         },
         margin: "auto",
         padding: "10px 0",
+    },
+    barRight: {
+        display: "flex",
+        flexDirection: "row-reverse",
     },
 }));
 
