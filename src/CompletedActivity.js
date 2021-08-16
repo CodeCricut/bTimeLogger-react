@@ -15,7 +15,9 @@ import { MoreVert as VerticalDotsIcon } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
     activityBox: {
         display: "grid",
-        gridTemplateColumns: "[title-start] 300px 100px [title-end] 50px",
+        // gridTemplateColumns: "[title-start] 300px 100px [title-end] 50px",
+        gridTemplateColumns: "[title-start] 6fr 2fr [title-end] 1fr",
+        width: "100%",
         overflow: "hidden",
         "& *": {
             overflow: "hidden",

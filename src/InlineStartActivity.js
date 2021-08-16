@@ -17,8 +17,8 @@ const activityTypes = ["Sleep", "Reading", "Coding"];
 
 const useStyles = makeStyles((theme) => ({
     outline: {
-        width: "fit-content",
-        width: 600,
+        width: "100%",
+        flexGrow: 1,
         minWidth: 300,
         padding: theme.spacing(1),
         margin: "0 auto",

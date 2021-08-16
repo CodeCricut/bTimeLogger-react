@@ -12,6 +12,7 @@ import {
     InputBase,
     IconButton,
     Container,
+    Box,
 } from "@material-ui/core";
 import {
     Search as SearchIcon,
@@ -105,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 0,
 
         width: "100%",
-        [theme.breakpoints.up("sm")]: {
+        [theme.breakpoints.down("sm")]: {
             marginLeft: theme.spacing(1),
             width: "auto",
         },
@@ -146,6 +147,20 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "flex-start",
         flexGrow: 1,
+    },
+    activities: {
+        width: "50%",
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+        },
+    },
+    startActivityBox: {
+        width: "50%",
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+        },
+        margin: "auto",
+        padding: "10px 0",
     },
 }));
 
@@ -267,9 +282,13 @@ const Layout = () => {
                 onClose={() => setIsSearchDialogOpen(false)}
             />
             <Container>
-                <InlineStartActivity />
-                {runningActivityList()}
-                {completedActivityList()}
+                <Box className={classes.startActivityBox}>
+                    <InlineStartActivity />
+                </Box>
+                <Box className={classes.activities}>
+                    {runningActivityList()}
+                    {completedActivityList()}
+                </Box>
             </Container>
         </React.Fragment>
     );
