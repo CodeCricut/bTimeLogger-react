@@ -9,6 +9,7 @@ import {
     Box,
     Paper,
     Typography,
+    Tooltip,
 } from "@material-ui/core";
 import {
     MoreVert as VerticalDotsIcon,
@@ -37,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         height: "fit-content",
         alignSelf: "center",
-        color: "inherit",
     },
     time: {
         gridRow: "2",
@@ -53,37 +53,62 @@ const useStyles = makeStyles((theme) => ({
     dropdownIcon: {
         marginRight: "20px",
     },
+    moreSelectRoot: {
+        "&:before": {
+            borderColor: theme.palette.text.primary,
+        },
+        "&:after": {
+            borderColor: theme.palette.text.primary,
+        },
+    },
+    moreSelectIcon: {
+        fill: theme.palette.text.primary,
+    },
 }));
 
 const CompletedActivity = ({ activity }) => {
     const classes = useStyles();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const handleDropdownOpen = () => setIsDropdownOpen(true);
+    const handleDropdownOpen = () => {
+        setIsDropdownOpen(true);
+        setIsTooltipOpen(false);
+    };
     const handleDropdownClose = () => setIsDropdownOpen(false);
+
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
     const [isEditOpen, setIsEditOpen] = useState(false);
     const handleEditOpen = () => setIsEditOpen(true);
     const handleEditClose = () => setIsEditOpen(false);
 
     const moreDropdownMenu = () => (
-        <Select
-            className={classes.moreDropdown}
-            open={isDropdownOpen}
-            onOpen={handleDropdownOpen}
-            onClose={handleDropdownClose}
-            disableUnderline
-            IconComponent={VerticalDotsIcon}
-        >
-            <MenuItem className={classes.menuItem} onClick={handleEditOpen}>
-                <EditIcon className={classes.dropdownIcon} />
-                Edit
-            </MenuItem>
-            <MenuItem className={classes.menuItem}>
-                <DeleteIcon className={classes.dropdownIcon} />
-                Delete
-            </MenuItem>
-        </Select>
+        <Tooltip title="Options" open={isTooltipOpen}>
+            <Select
+                onMouseEnter={() => setIsTooltipOpen(true)}
+                onMouseLeave={() => setIsTooltipOpen(false)}
+                inputProps={{
+                    classes: {
+                        root: classes.moreSelectRoot,
+                        icon: classes.moreSelectIcon,
+                    },
+                }}
+                open={isDropdownOpen}
+                onOpen={handleDropdownOpen}
+                onClose={handleDropdownClose}
+                disableUnderline
+                IconComponent={VerticalDotsIcon}
+            >
+                <MenuItem className={classes.menuItem} onClick={handleEditOpen}>
+                    <EditIcon className={classes.dropdownIcon} />
+                    Edit
+                </MenuItem>
+                <MenuItem className={classes.menuItem}>
+                    <DeleteIcon className={classes.dropdownIcon} />
+                    Delete
+                </MenuItem>
+            </Select>
+        </Tooltip>
     );
     return (
         <React.Fragment>

@@ -8,6 +8,7 @@ import {
     IconButton,
     Box,
     Paper,
+    Tooltip,
 } from "@material-ui/core";
 import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
 
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {},
     select: {
         minWidth: 120,
+        width: "50%",
     },
 }));
 const InlineStartActivity = () => {
@@ -73,22 +75,26 @@ const InlineStartActivity = () => {
                         ))}
                     </Select>
                     <Box className={classes.formButtons}>
-                        <IconButton
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="start activity"
-                            onClick={startActivity()}
-                        >
-                            <AddIcon />
-                        </IconButton>
-                        <IconButton
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="tune activity"
-                            onClick={tuneActivity}
-                        >
-                            <TuneIcon />
-                        </IconButton>
+                        <Tooltip title="Start Activity">
+                            <IconButton
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="start activity"
+                                onClick={startActivity()}
+                            >
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Adjust Activity">
+                            <IconButton
+                                className={classes.menuButton}
+                                color="inherit"
+                                aria-label="tune activity"
+                                onClick={tuneActivity}
+                            >
+                                <TuneIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                 </FormControl>
             </Paper>

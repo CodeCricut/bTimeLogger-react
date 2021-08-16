@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 0,
         height: "fit-content",
         alignSelf: "center",
-        // color: theme.palette.secondary,
-        color: "#f44336",
+        color: theme.palette.error.main,
+        // color: "#f44336",
     },
     time: {
         gridRow: "2",

@@ -31,10 +31,31 @@ const RUNNING = "Running",
 
 const useStyles = makeStyles((theme) => ({
     form: {
-        display: "flex",
-        flexDirection: "column",
         "& > *": {
-            marginTop: "10px",
+            width: "100%",
+            marginBottom: theme.spacing(3),
+        },
+    },
+    labeledInput: {
+        display: "grid",
+        gridTemplateColumns: "100px auto 4fr 2fr",
+        [theme.breakpoints.down("sm")]: {
+            gridTemplateColumns: "1fr",
+        },
+        alignItems: "center",
+    },
+    label: {
+        color: theme.palette.secondary.main,
+        fontSize: 12,
+    },
+    inputShort: {
+        [theme.breakpoints.up("md")]: {
+            gridColumn: "3 / 4",
+        },
+    },
+    inputLong: {
+        [theme.breakpoints.up("md")]: {
+            gridColumn: "3 / 5",
         },
     },
 }));
@@ -51,7 +72,7 @@ const EditActivityDialog = ({ isOpen, onClose, activityId }) => {
     return (
         <Dialog open={isOpen}>
             <DialogTitle>Edit Activity</DialogTitle>
-            <DialogContent>
+            {/* <DialogContent>
                 <Box className={classes.form}>
                     <FormControl>
                         <InputLabel id="activity-type-label">
@@ -117,6 +138,99 @@ const EditActivityDialog = ({ isOpen, onClose, activityId }) => {
                                     "aria-label": "change date",
                                 }}
                             />
+                        </MuiPickersUtilsProvider>
+                    )}
+                </Box>
+            </DialogContent> */}
+            <DialogContent>
+                <Box className={classes.form}>
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
+                            Activity Type
+                        </Typography>
+                        <Select
+                            className={classes.inputShort}
+                            value={selectedType}
+                            onChange={(e) => setSelectedType(e.target.value)}
+                            labelId="activity-type-label"
+                        >
+                            {["Sleep", "Reading", "Coding"].map(
+                                (actType, index) => (
+                                    <MenuItem value={actType} key={index}>
+                                        {actType}
+                                    </MenuItem>
+                                )
+                            )}
+                        </Select>
+                    </FormControl>
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
+                            Comment
+                        </Typography>
+                        <TextField
+                            className={classes.inputLong}
+                            multiline
+                            margin="dense"
+                            variant="outlined"
+                        />
+                    </FormControl>
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
+                            Status
+                        </Typography>
+                        <Select
+                            className={classes.inputShort}
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            labelId="activity-status-label"
+                        >
+                            <MenuItem value={COMPLETED} key={COMPLETED}>
+                                {COMPLETED}
+                            </MenuItem>
+                            <MenuItem value={RUNNING} key={RUNNING}>
+                                {RUNNING}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                    {status == COMPLETED && (
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    From
+                                </Typography>
+                                <KeyboardDatePicker
+                                    className={classes.inputShort}
+                                    disableToolbar
+                                    variant="inline"
+                                    format="MM/DD/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={fromDate}
+                                    onChange={(date) => setFromDate(date)}
+                                    KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                    }}
+                                />
+                            </FormControl>
+
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    To
+                                </Typography>
+                                <KeyboardDatePicker
+                                    className={classes.inputShort}
+                                    disableToolbar
+                                    variant="inline"
+                                    format="MM/DD/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={toDate}
+                                    onChange={(date) => setToDate(date)}
+                                    KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                    }}
+                                />
+                            </FormControl>
                         </MuiPickersUtilsProvider>
                     )}
                 </Box>

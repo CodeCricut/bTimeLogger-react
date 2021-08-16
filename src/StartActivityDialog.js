@@ -31,10 +31,32 @@ const RUNNING = "Running",
 
 const useStyles = makeStyles((theme) => ({
     form: {
-        display: "flex",
-        flexDirection: "column",
+        width: "100%",
         "& > *": {
-            marginTop: "10px",
+            width: "100%",
+            marginBottom: theme.spacing(3),
+        },
+    },
+    labeledInput: {
+        display: "grid",
+        gridTemplateColumns: "100px auto 4fr 2fr",
+        [theme.breakpoints.down("sm")]: {
+            gridTemplateColumns: "1fr",
+        },
+        alignItems: "center",
+    },
+    label: {
+        color: theme.palette.secondary.main,
+        fontSize: 12,
+    },
+    inputShort: {
+        [theme.breakpoints.up("md")]: {
+            gridColumn: "3 / 4",
+        },
+    },
+    inputLong: {
+        [theme.breakpoints.up("md")]: {
+            gridColumn: "3 / 5",
         },
     },
 }));
@@ -58,11 +80,12 @@ const StartActivityDialog = ({
             <DialogTitle>Start Activity</DialogTitle>
             <DialogContent>
                 <Box className={classes.form}>
-                    <FormControl>
-                        <InputLabel id="activity-type-label">
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
                             Activity Type
-                        </InputLabel>
+                        </Typography>
                         <Select
+                            className={classes.inputShort}
                             value={selectedType}
                             onChange={(e) => setSelectedType(e.target.value)}
                             labelId="activity-type-label"
@@ -76,12 +99,23 @@ const StartActivityDialog = ({
                             )}
                         </Select>
                     </FormControl>
-                    <TextField helperText="Search term" />
-                    <FormControl>
-                        <InputLabel id="activity-status-label">
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
+                            Comment
+                        </Typography>
+                        <TextField
+                            className={classes.inputLong}
+                            multiline
+                            margin="dense"
+                            variant="outlined"
+                        />
+                    </FormControl>
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
                             Status
-                        </InputLabel>
+                        </Typography>
                         <Select
+                            className={classes.inputShort}
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             labelId="activity-status-label"
@@ -96,32 +130,43 @@ const StartActivityDialog = ({
                     </FormControl>
                     {status == COMPLETED && (
                         <MuiPickersUtilsProvider utils={MomentUtils}>
-                            <KeyboardDatePicker
-                                disableToolbar
-                                variant="inline"
-                                format="MM/DD/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                label="From"
-                                value={fromDate}
-                                onChange={(date) => setFromDate(date)}
-                                KeyboardButtonProps={{
-                                    "aria-label": "change date",
-                                }}
-                            />
-                            <KeyboardDatePicker
-                                disableToolbar
-                                variant="inline"
-                                format="MM/DD/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                label="To"
-                                value={toDate}
-                                onChange={(date) => setToDate(date)}
-                                KeyboardButtonProps={{
-                                    "aria-label": "change date",
-                                }}
-                            />
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    From
+                                </Typography>
+                                <KeyboardDatePicker
+                                    className={classes.inputShort}
+                                    disableToolbar
+                                    variant="inline"
+                                    format="MM/DD/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={fromDate}
+                                    onChange={(date) => setFromDate(date)}
+                                    KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                    }}
+                                />
+                            </FormControl>
+
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    To
+                                </Typography>
+                                <KeyboardDatePicker
+                                    className={classes.inputShort}
+                                    disableToolbar
+                                    variant="inline"
+                                    format="MM/DD/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={toDate}
+                                    onChange={(date) => setToDate(date)}
+                                    KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                    }}
+                                />
+                            </FormControl>
                         </MuiPickersUtilsProvider>
                     )}
                 </Box>
