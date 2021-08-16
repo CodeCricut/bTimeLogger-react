@@ -121,12 +121,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
     },
     tuneIcon: {
-        padding: theme.spacing(0, 2),
+        marginRight: theme.spacing(1),
         height: "100%",
-        // position: "absolute",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         color: "inherit",
     },
     inputRoot: {

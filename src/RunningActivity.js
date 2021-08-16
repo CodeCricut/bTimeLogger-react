@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
     activityBox: {
         display: "grid",
         // gridTemplateColumns: "[title-start] 300px 100px [title-end] 50px",
-        gridTemplateColumns: "[title-start] 6fr 2fr [title-end] 1fr",
+        gridTemplateColumns: "[title-start] 3fr 1fr [title-end] 50px",
+        // gridTemplateColumns: "[title-start] 6fr 2fr [title-end] 1fr",
         width: "100%",
         overflow: "hidden",
         "& *": {

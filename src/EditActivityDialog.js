@@ -39,15 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const StartActivityDialog = ({
-    isOpen,
-    onClose,
-    selectedType,
-    setSelectedType,
-}) => {
+const EditActivityDialog = ({ isOpen, onClose, activityId }) => {
     const classes = useStyles();
     const [comment, setComment] = useState("");
-
+    const [selectedType, setSelectedType] = useState("");
     const [status, setStatus] = useState(RUNNING);
 
     // only show if not running
@@ -55,7 +50,7 @@ const StartActivityDialog = ({
     const [toDate, setToDate] = useState(new Date());
     return (
         <Dialog open={isOpen}>
-            <DialogTitle>Start Activity</DialogTitle>
+            <DialogTitle>Edit Activity</DialogTitle>
             <DialogContent>
                 <Box className={classes.form}>
                     <FormControl>
@@ -129,11 +124,11 @@ const StartActivityDialog = ({
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button onClick={onClose} variant="contained" color="primary">
-                    Search
+                    Save Changes
                 </Button>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default StartActivityDialog;
+export default EditActivityDialog;
