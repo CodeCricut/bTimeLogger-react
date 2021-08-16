@@ -4,7 +4,6 @@ import {
     Select,
     MenuItem,
     InputLabel,
-    makeStyles,
     IconButton,
     Box,
     Paper,
@@ -13,31 +12,12 @@ import {
 import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
 
 import StartActivityDialog from "./StartActivityDialog";
+import useInlineStartActivityStyles from "./hooks/useInlineStartActivityStyles";
 
-const activityTypes = ["Sleep", "Reading", "Coding"];
+import activityTypes from "./data/activity-types";
 
-const useStyles = makeStyles((theme) => ({
-    outline: {
-        width: "100%",
-        flexGrow: 1,
-        minWidth: 300,
-        padding: theme.spacing(1),
-        margin: "0 auto",
-    },
-    formControl: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    formButtons: {},
-    menuButton: {},
-    select: {
-        minWidth: 120,
-        width: "50%",
-    },
-}));
 const InlineStartActivity = () => {
-    const classes = useStyles();
+    const classes = useInlineStartActivityStyles();
 
     const [selectedType, setSelectedType] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);

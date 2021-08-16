@@ -24,40 +24,11 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
-
-const useStyles = makeStyles((theme) => ({
-    contentContainer: {
-        "& > *": {
-            width: "100%",
-            marginBottom: theme.spacing(3),
-        },
-    },
-    labeledInput: {
-        display: "grid",
-        gridTemplateColumns: "100px auto 4fr 2fr",
-        [theme.breakpoints.down("sm")]: {
-            gridTemplateColumns: "1fr",
-        },
-        alignItems: "center",
-    },
-    label: {
-        color: theme.palette.secondary.main,
-        fontSize: 12,
-    },
-    inputShort: {
-        [theme.breakpoints.up("md")]: {
-            gridColumn: "3 / 4",
-        },
-    },
-    inputLong: {
-        [theme.breakpoints.up("md")]: {
-            gridColumn: "3 / 5",
-        },
-    },
-}));
+import useDialogFormStyles from "./hooks/useDialogFormStyles";
+import activityTypes from "./data/activity-types";
 
 const TuneSearchDialog = ({ isOpen, onClose }) => {
-    const classes = useStyles();
+    const classes = useDialogFormStyles();
 
     const [selectedType, setSelectedType] = useState("");
     const [fromDate, setFromDate] = useState(new Date());
@@ -66,7 +37,7 @@ const TuneSearchDialog = ({ isOpen, onClose }) => {
         <Dialog open={isOpen}>
             <DialogTitle>Search</DialogTitle>
             <DialogContent>
-                <Box className={classes.contentContainer}>
+                <Box className={classes.form}>
                     <FormControl className={classes.labeledInput}>
                         <Typography className={classes.label}>
                             Activity Type
@@ -77,13 +48,11 @@ const TuneSearchDialog = ({ isOpen, onClose }) => {
                             onChange={(e) => setSelectedType(e.target.value)}
                             id="activity-type"
                         >
-                            {["Sleep", "Reading", "Coding"].map(
-                                (actType, index) => (
-                                    <MenuItem value={actType} key={index}>
-                                        {actType}
-                                    </MenuItem>
-                                )
-                            )}
+                            {activityTypes.map((actType, index) => (
+                                <MenuItem value={actType} key={index}>
+                                    {actType}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <FormControl className={classes.labeledInput}>

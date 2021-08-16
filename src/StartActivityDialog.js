@@ -25,41 +25,10 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
+import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
-const RUNNING = "Running",
-    COMPLETED = "Completed";
-
-const useStyles = makeStyles((theme) => ({
-    form: {
-        width: "100%",
-        "& > *": {
-            width: "100%",
-            marginBottom: theme.spacing(3),
-        },
-    },
-    labeledInput: {
-        display: "grid",
-        gridTemplateColumns: "100px auto 4fr 2fr",
-        [theme.breakpoints.down("sm")]: {
-            gridTemplateColumns: "1fr",
-        },
-        alignItems: "center",
-    },
-    label: {
-        color: theme.palette.secondary.main,
-        fontSize: 12,
-    },
-    inputShort: {
-        [theme.breakpoints.up("md")]: {
-            gridColumn: "3 / 4",
-        },
-    },
-    inputLong: {
-        [theme.breakpoints.up("md")]: {
-            gridColumn: "3 / 5",
-        },
-    },
-}));
+import { RUNNING, COMPLETED } from "./data/activity-statuses";
+import activityTypes from "./data/activity-types";
 
 const StartActivityDialog = ({
     isOpen,
@@ -67,8 +36,7 @@ const StartActivityDialog = ({
     selectedType,
     setSelectedType,
 }) => {
-    const classes = useStyles();
-    const [comment, setComment] = useState("");
+    const classes = useDialogFormStyles();
 
     const [status, setStatus] = useState(RUNNING);
 
@@ -90,13 +58,11 @@ const StartActivityDialog = ({
                             onChange={(e) => setSelectedType(e.target.value)}
                             labelId="activity-type-label"
                         >
-                            {["Sleep", "Reading", "Coding"].map(
-                                (actType, index) => (
-                                    <MenuItem value={actType} key={index}>
-                                        {actType}
-                                    </MenuItem>
-                                )
-                            )}
+                            {activityTypes.map((actType, index) => (
+                                <MenuItem value={actType} key={index}>
+                                    {actType}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <FormControl className={classes.labeledInput}>
