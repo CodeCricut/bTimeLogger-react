@@ -12,6 +12,7 @@ const useCompletedActivityStyles = makeStyles((theme) => ({
     },
     activityName: {
         gridColumn: "title-start",
+        fontSize: 16,
     },
     dropdownContainer: {
         gridRow: "1 / 3",
@@ -41,9 +42,14 @@ const useCompletedActivityStyles = makeStyles((theme) => ({
         "&:after": {
             borderColor: theme.palette.text.primary,
         },
+        backgroundColor: "transparent!important", // yeah yeah
     },
     moreSelectIcon: {
         fill: theme.palette.text.primary,
+    },
+    subtitle: {
+        fontSize: 12,
+        color: theme.palette.text.secondary,
     },
 }));
 

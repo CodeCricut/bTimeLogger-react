@@ -67,10 +67,16 @@ const CompletedActivity = ({ activity }) => {
                 <Box className={classes.dropdownContainer}>
                     {moreDropdownMenu()}
                 </Box>
-                <Typography variant="subtitle1" className={classes.time}>
+                <Typography
+                    variant="subtitle1"
+                    className={`${classes.time} ${classes.subtitle}`}
+                >
                     {activity.startTime} - {activity.endTime}
                 </Typography>
-                <Typography variant="subtitle1" className={classes.duration}>
+                <Typography
+                    variant="subtitle1"
+                    className={`${classes.duration} ${classes.subtitle}`}
+                >
                     {activity.duration}
                 </Typography>
             </Box>

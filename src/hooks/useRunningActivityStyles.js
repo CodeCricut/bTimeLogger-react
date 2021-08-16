@@ -13,6 +13,7 @@ const useRunningActivityStyles = makeStyles((theme) => ({
     },
     activityName: {
         gridColumn: "title-start",
+        fontSize: 16,
     },
     stopButton: {
         gridRow: "1 / 3",
@@ -30,6 +31,10 @@ const useRunningActivityStyles = makeStyles((theme) => ({
     duration: {
         gridRow: "2",
         gridColumn: "2 / 3",
+    },
+    subtitle: {
+        fontSize: 12,
+        color: theme.palette.text.secondary,
     },
 }));
 

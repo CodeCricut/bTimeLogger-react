@@ -15,12 +15,15 @@ const RunningActivity = ({ activity }) => {
             <IconButton className={classes.stopButton}>
                 <StopIcon />
             </IconButton>
-            <Typography variant="subtitle1" className={classes.time}>
+            <Typography
+                variant="subtitle1"
+                className={`${classes.time} ${classes.subtitle}`}
+            >
                 {activity.startTime} - TODO
             </Typography>
             <Typography
                 variant="subtitle1"
-                className={classes.duration}
+                className={`${classes.duration} ${classes.subtitle}`}
                 aria-rowcount
             >
                 10 hours

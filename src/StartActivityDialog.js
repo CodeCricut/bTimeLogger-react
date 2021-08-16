@@ -29,6 +29,7 @@ import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
 import { RUNNING, COMPLETED } from "./data/activity-statuses";
 import activityTypes from "./data/activity-types";
+import ActivityTypeSelect from "./ActivityTypeSelect";
 
 const StartActivityDialog = ({
     isOpen,
@@ -43,28 +44,23 @@ const StartActivityDialog = ({
     // only show if not running
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
+
+    const [existingSelectedType, setExistingSelectedType] = useState("");
+    const [newSelectedType, setNewSelectedType] = useState("");
+
     return (
         <Dialog open={isOpen}>
             <DialogTitle>Start Activity</DialogTitle>
             <DialogContent>
                 <Box className={classes.form}>
-                    <FormControl className={classes.labeledInput}>
-                        <Typography className={classes.label}>
-                            Activity Type
-                        </Typography>
-                        <Select
-                            className={classes.inputShort}
-                            value={selectedType}
-                            onChange={(e) => setSelectedType(e.target.value)}
-                            labelId="activity-type-label"
-                        >
-                            {activityTypes.map((actType, index) => (
-                                <MenuItem value={actType} key={index}>
-                                    {actType}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    <Box className={classes.inputShort}>
+                        <ActivityTypeSelect
+                            selectedValue={existingSelectedType}
+                            setSelectedValue={setExistingSelectedType}
+                            inputValue={newSelectedType}
+                            setInputValue={setNewSelectedType}
+                        />
+                    </Box>
                     <FormControl className={classes.labeledInput}>
                         <Typography className={classes.label}>
                             Comment
@@ -81,6 +77,7 @@ const StartActivityDialog = ({
                             Status
                         </Typography>
                         <Select
+                            fullWidth
                             className={classes.inputShort}
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}

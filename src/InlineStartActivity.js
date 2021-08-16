@@ -14,12 +14,13 @@ import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
 import StartActivityDialog from "./StartActivityDialog";
 import useInlineStartActivityStyles from "./hooks/useInlineStartActivityStyles";
 
-import activityTypes from "./data/activity-types";
+import ActivityTypeSelect from "./ActivityTypeSelect";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
 
-    const [selectedType, setSelectedType] = useState("");
+    const [existingSelectedType, setExistingSelectedType] = useState("");
+    const [newSelectedType, setNewSelectedType] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const startActivity = () => {};
@@ -34,26 +35,20 @@ const InlineStartActivity = () => {
             <StartActivityDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                selectedType={selectedType}
-                setSelectedType={setSelectedType}
+                selectedType={newSelectedType}
+                setSelectedType={setNewSelectedType}
             />
             <Paper variant="outlined" className={classes.outline}>
                 <FormControl className={classes.formControl}>
-                    <InputLabel id="activity-type-label">
-                        Activity Type
-                    </InputLabel>
-                    <Select
-                        value={selectedType}
-                        onChange={(e) => setSelectedType(e.target.value)}
-                        labelId="activity-type-label"
-                        className={classes.select}
-                    >
-                        {activityTypes.map((actType, index) => (
-                            <MenuItem value={actType} key={index}>
-                                {actType}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <Box className={classes.select}>
+                        <ActivityTypeSelect
+                            selectedValue={existingSelectedType}
+                            setSelectedValue={setExistingSelectedType}
+                            inputValue={newSelectedType}
+                            setInputValue={setNewSelectedType}
+                        />
+                    </Box>
+
                     <Box className={classes.formButtons}>
                         <Tooltip title="Start Activity">
                             <IconButton

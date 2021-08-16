@@ -16,7 +16,7 @@ import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
 const useSettingsStyles = makeStyles((theme) => ({
     content: {
-        minWidth: "50vw",
+        minWidth: "30vw",
     },
 }));
 const SettingsDialog = ({ isOpen, onClose }) => {
