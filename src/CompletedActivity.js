@@ -13,9 +13,11 @@ import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
 import { formatDuration } from "./util/timeFormatters";
 import { useMainContext } from "./data/MainContext";
 import { RESUME_ACTIVITY, TRASH_ACTIVITY } from "./data/activity-reducer";
+import { useThemeSwitcherContext } from "./data/ThemeSwitcherContext";
 
 const CompletedActivity = ({ activity }) => {
-    const classes = useCompletedActivityStyles();
+    const [theme, setTheme] = useThemeSwitcherContext();
+    const classes = useCompletedActivityStyles({ theme });
 
     const [state, dispatch] = useMainContext();
 

@@ -13,6 +13,7 @@ import {
     IconButton,
     Container,
     Box,
+    useTheme,
 } from "@material-ui/core";
 import {
     Search as SearchIcon,
@@ -30,11 +31,17 @@ import useLayoutStyles from "./hooks/useLayoutStyles";
 
 import SettingsDialog from "./SettingsDialog";
 import { useMainContext } from "./data/MainContext";
+import { darkTheme } from "./theme";
 
 const Layout = () => {
     const classes = useLayoutStyles();
 
     const [{ activities }, dispatch] = useMainContext();
+
+    const theme = useTheme();
+    console.log(
+        `layout theme: ${theme === darkTheme ? "dark theme" : "light theme"}}`
+    );
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);

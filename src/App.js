@@ -1,24 +1,24 @@
 import React from "react";
 import { ThemeProvider, CssBaseline } from "@material-ui/core";
-import { darkTheme } from "./theme";
+import { DARK, darkTheme, lightTheme } from "./theme";
 
 import Layout from "./Layout";
 import { MainProvider } from "./data/MainContext";
 import Moment from "react-moment";
+import {
+    ThemeSwitcherProvider,
+    useThemeSwitcherContext,
+} from "./data/ThemeSwitcherContext";
 
 Moment.globalFormat = "MM/DD HH:mm";
 function App() {
     return (
-        <ThemeProvider theme={darkTheme}>
-            <MainProvider>
-                {/* <ActivityTypeProvider>
-                <ActivityProvider> */}
+        <MainProvider>
+            <ThemeSwitcherProvider>
                 <CssBaseline />
                 <Layout />
-                {/* </ActivityProvider>
-            </ActivityTypeProvider> */}
-            </MainProvider>
-        </ThemeProvider>
+            </ThemeSwitcherProvider>
+        </MainProvider>
     );
 }
 export default App;

@@ -42,7 +42,7 @@ const useCompletedActivityStyles = makeStyles((theme) => ({
         "&:after": {
             borderColor: theme.palette.text.primary,
         },
-        backgroundColor: "transparent!important", // yeah yeah
+        backgroundColor: "transparent!important", // yeah ea
     },
     moreSelectIcon: {
         fill: theme.palette.text.primary,
