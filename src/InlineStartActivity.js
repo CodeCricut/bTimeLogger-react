@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     FormControl,
     Select,
@@ -24,10 +24,18 @@ const InlineStartActivity = () => {
     const [{ types }, dispatch] = useMainContext();
 
     const [selectedType, setSelectedType] = useState("");
+    const [invalidType, setInvalidType] = useState(false);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+    useEffect(() => {
+        if (!selectedType) setInvalidType(true);
+        else setInvalidType(false);
+    }, [selectedType]);
+
     const startActivity = () => {
+        if (invalidType) return;
+
         const activityType = {
             name: selectedType,
         };
@@ -63,6 +71,7 @@ const InlineStartActivity = () => {
                     <Box className={classes.formButtons}>
                         <Tooltip title="Start Activity">
                             <IconButton
+                                disabled={invalidType}
                                 className={classes.menuButton}
                                 color="inherit"
                                 aria-label="start activity"

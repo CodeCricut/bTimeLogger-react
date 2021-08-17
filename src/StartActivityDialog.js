@@ -44,6 +44,12 @@ const StartActivityDialog = ({
     const classes = useDialogFormStyles();
     const [{ types }, dispatch] = useMainContext();
 
+    const [invalidType, setInvalidType] = useState(false);
+    useEffect(() => {
+        if (!selectedType) setInvalidType(true);
+        else setInvalidType(false);
+    }, [selectedType]);
+
     const [status, setStatus] = useState(RUNNING);
 
     const [comment, setComment] = useState("");
@@ -181,6 +187,7 @@ const StartActivityDialog = ({
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button
+                    disabled={invalidType}
                     onClick={handleCreate}
                     variant="contained"
                     color="primary"

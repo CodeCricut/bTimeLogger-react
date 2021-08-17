@@ -6,7 +6,7 @@ const addType = (state, type) => {
     if (!type) throw new Error("Tried adding null activity type.");
     if (!type.name) throw new Error("Tried adding type with invalid name.");
 
-    const typeExists = state.some((t) => t.name == type.name);
+    const typeExists = state.some((t) => t.name === type.name);
     if (typeExists) return [...state];
     else {
         const newType = {

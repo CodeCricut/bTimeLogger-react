@@ -12,8 +12,8 @@ const ActivityTypeSelect = ({ selectedType, setSelectedType }) => {
     useEffect(() => {
         if (inputValue) {
             setSelectedType(inputValue);
-        } else if (value) {
-            setSelectedType(value);
+        } else {
+            setSelectedType("");
         }
     }, [value, inputValue]);
     return (

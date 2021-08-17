@@ -118,18 +118,20 @@ const Layout = () => {
     const activityList = () => {
         return (
             <List>
-                {activities.map((act) => (
-                    <React.Fragment key={act.id}>
-                        <ListItem>
-                            {act.endTime ? (
-                                <CompletedActivity activity={act} />
-                            ) : (
-                                <RunningActivity activity={act} />
-                            )}
-                        </ListItem>
-                        <Divider />
-                    </React.Fragment>
-                ))}
+                {activities
+                    .sort((act1, act2) => act2.startTime - act1.startTime) // order by newest
+                    .map((act) => (
+                        <React.Fragment key={act.id}>
+                            <ListItem>
+                                {act.endTime ? (
+                                    <CompletedActivity activity={act} />
+                                ) : (
+                                    <RunningActivity activity={act} />
+                                )}
+                            </ListItem>
+                            <Divider />
+                        </React.Fragment>
+                    ))}
             </List>
         );
     };
