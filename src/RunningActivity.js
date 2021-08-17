@@ -6,17 +6,25 @@ import useRunningActivityStyles from "./hooks/useRunningActivityStyles";
 import useDate from "./hooks/useDate";
 import moment from "moment";
 import { formatDuration } from "./util/timeFormatters";
+import { useMainContext } from "./data/MainContext";
+import { STOP_ACTIVITY } from "./data/activity-reducer";
 
 const RunningActivity = ({ activity }) => {
+    const [state, dispatch] = useMainContext();
+
     const classes = useRunningActivityStyles();
     const date = useDate(1000);
+
+    const stopActivity = () => {
+        dispatch({ type: STOP_ACTIVITY, payload: activity.id });
+    };
 
     return (
         <Box className={classes.activityBox}>
             <Typography variant="h6" className={classes.activityName}>
                 {activity.type.name}
             </Typography>
-            <IconButton className={classes.stopButton}>
+            <IconButton className={classes.stopButton} onClick={stopActivity}>
                 <StopIcon />
             </IconButton>
             <Typography

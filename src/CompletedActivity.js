@@ -4,15 +4,20 @@ import {
     MoreVert as VerticalDotsIcon,
     Delete as DeleteIcon,
     Edit as EditIcon,
+    PlayArrow as PlayArrowIcon,
 } from "@material-ui/icons";
 import Moment from "react-moment";
 
 import EditActivityDialog from "./EditActivityDialog";
 import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
 import { formatDuration } from "./util/timeFormatters";
+import { useMainContext } from "./data/MainContext";
+import { RESUME_ACTIVITY } from "./data/activity-reducer";
 
 const CompletedActivity = ({ activity }) => {
     const classes = useCompletedActivityStyles();
+
+    const [state, dispatch] = useMainContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleDropdownOpen = () => {
@@ -26,6 +31,10 @@ const CompletedActivity = ({ activity }) => {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const handleEditOpen = () => setIsEditOpen(true);
     const handleEditClose = () => setIsEditOpen(false);
+
+    const handleResume = () => {
+        dispatch({ type: RESUME_ACTIVITY, payload: activity.id });
+    };
 
     const moreDropdownMenu = () => (
         <Tooltip title="Options" open={isTooltipOpen}>
@@ -47,6 +56,10 @@ const CompletedActivity = ({ activity }) => {
                 <MenuItem className={classes.menuItem} onClick={handleEditOpen}>
                     <EditIcon className={classes.dropdownIcon} />
                     Edit
+                </MenuItem>
+                <MenuItem className={classes.menuItem} onClick={handleResume}>
+                    <PlayArrowIcon className={classes.dropdownIcon} />
+                    Resume
                 </MenuItem>
                 <MenuItem className={classes.menuItem}>
                     <DeleteIcon className={classes.dropdownIcon} />
