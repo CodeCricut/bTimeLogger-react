@@ -23,6 +23,7 @@ import MomentUtils from "@date-io/moment";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
+    KeyboardTimePicker,
 } from "@material-ui/pickers";
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
@@ -34,6 +35,7 @@ import {
     CREATE_COMPLETED_ACTIVITY,
     START_ACTIVITY,
 } from "./data/activity-reducer";
+import useDateTimeStyles from "./hooks/useDateTimeStyles";
 
 const StartActivityDialog = ({
     isOpen,
@@ -42,6 +44,7 @@ const StartActivityDialog = ({
     setSelectedType,
 }) => {
     const classes = useDialogFormStyles();
+    const dateTimeClasses = useDateTimeStyles();
     const [{ types }, dispatch] = useMainContext();
 
     const [invalidType, setInvalidType] = useState(false);
@@ -148,38 +151,68 @@ const StartActivityDialog = ({
                                 <Typography className={classes.label}>
                                     From
                                 </Typography>
-                                <KeyboardDatePicker
-                                    className={classes.inputShort}
-                                    disableToolbar
-                                    variant="inline"
-                                    format="MM/DD/yyyy"
-                                    margin="normal"
-                                    id="date-picker-inline"
-                                    value={fromDate}
-                                    onChange={(date) => setFromDate(date)}
-                                    KeyboardButtonProps={{
-                                        "aria-label": "change date",
-                                    }}
-                                />
+                                <Box
+                                    className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
+                                >
+                                    <KeyboardDatePicker
+                                        className={dateTimeClasses.date}
+                                        disableToolbar
+                                        variant="dialog"
+                                        label="start date"
+                                        format="MM/DD/yyyy"
+                                        margin="normal"
+                                        value={fromDate}
+                                        onChange={setFromDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                    />
+                                    <KeyboardTimePicker
+                                        label="start time"
+                                        className={dateTimeClasses.time}
+                                        variant="dialog"
+                                        value={fromDate}
+                                        margin="normal"
+                                        onChange={setFromDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change time",
+                                        }}
+                                    />
+                                </Box>
                             </FormControl>
 
                             <FormControl className={classes.labeledInput}>
                                 <Typography className={classes.label}>
                                     To
                                 </Typography>
-                                <KeyboardDatePicker
-                                    className={classes.inputShort}
-                                    disableToolbar
-                                    variant="inline"
-                                    format="MM/DD/yyyy"
-                                    margin="normal"
-                                    id="date-picker-inline"
-                                    value={toDate}
-                                    onChange={(date) => setToDate(date)}
-                                    KeyboardButtonProps={{
-                                        "aria-label": "change date",
-                                    }}
-                                />
+                                <Box
+                                    className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
+                                >
+                                    <KeyboardDatePicker
+                                        className={dateTimeClasses.date}
+                                        disableToolbar
+                                        variant="dialog"
+                                        label="end date"
+                                        format="MM/DD/yyyy"
+                                        margin="normal"
+                                        value={toDate}
+                                        onChange={setToDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                    />
+                                    <KeyboardTimePicker
+                                        label="end time"
+                                        className={dateTimeClasses.time}
+                                        variant="dialog"
+                                        value={toDate}
+                                        margin="normal"
+                                        onChange={setToDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change time",
+                                        }}
+                                    />
+                                </Box>
                             </FormControl>
                         </MuiPickersUtilsProvider>
                     )}
