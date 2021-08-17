@@ -31,21 +31,41 @@ import useLayoutStyles from "./hooks/useLayoutStyles";
 
 import SettingsDialog from "./SettingsDialog";
 import { useMainContext } from "./data/MainContext";
-import { darkTheme } from "./theme";
+import {
+    selectActivitiesWithText,
+    selectActivitiesWithTypeText,
+    selectNonTrashedActivities,
+    sortActivitiesByNewest,
+} from "./data/activitiy-selectors";
 
 const Layout = () => {
     const classes = useLayoutStyles();
-
     const [{ activities }, dispatch] = useMainContext();
-
-    const theme = useTheme();
-    console.log(
-        `layout theme: ${theme === darkTheme ? "dark theme" : "light theme"}}`
-    );
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isShowingSearchResults, setIsShowingSearchResults] = useState(
+        !!searchTerm
+    );
+
+    const [searchResultActivities, setSearchResultActivities] = useState([]);
+    useEffect(() => {
+        if (searchTerm) {
+            const searchResults = selectActivitiesWithText(
+                activities,
+                searchTerm
+            );
+            const sortedResults = sortActivitiesByNewest(searchResults);
+            setSearchResultActivities(sortedResults);
+            setIsShowingSearchResults(true);
+        } else {
+            setSearchResultActivities([]);
+            setIsShowingSearchResults(false);
+        }
+    }, [searchTerm, activities]);
 
     const appBar = () => (
         <AppBar position="static">
@@ -70,6 +90,8 @@ const Layout = () => {
                             <SearchIcon />
                         </div>
                         <InputBase
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search…"
                             classes={{
                                 root: classes.inputRoot,
@@ -122,13 +144,13 @@ const Layout = () => {
         </div>
     );
 
-    const activityList = () => {
+    const searchResultActivityList = () => {
+        if (!isShowingSearchResults) return;
         return (
-            <List>
-                {activities
-                    .filter((act) => !act.trashed)
-                    .sort((act1, act2) => act2.startTime - act1.startTime) // order by newest
-                    .map((act) => (
+            <React.Fragment>
+                <Typography variant="h2">Search Results</Typography>
+                <List>
+                    {searchResultActivities.map((act) => (
                         <React.Fragment key={act.id}>
                             <ListItem>
                                 {act.endTime ? (
@@ -140,6 +162,28 @@ const Layout = () => {
                             <Divider />
                         </React.Fragment>
                     ))}
+                </List>
+            </React.Fragment>
+        );
+    };
+
+    const activityList = () => {
+        return (
+            <List>
+                {sortActivitiesByNewest(
+                    selectNonTrashedActivities(activities)
+                ).map((act) => (
+                    <React.Fragment key={act.id}>
+                        <ListItem>
+                            {act.endTime ? (
+                                <CompletedActivity activity={act} />
+                            ) : (
+                                <RunningActivity activity={act} />
+                            )}
+                        </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                ))}
             </List>
         );
     };
@@ -166,7 +210,10 @@ const Layout = () => {
                 <Box className={classes.startActivityBox}>
                     <InlineStartActivity />
                 </Box>
-                <Box className={classes.activities}>{activityList()}</Box>
+                <Box className={classes.activities}>
+                    {searchResultActivityList()}
+                    {activityList()}
+                </Box>
             </Container>
         </React.Fragment>
     );
