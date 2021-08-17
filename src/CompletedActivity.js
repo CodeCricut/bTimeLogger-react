@@ -12,7 +12,7 @@ import EditActivityDialog from "./EditActivityDialog";
 import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
 import { formatDuration } from "./util/timeFormatters";
 import { useMainContext } from "./data/MainContext";
-import { RESUME_ACTIVITY } from "./data/activity-reducer";
+import { RESUME_ACTIVITY, TRASH_ACTIVITY } from "./data/activity-reducer";
 
 const CompletedActivity = ({ activity }) => {
     const classes = useCompletedActivityStyles();
@@ -35,6 +35,9 @@ const CompletedActivity = ({ activity }) => {
     const handleResume = () => {
         dispatch({ type: RESUME_ACTIVITY, payload: activity.id });
     };
+
+    const handleTrash = () =>
+        dispatch({ type: TRASH_ACTIVITY, payload: activity.id });
 
     const moreDropdownMenu = () => (
         <Tooltip title="Options" open={isTooltipOpen}>
@@ -61,9 +64,9 @@ const CompletedActivity = ({ activity }) => {
                     <PlayArrowIcon className={classes.dropdownIcon} />
                     Resume
                 </MenuItem>
-                <MenuItem className={classes.menuItem}>
+                <MenuItem className={classes.menuItem} onClick={handleTrash}>
                     <DeleteIcon className={classes.dropdownIcon} />
-                    Delete
+                    Trash
                 </MenuItem>
             </Select>
         </Tooltip>
@@ -73,7 +76,7 @@ const CompletedActivity = ({ activity }) => {
             <EditActivityDialog
                 isOpen={isEditOpen}
                 onClose={handleEditClose}
-                activityId={0}
+                activity={activity}
             />
             <Box className={classes.activityBox}>
                 <Typography variant="h6" className={classes.activityName}>

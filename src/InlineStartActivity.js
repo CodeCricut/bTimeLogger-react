@@ -47,7 +47,6 @@ const InlineStartActivity = () => {
     };
 
     const tuneActivity = () => {
-        console.log("tune");
         setIsDialogOpen(true);
     };
 
@@ -70,15 +69,17 @@ const InlineStartActivity = () => {
 
                     <Box className={classes.formButtons}>
                         <Tooltip title="Start Activity">
-                            <IconButton
-                                disabled={invalidType}
-                                className={classes.menuButton}
-                                color="inherit"
-                                aria-label="start activity"
-                                onClick={startActivity}
-                            >
-                                <AddIcon />
-                            </IconButton>
+                            <span>
+                                <IconButton
+                                    disabled={invalidType}
+                                    className={classes.menuButton}
+                                    color="inherit"
+                                    aria-label="start activity"
+                                    onClick={startActivity}
+                                >
+                                    <AddIcon />
+                                </IconButton>
+                            </span>
                         </Tooltip>
                         <Tooltip title="Adjust Activity">
                             <IconButton

@@ -77,6 +77,7 @@ const StartActivityDialog = ({
     const startRunningActivity = (activityType) => {
         const activity = {
             type: activityType,
+            comment: comment,
         };
         dispatch({ type: START_ACTIVITY, payload: activity });
     };

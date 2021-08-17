@@ -4,6 +4,7 @@ import {
     stopActivity,
     resumeActivity,
     trashActivity,
+    editActivity,
 } from "./activity-reducer";
 
 const existingState = [
@@ -230,6 +231,54 @@ test("trashes non-trashed activity with valid id, expects trash to be true", () 
 
 test("trashes non-trashed activity with invalid id, expects error to be thrown", () => {
     expect(() => trashActivity(existingState, -99)).toThrowError();
+
+    expectExistingToBePure();
+});
+
+// ============================== editActivity ==============================
+test("edits activity with valid id, expects fields to be updated", () => {
+    const activity = existingState[0];
+
+    const toUpdate = {
+        ...activity,
+        type: {
+            name: "update activity",
+        },
+        startTime: new Date(2020, 1, 1),
+        endTime: new Date(2020, 1, 2),
+        comment: "new comment",
+        trashed: true,
+    };
+
+    expect(toUpdate.type).not.toEqual(activity.type);
+    expect(toUpdate.startTime).not.toEqual(activity.startTime);
+    expect(toUpdate.endTime).not.toEqual(activity.endTime);
+    expect(toUpdate.comment).not.toEqual(activity.comment);
+    expect(toUpdate.trashed).not.toEqual(activity.trashed);
+
+    const newState = editActivity(existingState, toUpdate);
+
+    const updatedActivity = newState.find((act) => act.id === activity.id);
+    expect(updatedActivity).toBeTruthy();
+
+    expect(toUpdate.type).toEqual(updatedActivity.type);
+    expect(toUpdate.startTime).toEqual(updatedActivity.startTime);
+    expect(toUpdate.endTime).toEqual(updatedActivity.endTime);
+    expect(toUpdate.comment).toEqual(updatedActivity.comment);
+    expect(toUpdate.trashed).toEqual(updatedActivity.trashed);
+
+    expectExistingToBePure();
+});
+
+test("edits null activity, expects fields to be updated", () => {
+    expect(() => editActivity(existingState, null)).toThrowError();
+
+    expectExistingToBePure();
+});
+
+test("edits activity with invalid id, expects fields to be updated", () => {
+    const activity = { id: -99 };
+    expect(() => editActivity(existingState, activity)).toThrowError();
 
     expectExistingToBePure();
 });

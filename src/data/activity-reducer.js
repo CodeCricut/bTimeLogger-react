@@ -4,7 +4,8 @@ const START_ACTIVITY = "START_ACTIVITY",
     CREATE_COMPLETED_ACTIVITY = "CREATE_COMPLETED_ACTIVITY",
     STOP_ACTIVITY = "STOP_ACTIVITY",
     RESUME_ACTIVITY = "RESUME_ACTIVITY",
-    TRASH_ACTIVITY = "REMOVE_ACTIVITY";
+    TRASH_ACTIVITY = "REMOVE_ACTIVITY",
+    EDIT_ACTIVITY = "EDIT_ACTIVITY";
 
 const startActivity = (state, activity) => {
     if (!activity) throw new Error("Tried to start null activity.");
@@ -90,6 +91,17 @@ const trashActivity = (state, activityId) => {
     return [...allButActivity, trashedActivity];
 };
 
+const editActivity = (state, updatedActivity) => {
+    if (!updatedActivity) throw new Error("Tried editing null activity");
+
+    const activity = state.find((act) => act.id === updatedActivity.id);
+    if (!activity) throw new Error("Tried editing activity with invalid id.");
+
+    const allButActivity = state.filter((act) => act.id !== activity.id);
+
+    return [...allButActivity, updatedActivity];
+};
+
 const reducer = (state, { type, payload }) => {
     switch (type) {
         case START_ACTIVITY:
@@ -102,7 +114,9 @@ const reducer = (state, { type, payload }) => {
             return resumeActivity(state, payload);
         case TRASH_ACTIVITY:
             return trashActivity(state, payload);
-        // TODO other types
+        case EDIT_ACTIVITY:
+            return editActivity(state, payload);
+        // TODO: RESTORE_ACTIVITY
         default:
             return state; // normally I would prefer to throw error, but with a combined-reducer setup,
         // the wrong reducer may be used for an action
@@ -116,9 +130,11 @@ export {
     stopActivity,
     resumeActivity,
     trashActivity,
+    editActivity,
     START_ACTIVITY,
     CREATE_COMPLETED_ACTIVITY,
     STOP_ACTIVITY,
     RESUME_ACTIVITY,
     TRASH_ACTIVITY,
+    EDIT_ACTIVITY,
 };

@@ -119,6 +119,7 @@ const Layout = () => {
         return (
             <List>
                 {activities
+                    .filter((act) => !act.trashed)
                     .sort((act1, act2) => act2.startTime - act1.startTime) // order by newest
                     .map((act) => (
                         <React.Fragment key={act.id}>

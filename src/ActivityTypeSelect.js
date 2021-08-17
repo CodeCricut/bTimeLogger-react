@@ -10,6 +10,9 @@ const ActivityTypeSelect = ({ selectedType, setSelectedType }) => {
     const [inputValue, setInputValue] = useState(selectedType);
 
     useEffect(() => {
+        setInputValue(selectedType);
+    }, [selectedType]);
+    useEffect(() => {
         if (inputValue) {
             setSelectedType(inputValue);
         } else {
