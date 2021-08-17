@@ -4,6 +4,8 @@ const ADD_TYPE = "ADD_TYPE",
 
 const addType = (state, type) => {
     if (!type) throw new Error("Tried adding null activity type.");
+    if (!type.name) throw new Error("Tried adding type with invalid name.");
+
     const typeExists = state.some((t) => t.name == type.name);
     if (typeExists) return [...state];
     else {
@@ -39,4 +41,4 @@ const reducer = (state, { type, payload }) => {
 };
 
 export default reducer;
-export { ADD_TYPE, REMOVE_TYPE };
+export { addType, removeType, ADD_TYPE, REMOVE_TYPE };
