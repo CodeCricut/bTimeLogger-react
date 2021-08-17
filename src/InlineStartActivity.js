@@ -15,15 +15,28 @@ import StartActivityDialog from "./StartActivityDialog";
 import useInlineStartActivityStyles from "./hooks/useInlineStartActivityStyles";
 
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { ADD_TYPE } from "./data/type-reducer";
+import { useMainContext } from "./data/MainContext";
+import { START_ACTIVITY } from "./data/activity-reducer";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
+    const [{ types }, dispatch] = useMainContext();
 
-    const [existingSelectedType, setExistingSelectedType] = useState("");
-    const [newSelectedType, setNewSelectedType] = useState("");
+    const [selectedType, setSelectedType] = useState("");
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const startActivity = () => {};
+    const startActivity = () => {
+        const activityType = {
+            name: selectedType,
+        };
+        const activity = {
+            type: activityType, //
+        };
+        dispatch({ type: ADD_TYPE, payload: activityType });
+        dispatch({ type: START_ACTIVITY, payload: activity });
+    };
 
     const tuneActivity = () => {
         console.log("tune");
@@ -35,17 +48,15 @@ const InlineStartActivity = () => {
             <StartActivityDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                selectedType={newSelectedType}
-                setSelectedType={setNewSelectedType}
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
             />
             <Paper variant="outlined" className={classes.outline}>
                 <FormControl className={classes.formControl}>
                     <Box className={classes.select}>
                         <ActivityTypeSelect
-                            selectedValue={existingSelectedType}
-                            setSelectedValue={setExistingSelectedType}
-                            inputValue={newSelectedType}
-                            setInputValue={setNewSelectedType}
+                            selectedType={selectedType}
+                            setSelectedType={setSelectedType}
                         />
                     </Box>
 
@@ -55,7 +66,7 @@ const InlineStartActivity = () => {
                                 className={classes.menuButton}
                                 color="inherit"
                                 aria-label="start activity"
-                                onClick={startActivity()}
+                                onClick={startActivity}
                             >
                                 <AddIcon />
                             </IconButton>

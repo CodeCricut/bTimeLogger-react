@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     FormControl,
@@ -22,14 +22,18 @@ import MomentUtils from "@date-io/moment";
 
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
 import { RUNNING, COMPLETED } from "./data/activity-statuses";
-import activityTypes from "./data/activity-types";
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { useMainContext } from "./data/MainContext";
+import { ADD_TYPE } from "./data/type-reducer";
+import {
+    CREATE_COMPLETED_ACTIVITY,
+    START_ACTIVITY,
+} from "./data/activity-reducer";
 
 const StartActivityDialog = ({
     isOpen,
@@ -38,16 +42,56 @@ const StartActivityDialog = ({
     setSelectedType,
 }) => {
     const classes = useDialogFormStyles();
+    const [{ types }, dispatch] = useMainContext();
 
     const [status, setStatus] = useState(RUNNING);
 
-    // only show if not running
+    const [comment, setComment] = useState("");
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
+    // TODO: need fromTime & toTime
 
-    const [existingSelectedType, setExistingSelectedType] = useState("");
-    const [newSelectedType, setNewSelectedType] = useState("");
+    const reset = () => {
+        setStatus(RUNNING);
+        setFromDate(new Date());
+        setToDate(new Date());
+        setComment("");
+    };
 
+    useEffect(reset, [isOpen]);
+
+    const addType = () => {
+        const activityType = {
+            name: selectedType,
+        };
+        dispatch({ type: ADD_TYPE, payload: activityType });
+        return activityType;
+    };
+
+    const startRunningActivity = (activityType) => {
+        const activity = {
+            type: activityType,
+        };
+        dispatch({ type: START_ACTIVITY, payload: activity });
+    };
+
+    const createCompletedActivity = (activityType) => {
+        const activity = {
+            type: activityType,
+            comment: comment,
+            startTime: fromDate,
+            endTime: toDate,
+        };
+        dispatch({ type: CREATE_COMPLETED_ACTIVITY, payload: activity });
+    };
+
+    const handleCreate = () => {
+        const activityType = addType();
+
+        if (status === RUNNING) startRunningActivity(activityType);
+        else createCompletedActivity(activityType);
+        onClose();
+    };
     return (
         <Dialog open={isOpen}>
             <DialogTitle>Start Activity</DialogTitle>
@@ -55,10 +99,8 @@ const StartActivityDialog = ({
                 <Box className={classes.form}>
                     <Box className={classes.inputShort}>
                         <ActivityTypeSelect
-                            selectedValue={existingSelectedType}
-                            setSelectedValue={setExistingSelectedType}
-                            inputValue={newSelectedType}
-                            setInputValue={setNewSelectedType}
+                            selectedType={selectedType}
+                            setSelectedType={setSelectedType}
                         />
                     </Box>
                     <FormControl className={classes.labeledInput}>
@@ -67,6 +109,8 @@ const StartActivityDialog = ({
                         </Typography>
                         <TextField
                             className={classes.inputLong}
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
                             multiline
                             margin="dense"
                             variant="outlined"
@@ -136,8 +180,12 @@ const StartActivityDialog = ({
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={onClose} variant="contained" color="primary">
-                    Search
+                <Button
+                    onClick={handleCreate}
+                    variant="contained"
+                    color="primary"
+                >
+                    Create
                 </Button>
             </DialogActions>
         </Dialog>

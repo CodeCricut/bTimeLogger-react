@@ -5,9 +5,11 @@ import {
     Delete as DeleteIcon,
     Edit as EditIcon,
 } from "@material-ui/icons";
+import Moment from "react-moment";
 
 import EditActivityDialog from "./EditActivityDialog";
 import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
+import { formatDuration } from "./util/timeFormatters";
 
 const CompletedActivity = ({ activity }) => {
     const classes = useCompletedActivityStyles();
@@ -62,7 +64,7 @@ const CompletedActivity = ({ activity }) => {
             />
             <Box className={classes.activityBox}>
                 <Typography variant="h6" className={classes.activityName}>
-                    {activity.name}
+                    {activity.type.name}
                 </Typography>
                 <Box className={classes.dropdownContainer}>
                     {moreDropdownMenu()}
@@ -71,12 +73,14 @@ const CompletedActivity = ({ activity }) => {
                     variant="subtitle1"
                     className={`${classes.time} ${classes.subtitle}`}
                 >
-                    {activity.startTime} - {activity.endTime}
+                    <Moment>{activity.startTime}</Moment> -{" "}
+                    <Moment>{activity.endTime}</Moment>
                 </Typography>
                 <Typography
                     variant="subtitle1"
                     className={`${classes.duration} ${classes.subtitle}`}
                 >
+                    {formatDuration(activity.startTime, activity.endTime)}
                     {activity.duration}
                 </Typography>
             </Box>

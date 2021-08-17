@@ -1,23 +1,32 @@
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useMainContext } from "./data/MainContext";
 
-import activityTypes from "./data/activity-types";
+const ActivityTypeSelect = ({ selectedType, setSelectedType }) => {
+    const [{ activities, types }, dispatch] = useMainContext();
 
-const ActivityTypeSelect = ({
-    selectedValue,
-    setSelectedValue,
-    inputValue,
-    setInputValue,
-}) => {
+    const [value, setValue] = useState("");
+    const [inputValue, setInputValue] = useState(selectedType);
+
+    useEffect(() => {
+        if (inputValue) {
+            setSelectedType(inputValue);
+        } else if (value) {
+            setSelectedType(value);
+        }
+    }, [value, inputValue]);
     return (
         <Autocomplete
             freeSolo
-            options={activityTypes}
+            options={types}
             fullWidth
-            getOptionLabel={(opt) => opt}
-            value={selectedValue}
-            onChange={(event, newValue) => setSelectedValue(newValue)}
+            getOptionLabel={(opt) => {
+                if (opt) return opt.name;
+                return "";
+            }}
+            value={value}
+            onChange={(event, newValue) => setValue(newValue)}
             inputValue={inputValue}
             onInputChange={(event, newValue) => setInputValue(newValue)}
             renderInput={(params) => (

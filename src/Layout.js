@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Drawer,
@@ -28,11 +28,13 @@ import CompletedActivity from "./CompletedActivity";
 import TuneSearchDialog from "./TuneSearchDialog";
 import useLayoutStyles from "./hooks/useLayoutStyles";
 
-import { completedActivities, runningActivities } from "./data/activities";
 import SettingsDialog from "./SettingsDialog";
+import { useMainContext } from "./data/MainContext";
 
 const Layout = () => {
     const classes = useLayoutStyles();
+
+    const [{ activities }, dispatch] = useMainContext();
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
@@ -113,28 +115,17 @@ const Layout = () => {
         </div>
     );
 
-    const runningActivityList = () => {
+    const activityList = () => {
         return (
             <List>
-                {runningActivities.map((act, index) => (
-                    <React.Fragment key={index}>
+                {activities.map((act) => (
+                    <React.Fragment key={act.id}>
                         <ListItem>
-                            <RunningActivity activity={act} />
-                        </ListItem>
-                        <Divider />
-                    </React.Fragment>
-                ))}
-            </List>
-        );
-    };
-
-    const completedActivityList = () => {
-        return (
-            <List>
-                {completedActivities.map((act, index) => (
-                    <React.Fragment key={index}>
-                        <ListItem>
-                            <CompletedActivity activity={act} />
+                            {act.endTime ? (
+                                <CompletedActivity activity={act} />
+                            ) : (
+                                <RunningActivity activity={act} />
+                            )}
                         </ListItem>
                         <Divider />
                     </React.Fragment>
@@ -165,10 +156,7 @@ const Layout = () => {
                 <Box className={classes.startActivityBox}>
                     <InlineStartActivity />
                 </Box>
-                <Box className={classes.activities}>
-                    {runningActivityList()}
-                    {completedActivityList()}
-                </Box>
+                <Box className={classes.activities}>{activityList()}</Box>
             </Container>
         </React.Fragment>
     );

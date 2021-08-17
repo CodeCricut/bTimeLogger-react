@@ -25,10 +25,11 @@ import {
     KeyboardDatePicker,
 } from "@material-ui/pickers";
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
-import activityTypes from "./data/activity-types";
+import { useMainContext } from "./data/MainContext";
 
 const TuneSearchDialog = ({ isOpen, onClose }) => {
     const classes = useDialogFormStyles();
+    const [{ types }, dispatch] = useMainContext();
 
     const [selectedType, setSelectedType] = useState("");
     const [fromDate, setFromDate] = useState(new Date());
@@ -48,7 +49,7 @@ const TuneSearchDialog = ({ isOpen, onClose }) => {
                             onChange={(e) => setSelectedType(e.target.value)}
                             id="activity-type"
                         >
-                            {activityTypes.map((actType, index) => (
+                            {types.map((actType, index) => (
                                 <MenuItem value={actType} key={index}>
                                     {actType}
                                 </MenuItem>
