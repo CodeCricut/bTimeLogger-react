@@ -33,47 +33,32 @@ import useDateTimeStyles from "./hooks/useDateTimeStyles";
 const TuneSearchDialog = ({
     isOpen,
     onClose,
-    searchTerm,
-    setSearchTerm,
-    selectedType,
-    setSelectedType,
-    doSearchBetweenDates,
-    setDoSearchBetweenDates,
-    fromDate,
-    setFromDate,
-    toDate,
-    setToDate,
+    searchParams,
+    setSearchParams,
 }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
 
-    const [tempSearchTerm, setTempSearchTerm] = useState(searchTerm);
+    const [tempSearchParams, setTempSearchParams] = useState(searchParams);
     useEffect(() => {
-        setTempSearchTerm(searchTerm);
-    }, [searchTerm]);
-
-    const [tempSelectedType, setTempSelectedType] = useState(selectedType);
-    const [tempDoSearchBetweenDates, setTempDoSearchBetweenDates] =
-        useState(doSearchBetweenDates);
-    const [tempFromDate, setTempFromDate] = useState(fromDate);
-    const [tempToDate, setTempToDate] = useState(toDate);
+        setTempSearchParams(searchParams);
+    }, [searchParams]);
 
     const handleSearch = () => {
-        setSearchTerm(tempSearchTerm);
-        setSelectedType(tempSelectedType);
-        setDoSearchBetweenDates(tempDoSearchBetweenDates);
-        setFromDate(tempFromDate);
-        setToDate(tempToDate);
+        setSearchParams(tempSearchParams);
         onClose();
     };
 
     const handleCancel = () => {
-        setTempSearchTerm(searchTerm);
-        setTempSelectedType(selectedType);
-        setTempDoSearchBetweenDates(doSearchBetweenDates);
-        setTempFromDate(fromDate);
-        setTempToDate(toDate);
+        setTempSearchParams(searchParams);
         onClose();
+    };
+
+    const setTempSearchParam = (paramName, paramValue) => {
+        setTempSearchParams((prev) => ({
+            ...prev,
+            [paramName]: paramValue,
+        }));
     };
 
     return (
@@ -87,16 +72,20 @@ const TuneSearchDialog = ({
                         </Typography>
                         <TextField
                             className={classes.inputLong}
-                            value={tempSearchTerm}
-                            onChange={(e) => setTempSearchTerm(e.target.value)}
+                            value={tempSearchParams.searchTerm}
+                            onChange={(e) =>
+                                setTempSearchParam("searchTerm", e.target.value)
+                            }
                             margin="dense"
                             variant="outlined"
                         />
                     </FormControl>
                     <Box className={classes.inputShort}>
                         <ActivityTypeSelect
-                            selectedType={tempSelectedType}
-                            setSelectedType={setTempSelectedType}
+                            selectedType={tempSearchParams.selectedType}
+                            setSelectedType={(type) =>
+                                setTempSearchParam("selectedType", type)
+                            }
                         />
                     </Box>
                     <FormControl className={classes.labeledInput}>
@@ -104,13 +93,16 @@ const TuneSearchDialog = ({
                             Search Between Dates
                         </Typography>
                         <Checkbox
-                            checked={tempDoSearchBetweenDates}
+                            checked={tempSearchParams.doSearchBetweenDates}
                             onChange={(e) =>
-                                setTempDoSearchBetweenDates(e.target.checked)
+                                setTempSearchParam(
+                                    "doSearchBetweenDates",
+                                    e.target.checked
+                                )
                             }
                         />
                     </FormControl>
-                    {tempDoSearchBetweenDates && (
+                    {tempSearchParams.doSearchBetweenDates && (
                         <MuiPickersUtilsProvider utils={MomentUtils}>
                             <FormControl className={classes.labeledInput}>
                                 <Typography className={classes.label}>
@@ -126,8 +118,10 @@ const TuneSearchDialog = ({
                                         label="start date"
                                         format="MM/DD/yyyy"
                                         margin="normal"
-                                        value={tempFromDate}
-                                        onChange={setTempFromDate}
+                                        value={tempSearchParams.fromDate}
+                                        onChange={(date) =>
+                                            setTempSearchParam("fromDate", date)
+                                        }
                                         KeyboardButtonProps={{
                                             "aria-label": "change date",
                                         }}
@@ -136,9 +130,11 @@ const TuneSearchDialog = ({
                                         label="start time"
                                         className={dateTimeClasses.time}
                                         variant="dialog"
-                                        value={tempFromDate}
+                                        value={tempSearchParams.fromDate}
                                         margin="normal"
-                                        onChange={setTempFromDate}
+                                        onChange={(date) =>
+                                            setTempSearchParam("fromDate", date)
+                                        }
                                         KeyboardButtonProps={{
                                             "aria-label": "change time",
                                         }}
@@ -160,8 +156,10 @@ const TuneSearchDialog = ({
                                         label="end date"
                                         format="MM/DD/yyyy"
                                         margin="normal"
-                                        value={tempToDate}
-                                        onChange={setTempToDate}
+                                        value={tempSearchParams.toDate}
+                                        onChange={(date) =>
+                                            setTempSearchParam("toDate", date)
+                                        }
                                         KeyboardButtonProps={{
                                             "aria-label": "change date",
                                         }}
@@ -170,9 +168,11 @@ const TuneSearchDialog = ({
                                         label="end time"
                                         className={dateTimeClasses.time}
                                         variant="dialog"
-                                        value={tempToDate}
+                                        value={tempSearchParams.toDate}
+                                        onChange={(date) =>
+                                            setTempSearchParam("toDate", date)
+                                        }
                                         margin="normal"
-                                        onChange={setTempToDate}
                                         KeyboardButtonProps={{
                                             "aria-label": "change time",
                                         }}

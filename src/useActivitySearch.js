@@ -8,13 +8,10 @@ import {
 } from "./data/activity-selectors";
 import { useMainContext } from "./data/MainContext";
 
-const useActivitySearch = ({
-    searchTerm,
-    selectedType,
-    doSearchBetweenDates,
-    fromDate,
-    toDate,
-}) => {
+const useActivitySearch = ({ searchParams }) => {
+    const { searchTerm, selectedType, doSearchBetweenDates, fromDate, toDate } =
+        searchParams;
+
     const [{ activities }, dispatch] = useMainContext();
 
     const [searchResults, setSearchResults] = useState([]);

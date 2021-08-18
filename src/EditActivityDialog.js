@@ -29,6 +29,7 @@ import { ADD_TYPE } from "./data/type-reducer";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
 
+// TODO: need temp activity so we can cancel like in tunesearchdialog
 const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
@@ -52,6 +53,7 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     );
 
     const [comment, setComment] = useState(activity.comment);
+    // TODO: make sure to date after from date
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
 

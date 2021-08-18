@@ -56,9 +56,9 @@ const StartActivityDialog = ({
     const [status, setStatus] = useState(RUNNING);
 
     const [comment, setComment] = useState("");
+    // TODO: make sure to date after from date
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
-    // TODO: need fromTime & toTime
 
     const reset = () => {
         setStatus(RUNNING);
