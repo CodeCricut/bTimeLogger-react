@@ -13,7 +13,6 @@ import {
     IconButton,
     Container,
     Box,
-    useTheme,
 } from "@material-ui/core";
 import {
     Search as SearchIcon,
@@ -32,13 +31,10 @@ import useLayoutStyles from "./hooks/useLayoutStyles";
 import SettingsDialog from "./SettingsDialog";
 import { useMainContext } from "./data/MainContext";
 import {
-    selectActivitesBetweenDates,
-    selectActivitiesOfType,
-    selectActivitiesWithText,
     selectNonTrashedActivities,
     sortActivitiesByNewest,
 } from "./data/activity-selectors";
-import useActivitySearch from "./useActivitySearch";
+import useActivitySearch from "./hooks/useActivitySearch";
 
 const Layout = () => {
     const classes = useLayoutStyles();

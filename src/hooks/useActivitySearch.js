@@ -5,8 +5,8 @@ import {
     selectActivitiesOfType,
     selectActivitiesWithText,
     sortActivitiesByNewest,
-} from "./data/activity-selectors";
-import { useMainContext } from "./data/MainContext";
+} from "../data/activity-selectors";
+import { useMainContext } from "../data/MainContext";
 
 const useActivitySearch = ({ searchParams }) => {
     const { searchTerm, selectedType, doSearchBetweenDates, fromDate, toDate } =

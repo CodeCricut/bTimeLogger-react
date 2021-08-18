@@ -47,18 +47,22 @@ const StartActivityDialog = ({
     const dateTimeClasses = useDateTimeStyles();
     const [{ types }, dispatch] = useMainContext();
 
-    const [invalidType, setInvalidType] = useState(false);
+    const [invalidState, setInvalidState] = useState(false);
     useEffect(() => {
-        if (!selectedType) setInvalidType(true);
-        else setInvalidType(false);
+        if (!selectedType) setInvalidState(true);
+        else setInvalidState(false);
     }, [selectedType]);
+
+    const [comment, setComment] = useState("");
 
     const [status, setStatus] = useState(RUNNING);
 
-    const [comment, setComment] = useState("");
-    // TODO: make sure to date after from date
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
+    useEffect(() => {
+        if (toDate < fromDate) setInvalidState(true);
+        else setInvalidState(false);
+    }, [fromDate, toDate]);
 
     const reset = () => {
         setStatus(RUNNING);
@@ -221,7 +225,7 @@ const StartActivityDialog = ({
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button
-                    disabled={invalidType}
+                    disabled={invalidState}
                     onClick={handleCreate}
                     variant="contained"
                     color="primary"

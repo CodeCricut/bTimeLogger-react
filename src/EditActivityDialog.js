@@ -29,51 +29,47 @@ import { ADD_TYPE } from "./data/type-reducer";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
 
-// TODO: need temp activity so we can cancel like in tunesearchdialog
 const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
 
     const [{ types }, dispatch] = useMainContext();
+
+    const [invalidState, setInvalidState] = useState(false);
+
     const [selectedType, setSelectedType] = useState(activity.type.name);
-
-    useEffect(() => {
-        setSelectedType(activity.type.name);
-    }, [activity.type.name]);
-
-    const [invalidType, setInvalidType] = useState(false);
     useEffect(() => {
         if (!selectedType) {
-            setInvalidType(true);
-        } else setInvalidType(false);
+            setInvalidState(true);
+        } else setInvalidState(false);
     }, [selectedType]);
+
+    const [comment, setComment] = useState(activity.comment);
 
     const [status, setStatus] = useState(
         activity.endTime ? COMPLETED : RUNNING
     );
 
-    const [comment, setComment] = useState(activity.comment);
-    // TODO: make sure to date after from date
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
+    const [fromDate, setFromDate] = useState(activity.startTime ?? new Date());
+    const [toDate, setToDate] = useState(activity.endTime ?? new Date());
+    useEffect(() => {
+        if (fromDate < toDate) {
+            setInvalidState(false);
+        } else {
+            setInvalidState(true);
+        }
+    }, [fromDate, toDate]);
 
     const reset = () => {
-        setStatus(RUNNING);
-        setFromDate(new Date());
-        setToDate(new Date());
-        setComment("");
-        setSelectedType("");
+        setSelectedType(activity.type.name);
+        setComment(activity.comment);
+        setStatus(activity.endTime ? COMPLETED : RUNNING);
+        setFromDate(activity.startTime);
+        setToDate(activity.endTime);
     };
+
     useEffect(() => {
-        if (!activity) reset();
-        else {
-            if (activity.endTime) setStatus(COMPLETED);
-            else setStatus(RUNNING);
-            setFromDate(activity.startTime);
-            setToDate(activity.endTime);
-            setComment(activity.comment);
-            setSelectedType(activity.type.name);
-        }
+        reset();
     }, [activity]);
 
     const addType = () => {
@@ -85,12 +81,12 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     };
 
     const editAsRunningActivity = (type) => {
+        // We could give ability to choose start time, but would have to display only fromDate picker when in RUNNING state,
+        // then do validation and so on.
         const editedActivity = {
             ...activity,
             type: type,
             comment: comment,
-            startTime: fromDate,
-            endTime: null,
         };
         dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
     };
@@ -112,6 +108,11 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
         if (status === RUNNING) editAsRunningActivity(type);
         else editAsCompletedActivity(type);
 
+        onClose();
+    };
+
+    const cancel = () => {
+        reset();
         onClose();
     };
 
@@ -232,9 +233,9 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={cancel}>Cancel</Button>
                 <Button
-                    disabled={invalidType}
+                    disabled={invalidState}
                     onClick={editActivity}
                     variant="contained"
                     color="primary"
