@@ -6,7 +6,6 @@ import {
     ListItem,
     ListItemText,
     Divider,
-    AppBar,
     Toolbar,
     Typography,
     InputBase,
@@ -35,6 +34,7 @@ import {
     sortActivitiesByNewest,
 } from "./data/activity-selectors";
 import useActivitySearch from "./hooks/useActivitySearch";
+import SearchAppBar from "./SearchAppBar";
 
 const Layout = () => {
     const classes = useLayoutStyles();
@@ -65,62 +65,6 @@ const Layout = () => {
         if (searchResultActivities.length > 0) setIsShowingSearchResults(true);
         else setIsShowingSearchResults(false);
     }, [searchResultActivities]);
-
-    const appBar = () => (
-        <AppBar position="static">
-            <Toolbar className={classes.toolBar}>
-                <div className={classes.toolBarHeader}>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => setIsDrawerOpen(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        bTimeLogger
-                    </Typography>
-                </div>
-                <div className={classes.search}>
-                    <div className={classes.searchStart}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            value={searchParams.searchTerm}
-                            onChange={(e) =>
-                                setSearchParam("searchTerm", e.target.value)
-                            }
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            fullWidth={true}
-                            inputProps={{ "aria-label": "search" }}
-                        />
-                    </div>
-
-                    <IconButton
-                        className={classes.tuneIcon}
-                        onClick={() => setIsSearchDialogOpen(true)}
-                    >
-                        <TuneIcon />
-                    </IconButton>
-                </div>
-                <Box className={classes.barRight}>
-                    <IconButton
-                        className={classes.tuneIcon}
-                        onClick={() => setIsSettingsDialogOpen(true)}
-                    >
-                        <SettingsIcon />
-                    </IconButton>
-                </Box>
-            </Toolbar>
-        </AppBar>
-    );
 
     const drawerList = () => (
         <div
@@ -189,7 +133,13 @@ const Layout = () => {
 
     return (
         <React.Fragment>
-            {appBar()}
+            <SearchAppBar
+                setIsDrawerOpen={setIsDrawerOpen}
+                setIsSearchDialogOpen={setIsSearchDialogOpen}
+                setIsSettingsDialogOpen={setIsSettingsDialogOpen}
+                searchTerm={searchParams.searchTerm}
+                setSearchTerm={(term) => setSearchParam("searchTerm", term)}
+            />
             <Drawer
                 anchor="left"
                 open={isDrawerOpen}
