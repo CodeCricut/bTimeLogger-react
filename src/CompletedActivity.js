@@ -81,9 +81,21 @@ const CompletedActivity = ({ activity }) => {
                 activity={activity}
             />
             <Box className={classes.activityBox}>
-                <Typography variant="h6" className={classes.activityName}>
-                    {activity.type.name}
-                </Typography>
+                <Box className={classes.activityName}>
+                    <Typography variant="h6" className={classes.activityName}>
+                        {activity.type.name}
+                    </Typography>
+                    {activity.trashed ? (
+                        <Typography
+                            variant="subtitle1"
+                            className={`${classes.subtitle}`}
+                        >
+                            (trashed)
+                        </Typography>
+                    ) : (
+                        ""
+                    )}
+                </Box>
                 <Box className={classes.dropdownContainer}>
                     {moreDropdownMenu()}
                 </Box>

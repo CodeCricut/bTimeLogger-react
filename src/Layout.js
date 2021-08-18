@@ -146,10 +146,8 @@ const Layout = () => {
     );
 
     const searchResultActivityList = () => {
-        if (!isShowingSearchResults) return;
         return (
             <React.Fragment>
-                <Typography variant="h2">Search Results</Typography>
                 <List>
                     {searchResultActivities.map((act) => (
                         <React.Fragment key={act.id}>
@@ -214,8 +212,9 @@ const Layout = () => {
                     <InlineStartActivity />
                 </Box>
                 <Box className={classes.activities}>
-                    {searchResultActivityList()}
-                    {activityList()}
+                    {isShowingSearchResults
+                        ? searchResultActivityList()
+                        : activityList()}
                 </Box>
             </Container>
         </React.Fragment>
