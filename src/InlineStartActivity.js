@@ -44,6 +44,7 @@ const InlineStartActivity = () => {
         };
         dispatch({ type: ADD_TYPE, payload: activityType });
         dispatch({ type: START_ACTIVITY, payload: activity });
+        setSelectedType("");
     };
 
     const tuneActivity = () => {
@@ -64,6 +65,7 @@ const InlineStartActivity = () => {
                         <ActivityTypeSelect
                             selectedType={selectedType}
                             setSelectedType={setSelectedType}
+                            onEnter={() => startActivity()}
                         />
                     </Box>
 

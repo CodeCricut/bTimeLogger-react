@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     FormControl,
@@ -16,6 +16,7 @@ import {
     DialogActions,
     Dialog,
     Button,
+    Checkbox,
 } from "@material-ui/core";
 import MomentUtils from "@date-io/moment";
 
@@ -26,14 +27,55 @@ import {
 } from "@material-ui/pickers";
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
 import { useMainContext } from "./data/MainContext";
+import ActivityTypeSelect from "./ActivityTypeSelect";
+import useDateTimeStyles from "./hooks/useDateTimeStyles";
 
-const TuneSearchDialog = ({ isOpen, onClose }) => {
+const TuneSearchDialog = ({
+    isOpen,
+    onClose,
+    searchTerm,
+    setSearchTerm,
+    selectedType,
+    setSelectedType,
+    doSearchBetweenDates,
+    setDoSearchBetweenDates,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+}) => {
     const classes = useDialogFormStyles();
-    const [{ types }, dispatch] = useMainContext();
+    const dateTimeClasses = useDateTimeStyles();
 
-    const [selectedType, setSelectedType] = useState("");
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
+    const [tempSearchTerm, setTempSearchTerm] = useState(searchTerm);
+    useEffect(() => {
+        setTempSearchTerm(searchTerm);
+    }, [searchTerm]);
+
+    const [tempSelectedType, setTempSelectedType] = useState(selectedType);
+    const [tempDoSearchBetweenDates, setTempDoSearchBetweenDates] =
+        useState(doSearchBetweenDates);
+    const [tempFromDate, setTempFromDate] = useState(fromDate);
+    const [tempToDate, setTempToDate] = useState(toDate);
+
+    const handleSearch = () => {
+        setSearchTerm(tempSearchTerm);
+        setSelectedType(tempSelectedType);
+        setDoSearchBetweenDates(tempDoSearchBetweenDates);
+        setFromDate(tempFromDate);
+        setToDate(tempToDate);
+        onClose();
+    };
+
+    const handleCancel = () => {
+        setTempSearchTerm(searchTerm);
+        setTempSelectedType(selectedType);
+        setTempDoSearchBetweenDates(doSearchBetweenDates);
+        setTempFromDate(fromDate);
+        setTempToDate(toDate);
+        onClose();
+    };
+
     return (
         <Dialog open={isOpen}>
             <DialogTitle>Search</DialogTitle>
@@ -41,75 +83,115 @@ const TuneSearchDialog = ({ isOpen, onClose }) => {
                 <Box className={classes.form}>
                     <FormControl className={classes.labeledInput}>
                         <Typography className={classes.label}>
-                            Activity Type
-                        </Typography>
-                        <Select
-                            className={classes.inputShort}
-                            value={selectedType}
-                            onChange={(e) => setSelectedType(e.target.value)}
-                            id="activity-type"
-                        >
-                            {types.map((actType, index) => (
-                                <MenuItem value={actType} key={index}>
-                                    {actType}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.labeledInput}>
-                        <Typography className={classes.label}>
                             Search Term
                         </Typography>
                         <TextField
                             className={classes.inputLong}
+                            value={tempSearchTerm}
+                            onChange={(e) => setTempSearchTerm(e.target.value)}
                             margin="dense"
                             variant="outlined"
                         />
                     </FormControl>
-                    <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <FormControl className={classes.labeledInput}>
-                            <Typography className={classes.label}>
-                                From
-                            </Typography>
-                            <KeyboardDatePicker
-                                className={classes.inputShort}
-                                disableToolbar
-                                variant="inline"
-                                format="MM/DD/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                value={fromDate}
-                                onChange={(date) => setFromDate(date)}
-                                KeyboardButtonProps={{
-                                    "aria-label": "change date",
-                                }}
-                            />
-                        </FormControl>
+                    <Box className={classes.inputShort}>
+                        <ActivityTypeSelect
+                            selectedType={tempSelectedType}
+                            setSelectedType={setTempSelectedType}
+                        />
+                    </Box>
+                    <FormControl className={classes.labeledInput}>
+                        <Typography className={classes.label}>
+                            Search Between Dates
+                        </Typography>
+                        <Checkbox
+                            checked={tempDoSearchBetweenDates}
+                            onChange={(e) =>
+                                setTempDoSearchBetweenDates(e.target.checked)
+                            }
+                        />
+                    </FormControl>
+                    {tempDoSearchBetweenDates && (
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    From
+                                </Typography>
+                                <Box
+                                    className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
+                                >
+                                    <KeyboardDatePicker
+                                        className={dateTimeClasses.date}
+                                        disableToolbar
+                                        variant="dialog"
+                                        label="start date"
+                                        format="MM/DD/yyyy"
+                                        margin="normal"
+                                        value={tempFromDate}
+                                        onChange={setTempFromDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                    />
+                                    <KeyboardTimePicker
+                                        label="start time"
+                                        className={dateTimeClasses.time}
+                                        variant="dialog"
+                                        value={tempFromDate}
+                                        margin="normal"
+                                        onChange={setTempFromDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change time",
+                                        }}
+                                    />
+                                </Box>
+                            </FormControl>
 
-                        <FormControl className={classes.labeledInput}>
-                            <Typography className={classes.label}>
-                                To
-                            </Typography>
-                            <KeyboardDatePicker
-                                className={classes.inputShort}
-                                disableToolbar
-                                variant="inline"
-                                format="MM/DD/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                value={toDate}
-                                onChange={(date) => setToDate(date)}
-                                KeyboardButtonProps={{
-                                    "aria-label": "change date",
-                                }}
-                            />
-                        </FormControl>
-                    </MuiPickersUtilsProvider>
+                            <FormControl className={classes.labeledInput}>
+                                <Typography className={classes.label}>
+                                    To
+                                </Typography>
+                                <Box
+                                    className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
+                                >
+                                    <KeyboardDatePicker
+                                        className={dateTimeClasses.date}
+                                        disableToolbar
+                                        variant="dialog"
+                                        label="end date"
+                                        format="MM/DD/yyyy"
+                                        margin="normal"
+                                        value={tempToDate}
+                                        onChange={setTempToDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                        }}
+                                    />
+                                    <KeyboardTimePicker
+                                        label="end time"
+                                        className={dateTimeClasses.time}
+                                        variant="dialog"
+                                        value={tempToDate}
+                                        margin="normal"
+                                        onChange={setTempToDate}
+                                        KeyboardButtonProps={{
+                                            "aria-label": "change time",
+                                        }}
+                                    />
+                                </Box>
+                            </FormControl>
+                        </MuiPickersUtilsProvider>
+                    )}
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={onClose} variant="contained" color="primary">
+                <Button onClick={handleCancel} variant="outlined">
+                    Cancel
+                </Button>
+                <Button
+                    onClick={handleSearch}
+                    variant="contained"
+                    color="primary"
+                >
                     Search
                 </Button>
             </DialogActions>

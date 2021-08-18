@@ -36,10 +36,15 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     const [{ types }, dispatch] = useMainContext();
     const [selectedType, setSelectedType] = useState(activity.type.name);
 
+    useEffect(() => {
+        setSelectedType(activity.type.name);
+    }, [activity.type.name]);
+
     const [invalidType, setInvalidType] = useState(false);
     useEffect(() => {
-        if (!selectedType) setInvalidType(true);
-        else setInvalidType(false);
+        if (!selectedType) {
+            setInvalidType(true);
+        } else setInvalidType(false);
     }, [selectedType]);
 
     const [status, setStatus] = useState(
@@ -55,6 +60,7 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
         setFromDate(new Date());
         setToDate(new Date());
         setComment("");
+        setSelectedType("");
     };
     useEffect(() => {
         if (!activity) reset();
@@ -64,6 +70,7 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
             setFromDate(activity.startTime);
             setToDate(activity.endTime);
             setComment(activity.comment);
+            setSelectedType(activity.type.name);
         }
     }, [activity]);
 
@@ -192,7 +199,7 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
                                 <Box
                                     className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
                                 >
-                                    <KeyboardTimePicker
+                                    <KeyboardDatePicker
                                         className={dateTimeClasses.date}
                                         disableToolbar
                                         variant="dialog"

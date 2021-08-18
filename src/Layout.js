@@ -32,11 +32,13 @@ import useLayoutStyles from "./hooks/useLayoutStyles";
 import SettingsDialog from "./SettingsDialog";
 import { useMainContext } from "./data/MainContext";
 import {
+    selectActivitesBetweenDates,
+    selectActivitiesOfType,
     selectActivitiesWithText,
-    selectActivitiesWithTypeText,
     selectNonTrashedActivities,
     sortActivitiesByNewest,
-} from "./data/activitiy-selectors";
+} from "./data/activity-selectors";
+import useActivitySearch from "./useActivitySearch";
 
 const Layout = () => {
     const classes = useLayoutStyles();
@@ -47,25 +49,63 @@ const Layout = () => {
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [isShowingSearchResults, setIsShowingSearchResults] = useState(
-        !!searchTerm
-    );
+    const [isShowingSearchResults, setIsShowingSearchResults] = useState(false);
+    const [selectedType, setSelectedType] = useState("");
+    const [doSearchBetweenDates, setDoSearchBetweenDates] = useState(false);
+    const [fromDate, setFromDate] = useState(new Date());
+    const [toDate, setToDate] = useState(new Date());
 
-    const [searchResultActivities, setSearchResultActivities] = useState([]);
+    const searchResultActivities = useActivitySearch({
+        searchTerm,
+        isShowingSearchResults,
+        selectedType,
+        doSearchBetweenDates,
+        fromDate,
+        toDate,
+    });
     useEffect(() => {
-        if (searchTerm) {
-            const searchResults = selectActivitiesWithText(
-                activities,
-                searchTerm
-            );
-            const sortedResults = sortActivitiesByNewest(searchResults);
-            setSearchResultActivities(sortedResults);
-            setIsShowingSearchResults(true);
-        } else {
-            setSearchResultActivities([]);
-            setIsShowingSearchResults(false);
-        }
-    }, [searchTerm, activities]);
+        if (searchResultActivities.length > 0) setIsShowingSearchResults(true);
+        else setIsShowingSearchResults(false);
+    }, [searchResultActivities]);
+
+    // const [searchResultActivities, setSearchResultActivities] = useState([]);
+    // useEffect(() => {
+    //     if (searchTerm) {
+    //         const searchResults = selectActivitiesWithText(
+    //             activities,
+    //             searchTerm
+    //         );
+
+    //         console.log(searchTerm);
+    //         console.log(searchResults);
+    //         if (selectedType)
+    //             searchResults = selectActivitiesOfType(
+    //                 searchResults,
+    //                 selectedType
+    //             );
+    //         if (doSearchBetweenDates) {
+    //             searchResults = selectActivitesBetweenDates(
+    //                 searchResults,
+    //                 fromDate,
+    //                 toDate
+    //             );
+    //         }
+    //         const sortedResults = sortActivitiesByNewest(searchResults);
+    //         console.log(sortedResults);
+    //         setSearchResultActivities(sortedResults);
+    //         setIsShowingSearchResults(true);
+    //     } else {
+    //         setSearchResultActivities([]);
+    //         setIsShowingSearchResults(false);
+    //     }
+    // }, [
+    //     searchTerm,
+    //     selectedType,
+    //     doSearchBetweenDates,
+    //     fromDate,
+    //     toDate,
+    //     activities,
+    // ]);
 
     const appBar = () => (
         <AppBar position="static">
@@ -200,6 +240,16 @@ const Layout = () => {
             </Drawer>
             <TuneSearchDialog
                 isOpen={isSearchDialogOpen}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                selectedType={selectedType}
+                setSelectedType={setSelectedType}
+                doSearchBetweenDates={doSearchBetweenDates}
+                setDoSearchBetweenDates={setDoSearchBetweenDates}
+                fromDate={fromDate}
+                setFromDate={setFromDate}
+                toDate={toDate}
+                setToDate={setToDate}
                 onClose={() => setIsSearchDialogOpen(false)}
             />
             <SettingsDialog
