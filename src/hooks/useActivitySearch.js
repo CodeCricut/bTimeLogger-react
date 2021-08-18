@@ -15,13 +15,26 @@ const useActivitySearch = ({ searchParams }) => {
     const [{ activities }, dispatch] = useMainContext();
 
     const [searchResults, setSearchResults] = useState([]);
+    const [isShowingSearchResults, setIsShowingSearchResults] = useState(false);
 
     useEffect(() => {
         if (!searchTerm && !selectedType && !doSearchBetweenDates) {
+            setIsShowingSearchResults(false);
             setSearchResults([]); // If no filter, return none
-            console.log("no results");
-            return;
+        } else {
+            setIsShowingSearchResults(true);
+            setSearchResults(getFilteredResults());
         }
+    }, [
+        searchTerm,
+        selectedType,
+        doSearchBetweenDates,
+        fromDate,
+        toDate,
+        activities,
+    ]);
+
+    const getFilteredResults = () => {
         let filteredActivities = [...activities];
         if (searchTerm) {
             filteredActivities = selectActivitiesWithText(
@@ -43,17 +56,10 @@ const useActivitySearch = ({ searchParams }) => {
             );
         }
         const sortedActivities = sortActivitiesByNewest(filteredActivities);
-        setSearchResults(sortedActivities);
-    }, [
-        searchTerm,
-        selectedType,
-        doSearchBetweenDates,
-        fromDate,
-        toDate,
-        activities,
-    ]);
+        return sortedActivities;
+    };
 
-    return searchResults;
+    return [searchResults, isShowingSearchResults];
 };
 
 export default useActivitySearch;

@@ -44,7 +44,6 @@ const Layout = () => {
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
-    const [isShowingSearchResults, setIsShowingSearchResults] = useState(false);
     const [searchParams, setSearchParams] = useState({
         searchTerm: "",
         selectedType: "",
@@ -60,11 +59,9 @@ const Layout = () => {
         }));
     };
 
-    const searchResultActivities = useActivitySearch({ searchParams });
-    useEffect(() => {
-        if (searchResultActivities.length > 0) setIsShowingSearchResults(true);
-        else setIsShowingSearchResults(false);
-    }, [searchResultActivities]);
+    const [searchResultActivities, isShowingSearchResults] = useActivitySearch({
+        searchParams,
+    });
 
     const drawerList = () => (
         <div
