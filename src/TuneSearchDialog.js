@@ -26,39 +26,40 @@ import {
     KeyboardDatePicker,
 } from "@material-ui/pickers";
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
-import { useMainContext } from "./data/MainContext";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
+import SearchParams from "./model/SearchParams";
 
-const TuneSearchDialog = ({
-    isOpen,
-    onClose,
-    searchParams,
-    setSearchParams,
-}) => {
+const TuneSearchDialog = ({ isOpen, onClose, queryString, setQueryString }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
 
-    const [tempSearchParams, setTempSearchParams] = useState(searchParams);
-    useEffect(() => {
-        setTempSearchParams(searchParams);
-    }, [searchParams]);
-
-    const handleSearch = () => {
-        setSearchParams(tempSearchParams);
-        onClose();
-    };
-
-    const handleCancel = () => {
-        setTempSearchParams(searchParams);
-        onClose();
-    };
+    const tSearchParams = SearchParams.parseQueryString(queryString);
+    const [tempSearchParams, setTempSearchParams] = useState(tSearchParams);
+    // useEffect(() => {
+    //     setTempSearchParams(SearchParams.parseQueryString(queryString));
+    // }, [queryString]);
 
     const setTempSearchParam = (paramName, paramValue) => {
         setTempSearchParams((prev) => ({
             ...prev,
             [paramName]: paramValue,
         }));
+    };
+
+    const [doSearchBetweenDates, setDoSearchBetweenDates] = useState(
+        !!(tempSearchParams.fromDate || tempSearchParams.toDate)
+    );
+
+    const handleSearch = () => {
+        const newQueryStr = new SearchParams(tempSearchParams).queryString;
+        setQueryString(newQueryStr);
+        onClose();
+    };
+
+    const handleCancel = () => {
+        setTempSearchParams(SearchParams.parseQueryString(queryString));
+        onClose();
     };
 
     return (
@@ -93,16 +94,13 @@ const TuneSearchDialog = ({
                             Search Between Dates
                         </Typography>
                         <Checkbox
-                            checked={tempSearchParams.doSearchBetweenDates}
+                            checked={!!doSearchBetweenDates}
                             onChange={(e) =>
-                                setTempSearchParam(
-                                    "doSearchBetweenDates",
-                                    e.target.checked
-                                )
+                                setDoSearchBetweenDates(e.target.checked)
                             }
                         />
                     </FormControl>
-                    {tempSearchParams.doSearchBetweenDates && (
+                    {doSearchBetweenDates && (
                         <MuiPickersUtilsProvider utils={MomentUtils}>
                             <FormControl className={classes.labeledInput}>
                                 <Typography className={classes.label}>
@@ -118,7 +116,10 @@ const TuneSearchDialog = ({
                                         label="start date"
                                         format="MM/DD/yyyy"
                                         margin="normal"
-                                        value={tempSearchParams.fromDate}
+                                        value={
+                                            tempSearchParams.fromDate ??
+                                            new Date()
+                                        }
                                         onChange={(date) =>
                                             setTempSearchParam("fromDate", date)
                                         }
@@ -130,7 +131,10 @@ const TuneSearchDialog = ({
                                         label="start time"
                                         className={dateTimeClasses.time}
                                         variant="dialog"
-                                        value={tempSearchParams.fromDate}
+                                        value={
+                                            tempSearchParams.fromDate ??
+                                            new Date()
+                                        }
                                         margin="normal"
                                         onChange={(date) =>
                                             setTempSearchParam("fromDate", date)
@@ -150,13 +154,18 @@ const TuneSearchDialog = ({
                                     className={`${classes.inputLong} ${dateTimeClasses.dateTimeContainer}`}
                                 >
                                     <KeyboardDatePicker
-                                        className={dateTimeClasses.date}
+                                        className={
+                                            dateTimeClasses.date ?? new Date()
+                                        }
                                         disableToolbar
                                         variant="dialog"
                                         label="end date"
                                         format="MM/DD/yyyy"
                                         margin="normal"
-                                        value={tempSearchParams.toDate}
+                                        value={
+                                            tempSearchParams.toDate ??
+                                            new Date()
+                                        }
                                         onChange={(date) =>
                                             setTempSearchParam("toDate", date)
                                         }

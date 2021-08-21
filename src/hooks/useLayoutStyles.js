@@ -12,11 +12,16 @@ const useLayoutStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
         justifyContent: "flex-end",
     },
+    layoutContainer: {
+        height: "500px",
+        overflow: "auto",
+    },
     activities: {
         width: "50%",
         [theme.breakpoints.down("sm")]: {
             width: "100%",
         },
+        maxHeight: "100%",
     },
     startActivityBox: {
         width: "50%",

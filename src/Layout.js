@@ -36,6 +36,10 @@ import {
 import useActivitySearch from "./hooks/useActivitySearch";
 import SearchAppBar from "./SearchAppBar";
 
+import SearchParams from "./model/SearchParams";
+
+const initialQueryString = new SearchParams().queryString;
+
 const Layout = () => {
     const classes = useLayoutStyles();
     const [{ activities }, dispatch] = useMainContext();
@@ -44,24 +48,16 @@ const Layout = () => {
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
-    const [searchParams, setSearchParams] = useState({
-        searchTerm: "",
-        selectedType: "",
-        doSearchBetweenDates: false,
-        fromDate: new Date(),
-        toDate: new Date(),
-    });
-
+    const [queryString, setQueryString] = useState(initialQueryString);
     const setSearchParam = (paramName, paramValue) => {
-        setSearchParams((prev) => ({
-            ...prev,
-            [paramName]: paramValue,
-        }));
+        const searchParams = SearchParams.parseQueryString(queryString);
+        searchParams[paramName] = paramValue;
+        setQueryString(searchParams.queryString);
     };
+    const [searchResultActivities, isShowingSearchResults] =
+        useActivitySearch(queryString);
 
-    const [searchResultActivities, isShowingSearchResults] = useActivitySearch({
-        searchParams,
-    });
+    const clearSearch = () => setQueryString(initialQueryString);
 
     const drawerList = () => (
         <div
@@ -89,8 +85,36 @@ const Layout = () => {
     const searchResultActivityList = () => {
         return (
             <React.Fragment>
-                <List>
-                    {searchResultActivities.map((act) => (
+                {searchResultActivities.length > 0 ? (
+                    <List>
+                        {searchResultActivities.map((act) => (
+                            <React.Fragment key={act.id}>
+                                <ListItem>
+                                    {act.endTime ? (
+                                        <CompletedActivity activity={act} />
+                                    ) : (
+                                        <RunningActivity activity={act} />
+                                    )}
+                                </ListItem>
+                                <Divider />
+                            </React.Fragment>
+                        ))}
+                    </List>
+                ) : (
+                    <Typography variant="h4">No search results</Typography>
+                )}
+            </React.Fragment>
+        );
+    };
+
+    const activityList = () => {
+        const sortedActivities = sortActivitiesByNewest(
+            selectNonTrashedActivities(activities)
+        );
+        return (
+            <List>
+                {sortedActivities.length > 0 ? (
+                    sortedActivities.map((act) => (
                         <React.Fragment key={act.id}>
                             <ListItem>
                                 {act.endTime ? (
@@ -101,29 +125,10 @@ const Layout = () => {
                             </ListItem>
                             <Divider />
                         </React.Fragment>
-                    ))}
-                </List>
-            </React.Fragment>
-        );
-    };
-
-    const activityList = () => {
-        return (
-            <List>
-                {sortActivitiesByNewest(
-                    selectNonTrashedActivities(activities)
-                ).map((act) => (
-                    <React.Fragment key={act.id}>
-                        <ListItem>
-                            {act.endTime ? (
-                                <CompletedActivity activity={act} />
-                            ) : (
-                                <RunningActivity activity={act} />
-                            )}
-                        </ListItem>
-                        <Divider />
-                    </React.Fragment>
-                ))}
+                    ))
+                ) : (
+                    <Typography variant="h4">No Activities</Typography>
+                )}
             </List>
         );
     };
@@ -134,8 +139,9 @@ const Layout = () => {
                 setIsDrawerOpen={setIsDrawerOpen}
                 setIsSearchDialogOpen={setIsSearchDialogOpen}
                 setIsSettingsDialogOpen={setIsSettingsDialogOpen}
-                searchTerm={searchParams.searchTerm}
-                setSearchTerm={(term) => setSearchParam("searchTerm", term)}
+                queryString={queryString}
+                setQueryString={setQueryString}
+                clearSearch={clearSearch}
             />
             <Drawer
                 anchor="left"
@@ -147,14 +153,14 @@ const Layout = () => {
             <TuneSearchDialog
                 isOpen={isSearchDialogOpen}
                 onClose={() => setIsSearchDialogOpen(false)}
-                searchParams={searchParams}
-                setSearchParams={setSearchParams}
+                queryString={queryString}
+                setQueryString={setQueryString}
             />
             <SettingsDialog
                 isOpen={isSettingsDialogOpen}
                 onClose={() => setIsSettingsDialogOpen(false)}
             />
-            <Container>
+            <Container className={classes.layoutContainer}>
                 <Box className={classes.startActivityBox}>
                     <InlineStartActivity />
                 </Box>

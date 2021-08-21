@@ -13,6 +13,7 @@ import {
     Container,
     AppBar,
     Box,
+    TextField,
 } from "@material-ui/core";
 
 import {
@@ -21,6 +22,7 @@ import {
     Tune as TuneIcon,
     Settings as SettingsIcon,
     Close as CloseIcon,
+    Clear as ClearIcon,
 } from "@material-ui/icons";
 
 import useSearchAppBarStyles from "./hooks/useSearchAppBarStyles";
@@ -29,11 +31,13 @@ const SearchAppBar = ({
     setIsDrawerOpen,
     setIsSearchDialogOpen,
     setIsSettingsDialogOpen,
-    searchTerm,
-    setSearchTerm,
+    queryString,
+    setQueryString,
+    clearSearch,
 }) => {
     const classes = useSearchAppBarStyles();
 
+    console.log("search app bar rendered");
     return (
         <AppBar position="static">
             <Toolbar className={classes.toolBar}>
@@ -57,9 +61,9 @@ const SearchAppBar = ({
                             <SearchIcon />
                         </div>
                         <InputBase
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search…"
+                            value={queryString}
+                            onChange={(e) => setQueryString(e.target.value)}
+                            placeholder="Search..."
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
@@ -69,6 +73,12 @@ const SearchAppBar = ({
                         />
                     </div>
 
+                    <IconButton
+                        className={classes.clearButton}
+                        onClick={clearSearch}
+                    >
+                        <ClearIcon />
+                    </IconButton>
                     <IconButton
                         className={classes.tuneIcon}
                         onClick={() => setIsSearchDialogOpen(true)}

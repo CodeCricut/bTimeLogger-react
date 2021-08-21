@@ -47,28 +47,26 @@ const StartActivityDialog = ({
     const dateTimeClasses = useDateTimeStyles();
     const [{ types }, dispatch] = useMainContext();
 
-    const [invalidState, setInvalidState] = useState(false);
-    useEffect(() => {
-        if (!selectedType) setInvalidState(true);
-        else setInvalidState(false);
-    }, [selectedType]);
-
     const [comment, setComment] = useState("");
 
     const [status, setStatus] = useState(RUNNING);
 
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
+
+    const [invalidState, setInvalidState] = useState(!selectedType);
     useEffect(() => {
-        if (toDate < fromDate) setInvalidState(true);
-        else setInvalidState(false);
-    }, [fromDate, toDate]);
+        const invalidType = !selectedType;
+        const invalidDates = toDate < fromDate;
+        setInvalidState(invalidType || invalidDates);
+    }, [selectedType, fromDate, toDate]);
 
     const reset = () => {
         setStatus(RUNNING);
         setFromDate(new Date());
         setToDate(new Date());
         setComment("");
+        setInvalidState(!selectedType);
     };
 
     useEffect(reset, [isOpen]);

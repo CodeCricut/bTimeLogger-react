@@ -59,6 +59,12 @@ const useSearchAppBarStyles = makeStyles((theme) => ({
         height: "100%",
         color: "inherit",
     },
+    queryString: {
+        color: theme.palette.text.secondary,
+        margin: "0 10px",
+        padding: theme.spacing(1),
+        overflow: "hidden",
+    },
     inputRoot: {
         color: "inherit",
         width: "100%",
