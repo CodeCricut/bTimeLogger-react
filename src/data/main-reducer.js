@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 
-import activityReducer from "./activity-reducer";
-import typeReducer from "./type-reducer";
+import activityReducer from "../activities/activity-reducer";
+import typeReducer from "../activity-types/type-reducer";
 
 /* 
     this reducer combines all of our reducers into one so we can use one context/provider
@@ -9,10 +9,10 @@ import typeReducer from "./type-reducer";
     returns an object with all reducers {activities, types}
  */
 
-const mainReducer = ({ activities, types }, action) => {
+const mainReducer = ({ activityState, typeState }, action) => {
     return {
-        activities: activityReducer(activities, action),
-        types: typeReducer(types, action),
+        activityState: activityReducer(activityState, action),
+        typeState: typeReducer(typeState, action),
     };
 };
 

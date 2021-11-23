@@ -16,7 +16,7 @@ const RunningActivity = ({ activity }) => {
     const date = useDate(1000);
 
     const stopActivity = () => {
-        dispatch({ type: STOP_ACTIVITY, payload: activity.id });
+        dispatch({ type: STOP_ACTIVITY, payload: activity._id });
     };
 
     return (

@@ -14,12 +14,25 @@ import { formatDuration } from "./util/timeFormatters";
 import { useMainContext } from "./data/MainContext";
 import { RESUME_ACTIVITY, TRASH_ACTIVITY } from "./data/activity-reducer";
 import { useThemeSwitcherContext } from "./data/ThemeSwitcherContext";
+import useActivityRepository from "./activities/useActivityRepository";
 
 const CompletedActivity = ({ activity }) => {
     const [theme, setTheme] = useThemeSwitcherContext();
     const classes = useCompletedActivityStyles({ theme });
 
-    const [state, dispatch] = useMainContext();
+    const [
+        activityState,
+        {
+            startActivity,
+            createCompletedActivity,
+            stopActivity,
+            resumeActivity,
+            trashActivity,
+            untrashActivity,
+            updateActivity,
+            removeActivity,
+        },
+    ] = useActivityRepository([]);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleDropdownOpen = () => {
@@ -34,12 +47,9 @@ const CompletedActivity = ({ activity }) => {
     const handleEditOpen = () => setIsEditOpen(true);
     const handleEditClose = () => setIsEditOpen(false);
 
-    const handleResume = () => {
-        dispatch({ type: RESUME_ACTIVITY, payload: activity.id });
-    };
+    const handleResume = () => resumeActivity(activity._id);
 
-    const handleTrash = () =>
-        dispatch({ type: TRASH_ACTIVITY, payload: activity.id });
+    const handleTrash = () => trashActivity(activity._id);
 
     const moreDropdownMenu = () => (
         <Tooltip title="Options" open={isTooltipOpen}>

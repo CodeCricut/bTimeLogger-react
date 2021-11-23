@@ -38,12 +38,16 @@ import SearchAppBar from "./SearchAppBar";
 
 import SearchParams from "./model/SearchParams";
 
+import useActivityRepository from "./activities/useActivityRepository";
 const initialQueryString = new SearchParams().queryString;
 
 const Layout = () => {
+    console.log("layout rerendered");
     const classes = useLayoutStyles();
-    const [{ activities }, dispatch] = useMainContext();
+    // const [{ activities }, dispatch] = useMainContext();
+    const [{ activities }] = useActivityRepository([]);
 
+    console.log(activities);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
@@ -88,7 +92,7 @@ const Layout = () => {
                 {searchResultActivities.length > 0 ? (
                     <List>
                         {searchResultActivities.map((act) => (
-                            <React.Fragment key={act.id}>
+                            <React.Fragment key={act._id}>
                                 <ListItem>
                                     {act.endTime ? (
                                         <CompletedActivity activity={act} />
@@ -115,7 +119,7 @@ const Layout = () => {
             <List>
                 {sortedActivities.length > 0 ? (
                     sortedActivities.map((act) => (
-                        <React.Fragment key={act.id}>
+                        <React.Fragment key={act._id}>
                             <ListItem>
                                 {act.endTime ? (
                                     <CompletedActivity activity={act} />

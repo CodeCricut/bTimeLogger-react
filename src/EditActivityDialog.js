@@ -28,12 +28,15 @@ import { EDIT_ACTIVITY } from "./data/activity-reducer";
 import { ADD_TYPE } from "./data/type-reducer";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
+import useTypeRepository from "./activity-types/useTypeRepository";
 
 const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
 
-    const [{ types }, dispatch] = useMainContext();
+    const [{ types }, addType] = useTypeRepository([]);
+
+    // const [{ types }, dispatch] = useMainContext();
 
     const [invalidState, setInvalidState] = useState(false);
 
@@ -72,38 +75,39 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
         reset();
     }, [activity]);
 
-    const addType = () => {
+    const addTypeX = () => {
         const activityType = {
             name: selectedType,
         };
-        dispatch({ type: ADD_TYPE, payload: activityType });
+        addType(selectedType);
+        // dispatch({ type: ADD_TYPE, payload: activityType });
         return activityType;
     };
 
     const editAsRunningActivity = (type) => {
         // We could give ability to choose start time, but would have to display only fromDate picker when in RUNNING state,
         // then do validation and so on.
-        const editedActivity = {
-            ...activity,
-            type: type,
-            comment: comment,
-        };
-        dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
+        // const editedActivity = {
+        //     ...activity,
+        //     type: type,
+        //     comment: comment,
+        // };
+        // dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
     };
 
     const editAsCompletedActivity = (type) => {
-        const editedActivity = {
-            ...activity,
-            type: type,
-            comment: comment,
-            startTime: fromDate,
-            endTime: toDate,
-        };
-        dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
+        // const editedActivity = {
+        //     ...activity,
+        //     type: type,
+        //     comment: comment,
+        //     startTime: fromDate,
+        //     endTime: toDate,
+        // };
+        // dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
     };
 
     const editActivity = () => {
-        const type = addType();
+        const type = addTypeX();
 
         if (status === RUNNING) editAsRunningActivity(type);
         else editAsCompletedActivity(type);

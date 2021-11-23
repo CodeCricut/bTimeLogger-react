@@ -1,5 +1,7 @@
 import React, { useContext, useReducer } from "react";
 import mainReducer from "./main-reducer";
+import { initialState as typeState } from "../activity-types/type-reducer";
+import { initialState as activityState } from "../activities/activity-reducer";
 
 const MainContext = React.createContext();
 
@@ -8,8 +10,8 @@ const MainContext = React.createContext();
 // notice that it returns an object with all state types, but only one dispatch function
 const MainProvider = ({ children }) => {
     const [state, dispatch] = useReducer(mainReducer, {
-        activities: [],
-        types: [],
+        activityState,
+        typeState,
     });
     return (
         <MainContext.Provider value={[state, dispatch]}>
