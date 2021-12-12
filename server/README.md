@@ -9,18 +9,18 @@ as the backend for a React website.
 
 ## Running the Server
 
-**Prerequisites**
-The following softwares must be installed before the server can run:
+**Prerequisites**: The following softwares must be installed before the server can run:
 
 -   [Node.js](https://nodejs.org/en/)
 -   [MongoDB](https://www.mongodb.com/)
 
-**Starting the server**
-To run the server, run
+**Starting the server**: To run the server, run
 
 ```
 npm run start
 ```
+
+**Stopping the server**: To stop the server, run `^C` (Ctrl+C).
 
 ## Dependencies
 
@@ -34,6 +34,12 @@ The main dependencies of the solution include
 -   [Dotenv](https://www.npmjs.com/package/dotenv) - supports loading configuration from `.env` file (such as PORT number)
 
 ## Software Architecture
+
+The entry point of the application is `index.js`. It is responsible for:
+
+-   connecting to the MongoDB
+-   configuring the API routes to use
+-   listening for requests to the API routes and handling appropriately
 
 ## Testing & Test Results
 

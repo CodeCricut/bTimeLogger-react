@@ -8,22 +8,32 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
-const dbConnectionString = "mongodb://localhost/b_time_logger";
-
-try {
+const connectToDatabase = async () => {
+    const dbConnectionString = "mongodb://localhost/b_time_logger";
     await mongoose.connect(dbConnectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
+};
 
+const setUpServerApp = async (port) => {
     const app = express();
-    const port = process.env.SERVER_PORT;
-
     app.use(cors());
     app.use(express.json());
+    return app;
+};
 
+const setAppRoutes = (app) => {
     app.use("/types", typesRouter);
     app.use("/activities", activitiesRouter);
+};
+
+try {
+    await connectToDatabase();
+
+    const port = process.env.SERVER_PORT;
+    const app = setUpServerApp(port);
+    setAppRoutes(app);
 
     app.listen(port, () =>
         console.log(`Listening on http://localhost:${port}`)
