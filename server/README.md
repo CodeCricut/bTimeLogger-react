@@ -41,6 +41,49 @@ The entry point of the application is `index.js`. It is responsible for:
 -   configuring the API routes to use
 -   listening for requests to the API routes and handling appropriately
 
+### Database Model
+
+**Model objects can be found in the `model` directory.**
+
+Mongoose is used to connect the application to a Mongo database. Mongo is a NoSQL database.
+
+In Mongo, related data is stored in "documents." A document might be something like `Note`, which represents a single note object. The interface
+of documents are stored as "**Schema**," which define the structure of our document.
+
+For example, a note schema might look like this:
+
+```js
+const NoteSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String, required: false },
+});
+```
+
+Related documents are stored together in "Collections."
+
+In order to interact with the collection, we define a **Model**. A Model is
+a class which lets us interact with a collection in the database.
+
+```js
+const Note = mongoose.model("Note", NoteSchema);
+```
+
+Models have methods to interact with the collection:
+
+```js
+const noteById = await Note.findById(id);
+const allNotes = await Note.find();
+
+const newNote = new Note({ title: "Title", description: "Desc" });
+await newNote.save();
+```
+
+More information can be found in this [tutorial](https://rahmanfadhil.com/express-rest-api/) or the [Mongoose docs](https://mongoosejs.com/docs/guide.html).
+
+### Routing and Routers
+
+**Routers can be found in the `routers` directory.**
+
 ## Testing & Test Results
 
 ### Manual System Tests
