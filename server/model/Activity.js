@@ -7,7 +7,7 @@ const ActivitySchema = new Schema({
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: false },
     comment: { type: String, required: false },
-    isTrashed: { type: Boolean, required: true },
+    trashed: { type: Boolean, required: true },
 });
 
 export const ACTIVITY_MODEL_NAME = "Activity";
