@@ -1,4 +1,7 @@
 import express from "express";
+import IdNotProvidedError from "../repositories/IdNotProvidedError.js";
+import InvalidIdFormatError from "../repositories/InvalidIdFormatError.js";
+import NotFoundError from "../repositories/NotFoundError.js";
 import { TypeRepository } from "../repositories/TypeRepository.js";
 
 const router = express.Router();
@@ -22,9 +25,23 @@ router.get("/:id", async (req, res) => {
         res.status(200);
         res.json(type);
     } catch (e) {
-        console.error(e);
-        res.status(500);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
