@@ -1,11 +1,12 @@
 import express from "express";
-import ActivityType from "../model/ActivityType.js";
+import { TypeRepository } from "../repositories/TypeRepository.js";
 
 const router = express.Router();
+const typeRepo = new TypeRepository();
 
 router.get("/", async (req, res) => {
     try {
-        const types = await ActivityType.find({});
+        const types = await typeRepo.getAll();
         res.json(types);
     } catch (e) {
         console.error(e);
@@ -16,10 +17,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("ID not provided.");
-        const type = await ActivityType.findById(id);
-        if (!type) throw new Error("Invalid ID.");
+        const type = await typeRepo.getById(req.params.id);
 
         res.status(200);
         res.json(type);
@@ -32,13 +30,8 @@ router.get("/:id", async (req, res) => {
 
 router.post("/add", async (req, res) => {
     try {
-        const type = new ActivityType(req.body);
+        const type = await typeRepo.add(req.body.name);
 
-        if ((await ActivityType.count({ name: type.name })) > 0) {
-            throw new Error(`Already added type with name ${type.name}`);
-        }
-
-        await type.save();
         res.status(200);
         res.json(type);
     } catch (e) {
@@ -50,9 +43,8 @@ router.post("/add", async (req, res) => {
 
 router.delete("/remove/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-        await ActivityType.findByIdAndDelete(id);
+        await typeRepo.delete(req.params.id);
+
         res.status(200);
         res.send();
     } catch (e) {
