@@ -16,7 +16,7 @@ const connectToDatabase = async () => {
     });
 };
 
-const setUpServerApp = async (port) => {
+const setUpServerApp = (port) => {
     const app = express();
     app.use(cors());
     app.use(express.json());
@@ -39,5 +39,6 @@ try {
         console.log(`Listening on http://localhost:${port}`)
     );
 } catch (e) {
-    console.error.bind(console, "connection error:");
+    console.error("Connection error:" + e);
+    process.exit(1);
 }
