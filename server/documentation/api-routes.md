@@ -216,16 +216,45 @@ removed from the database, but will have its `trashed` property set to true.
 }
 ```
 
-### PUT `/update:id`
+### PUT `/update/:id`
 
-**Description**:
+**Description**: Update the given activity and return it. You may update the activity's
 
-**Example request**:
+-   `type`
+-   `startTime`
+-   `endTime`
+-   `comment`
+-   `isTrashed`
+
+Any property value not given in the request body will remain the same. Note that
+you cannot update values to be null.
+
+Where possible, it is preferable to use endpoints to update these properties individually (such as `/activities/trash/:id`).
+
+**Example request**: PUT `/activities/update/61b6c769c6536ace94ed1941`
+
+Request body:
+
+```json
+{
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was updated",
+    "endTime": null // will be ignored; can't update to be null
+}
+```
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6c769c6536ace94ed1941",
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was updated",
+    "startTime": "2021-12-13T04:04:42.000Z",
+    "endTime": "2021-12-13T04:00:16.847Z",
+    "trashed": false,
+    "__v": 0
+}
 ```
 
 ### DELETE `/remove/:id`
