@@ -1,23 +1,38 @@
 import ActivityType from "../model/ActivityType.js";
+import IdNotProvidedError from "./IdNotProvidedError.js";
+import InvalidIdFormatError from "./InvalidIdFormatError.js";
+import NotFoundError from "./NotFoundError.js";
 
 class TypeRepository {
     constructor() {}
 
+    /**
+     * Get all types in the database
+     * @returns A promise which will yield an array of all the type objects
+     */
     async getAll() {
         return await ActivityType.find({});
     }
 
+    /**
+     * Get a type with the given id.
+     * @param {string} id
+     * @returns {ActivityType} The activity with the given id.
+     * @throws {IdNotProvidedError} Will throw if id argument is null
+     * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
+     * @throws {NotFoundError} Will throw if no type can be found with the given id.
+     */
     async getById(id) {
-        if (!id) throw new Error("ID not provided.");
+        if (!id) throw new IdNotProvidedError();
 
         let type;
         try {
             type = await ActivityType.findById(id);
         } catch (e) {
-            throw new Error("Invalid ID format.");
+            throw new InvalidIdFormatError();
         }
 
-        if (!type) throw new Error("Invalid ID.");
+        if (!type) throw new NotFoundError("Type with the given ID not found.");
         return type;
     }
 
