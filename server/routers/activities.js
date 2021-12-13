@@ -58,6 +58,8 @@ router.post("/create-completed", async (req, res) => {
             ...req.body,
             trashed: false,
         };
+        // TODO Issue #7: manually create Date objects for startTime and endTime
+        // TODO Issue #8: accoridng to api-routes documentation, startTime should be required
         if (!toCreate.endTime)
             throw new Error(
                 "Tried to create completed activity without endTime."
