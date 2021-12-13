@@ -259,11 +259,13 @@ Request body:
 
 ### DELETE `/remove/:id`
 
-**Description**:
+**Description**: Completely remove an activity from the database.
 
-**Example request**:
+**Example request**: DELETE `/activities/remove/612176721e61a22088163e09`
 
 **Example response**
+
+(No response will be given for a valid request.)
 
 ```json
 
