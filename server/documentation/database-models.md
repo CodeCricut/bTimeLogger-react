@@ -1,6 +1,6 @@
 # Database models
 
-Mongoose is used to connect the application to a Mongo database. Mongo is a NoSQL database. Additional information can be found in the server's README.md.
+[Mongoose](https://www.npmjs.com/package/mongoose) is used to connect the application to a [Mongo](https://www.mongodb.com/) database. Mongo is a NoSQL database. Additional information can be found in the server's README.md.
 
 Outlined below are the available Mongoose Models used in the application.
 
