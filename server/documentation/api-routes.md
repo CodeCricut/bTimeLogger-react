@@ -22,14 +22,14 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
         "_id": "612174530de71f4c48ab23e5",
         "type": "6121713a797e0308845ec931",
         "startTime": "2021-08-21T05:00:00.000Z",
-        "isTrashed": false,
+        "trashed": false,
         "__v": 0
     },
     {
         "_id": "612176721e61a22088163e09",
         "type": "612170912b5a1716dca11c48",
         "startTime": "2021-08-21T05:00:00.000Z",
-        "isTrashed": true,
+        "trashed": true,
         "__v": 0,
         "comment": "this activity was updated",
         "endTime": "2021-08-23T05:00:00.000Z"
@@ -50,7 +50,7 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
     "_id": "612176721e61a22088163e09",
     "type": "612170912b5a1716dca11c48",
     "startTime": "2021-08-21T05:00:00.000Z",
-    "isTrashed": true,
+    "trashed": true,
     "__v": 0,
     "comment": "this activity was updated",
     "endTime": "2021-08-23T05:00:00.000Z"
@@ -224,7 +224,7 @@ removed from the database, but will have its `trashed` property set to true.
 -   `startTime`
 -   `endTime`
 -   `comment`
--   `isTrashed`
+-   `trashed`
 
 Any property value not given in the request body will remain the same. Note that
 you cannot update values to be null.
