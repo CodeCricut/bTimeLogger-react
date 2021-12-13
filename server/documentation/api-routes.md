@@ -152,14 +152,27 @@ This means to set the activity's `endTime` to the current date and time.
 
 ### PATCH `/resume/:id`
 
-**Description**:
+**Description**: Resume the given activity and return it.
 
-**Example request**:
+A resumed activity will
+
+-   have it's `startTime` set to the current date/time
+-   have it's `endTime` reset
+
+**Example request**: PATCH `/activities/resume/61b6c9bcaf732f85914bd711`
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6c9bcaf732f85914bd711",
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was started at approx 9:45 PM",
+    "startTime": "2021-12-13T04:19:08.361Z",
+    "endTime": null,
+    "trashed": false,
+    "__v": 0
+}
 ```
 
 ### PATCH `/trash/:id`
