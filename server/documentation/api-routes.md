@@ -277,26 +277,46 @@ Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoin
 
 ### GET `/`
 
-**Description**:
+**Description**: Get an array of all activity types
 
-**Example request**:
+**Example request**: GET `/types`
 
 **Example response**
 
 ```json
-
+[
+    {
+        "_id": "612170912b5a1716dca11c48",
+        "name": "Exercise",
+        "__v": 0
+    },
+    {
+        "_id": "6121713a797e0308845ec931",
+        "name": "Coding",
+        "__v": 0
+    },
+    {
+        "_id": "61217143797e0308845ec934",
+        "name": "Reading",
+        "__v": 0
+    }
+]
 ```
 
 ### GET `/:id`
 
-**Description**:
+**Description**: Get an activity type by its ID
 
-**Example request**:
+**Example request**: GET `/types/612170912b5a1716dca11c48`
 
 **Example response**
 
 ```json
-
+{
+    "_id": "612170912b5a1716dca11c48",
+    "name": "Exercise",
+    "__v": 0
+}
 ```
 
 ### POST `/add`
