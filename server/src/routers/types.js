@@ -1,9 +1,9 @@
 import express from "express";
-import AlreadyAddedError from "../repositories/AlreadyAddedError.js";
-import IdNotProvidedError from "../repositories/IdNotProvidedError.js";
-import InvalidIdFormatError from "../repositories/InvalidIdFormatError.js";
-import MissingModelInfoError from "../repositories/MissingModelInfoError.js";
-import NotFoundError from "../repositories/NotFoundError.js";
+import AlreadyAddedError from "../repositories/errors/AlreadyAddedError.js";
+import IdNotProvidedError from "../repositories/errors/IdNotProvidedError.js";
+import InvalidIdFormatError from "../repositories/errors/InvalidIdFormatError.js";
+import MissingModelInfoError from "../repositories/errors/MissingModelInfoError.js";
+import NotFoundError from "../repositories/errors/NotFoundError.js";
 import { TypeRepository } from "../repositories/TypeRepository.js";
 
 const router = express.Router();

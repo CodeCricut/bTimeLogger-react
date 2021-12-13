@@ -1,9 +1,9 @@
 import ActivityType from "../model/ActivityType.js";
-import IdNotProvidedError from "./IdNotProvidedError.js";
-import InvalidIdFormatError from "./InvalidIdFormatError.js";
-import MissingModelInfoError from "./MissingModelInfoError.js";
-import NotFoundError from "./NotFoundError.js";
-import AlreadyAddedError from "./AlreadyAddedError.js";
+import IdNotProvidedError from "./errors/IdNotProvidedError.js";
+import InvalidIdFormatError from "./errors/InvalidIdFormatError.js";
+import MissingModelInfoError from "./errors/MissingModelInfoError.js";
+import NotFoundError from "./errors/NotFoundError.js";
+import AlreadyAddedError from "./errors/AlreadyAddedError.js";
 
 class TypeRepository {
     constructor() {}
