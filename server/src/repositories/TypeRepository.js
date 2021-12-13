@@ -10,7 +10,7 @@ class TypeRepository {
 
     /**
      * Get all types in the database
-     * @returns A promise which will yield an array of all the type objects
+     * @returns {Promise<Array<Activity>>} A promise which will yield an array of all the type objects
      */
     async getAll() {
         return await ActivityType.find({});
@@ -19,7 +19,7 @@ class TypeRepository {
     /**
      * Get a type with the given id.
      * @param {string} id
-     * @returns {ActivityType} The activity with the given id.
+     * @returns {Promise<ActivityType>} A promise which will resolve to the activity with the given id.
      * @throws {IdNotProvidedError} Will throw if id argument is null
      * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
      * @throws {NotFoundError} Will throw if no type can be found with the given id.
@@ -41,6 +41,7 @@ class TypeRepository {
     /**
      * Add a new activity type with the given name
      * @param {string} name The name of the activity type to add
+     * @returns {Promise<ActivityType>} A promise which will resolve to the added activity type
      * @throws {MissingModelInfoError} Will throw if the name is not given
      * @throws {AlreadyAddedError} Will throw if a type with the given name already exists
      */
@@ -66,6 +67,7 @@ class TypeRepository {
     /**
      * Remove the given activity type from the database.
      * @param {string} id
+     * @returns {Promise} A promise which will resolve once the type has been deleted.
      * @throws {MissingModelInfoError} Will throw if no id provided.
      * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
      * @throws {NotFoundError} Will throw if no type can be found with the given id.
