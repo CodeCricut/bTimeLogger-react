@@ -11,4 +11,12 @@ const ActivitySchema = new Schema({
 });
 
 export const ACTIVITY_MODEL_NAME = "Activity";
-export default mongoose.model(ACTIVITY_MODEL_NAME, ActivitySchema);
+
+/**
+ * An Activity represents something the user did between particular points in time.
+ * Activities are of a certain Type, and can include information such as comments
+ * made by the user.
+ */
+const Activity = mongoose.model(ACTIVITY_MODEL_NAME, ActivitySchema);
+
+export default Activity;

@@ -6,4 +6,11 @@ const ActivityTypeSchema = new Schema({
 });
 
 export const TYPE_MODEL_NAME = "Type";
-export default mongoose.model(TYPE_MODEL_NAME, ActivityTypeSchema);
+
+/**
+ * An ActivityType represents the type of activity the user did at a
+ * particular point, such as "Reading" or "Sleeping."
+ */
+const ActivityType = mongoose.model(TYPE_MODEL_NAME, ActivityTypeSchema);
+
+export default ActivityType;
