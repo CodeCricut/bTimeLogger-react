@@ -177,26 +177,43 @@ A resumed activity will
 
 ### PATCH `/trash/:id`
 
-**Description**:
+**Description**: Trash the given activity and return it. A trashed activity is not
+removed from the database, but will have its `trashed` property set to true.
 
-**Example request**:
+**Example request**: PATCH `/activities/trash/61b6c9bcaf732f85914bd711`
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6c9bcaf732f85914bd711",
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was started at approx 9:45 PM",
+    "startTime": "2021-12-13T04:19:08.361Z",
+    "endTime": null,
+    "trashed": true,
+    "__v": 0
+}
 ```
 
 ### PATCH `/untrash/:id`
 
-**Description**:
+**Description**: Untrash the given activity and return it. An untrashed activity will have its `trashed` property set to false.
 
-**Example request**:
+**Example request**: `/activities/untrash/61b6c9bcaf732f85914bd711`
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6c9bcaf732f85914bd711",
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was started at approx 9:45 PM",
+    "startTime": "2021-12-13T04:19:08.361Z",
+    "endTime": null,
+    "trashed": false,
+    "__v": 0
+}
 ```
 
 ### PUT `/update:id`
