@@ -59,7 +59,7 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
 
 ### POST `/start-new`
 
-**Description**: Start a new activity. Started activities
+**Description**: Start a new activity and return it. Started activities
 
 -   will have the `startTime` property populated with the current date + time
 -   not have a populated `endTime`
@@ -92,7 +92,7 @@ Request body:
 
 ### POST `/create-completed`
 
-**Description**: Create a completed activity. A completed activity
+**Description**: Create a completed activity and return it. A completed activity
 
 -   must have it's `startTime` populated
 -   must have it's `endTime` populated
@@ -130,14 +130,24 @@ Request body:
 
 ### PATCH `/stop/:id`
 
-**Description**:
+**Description**: Stop the activity with the given id, and return the patched activity.
 
-**Example request**:
+This means to set the activity's `endTime` to the current date and time.
+
+**Example request**: PATCH `/activities/stop/612174530de71f4c48ab23e5`
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6c9bcaf732f85914bd711",
+    "type": "612170912b5a1716dca11c48",
+    "comment": "this activity was started at approx 9:45 PM",
+    "startTime": "2021-12-13T04:19:08.361Z",
+    "endTime": "2021-12-13T04:19:22.240Z",
+    "trashed": false,
+    "__v": 0
+}
 ```
 
 ### PATCH `/resume/:id`
