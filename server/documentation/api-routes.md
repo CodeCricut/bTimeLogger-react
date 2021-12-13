@@ -321,14 +321,26 @@ Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoin
 
 ### POST `/add`
 
-**Description**:
+**Description**: Add a new type and return it
 
-**Example request**:
+**Example request**: POST `/types/add`
+
+Request body:
+
+```json
+{
+    "name": "New type"
+}
+```
 
 **Example response**
 
 ```json
-
+{
+    "_id": "61b6cfe6edb2fe93dd605770",
+    "name": "New type",
+    "__v": 0
+}
 ```
 
 ### DELETE `/remove/:id`
