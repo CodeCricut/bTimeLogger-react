@@ -1,6 +1,8 @@
 import express from "express";
+import AlreadyAddedError from "../repositories/AlreadyAddedError.js";
 import IdNotProvidedError from "../repositories/IdNotProvidedError.js";
 import InvalidIdFormatError from "../repositories/InvalidIdFormatError.js";
+import MissingModelInfoError from "../repositories/MissingModelInfoError.js";
 import NotFoundError from "../repositories/NotFoundError.js";
 import { TypeRepository } from "../repositories/TypeRepository.js";
 
@@ -52,9 +54,17 @@ router.post("/add", async (req, res) => {
         res.status(200);
         res.json(type);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (e instanceof MissingModelInfoError) {
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof AlreadyAddedError) {
+            res.status(400);
+            res.send(e.message);
+        } else {
+            console.error(e);
+            res.status(500);
+            res.send(e.toString());
+        }
     }
 });
 

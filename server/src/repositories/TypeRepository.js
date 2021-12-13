@@ -50,15 +50,17 @@ class TypeRepository {
 
             const type = new ActivityType({ name });
 
-            if ((await ActivityType.count({ name: type.name })) > 0) {
+            if ((await ActivityType.countDocuments({ name: type.name })) > 0) {
                 throw new AlreadyAddedError(
-                    `Already added type with name ${type.name}`
+                    `Already added type with name '${type.name}'`
                 );
             }
 
             await type.save();
+
+            return type;
         };
-        await addAsync();
+        return await addAsync();
     }
 
     async delete(id) {
