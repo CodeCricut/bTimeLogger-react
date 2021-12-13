@@ -345,11 +345,13 @@ Request body:
 
 ### DELETE `/remove/:id`
 
-**Description**:
+**Description**: Delete a type from the database
 
-**Example request**:
+**Example request**: DELETE `/types/remove/61b6cfe6edb2fe93dd605770`
 
 **Example response**
+
+(No response will be given for a valid request.)
 
 ```json
 
