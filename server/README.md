@@ -41,7 +41,7 @@ The main dependencies of the solution include
 
 ## Software Architecture
 
-The entry point of the application is `index.js`. It is responsible for:
+The entry point of the application is `src/index.js`. It is responsible for:
 
 -   connecting to the MongoDB
 -   configuring the API routes to use

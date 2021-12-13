@@ -6,7 +6,7 @@ Routing for the application is done with [Express](https://expressjs.com/). Addi
 
 ## Activities
 
-Routes pertaining to the `Activity` model are mapped to the `/activities` endpoint via the `routers/activities.js` router.
+Routes pertaining to the `Activity` model are mapped to the `/activities` endpoint via the `src/routers/activities.js` router.
 
 ### GET `/`
 
@@ -273,7 +273,7 @@ Request body:
 
 ## Activity Types
 
-Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoint via the `routers/types.js` router.
+Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoint via the `src/routers/types.js` router.
 
 ### GET `/`
 
