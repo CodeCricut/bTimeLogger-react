@@ -11,7 +11,7 @@ class ActivityRepository {
 
     /**
      * Get all activities in the database
-     * @returns {Array<number>} A promise which will resolve to an array of all activities
+     * @returns {Promise<Array<number>>} A promise which will resolve to an array of all activities
      */
     async getAll() {
         return await Activity.find({});
@@ -20,7 +20,7 @@ class ActivityRepository {
     /**
      * Get an activity by its ID
      * @param {string} id The id of the activity to get
-     * @returns {Activity} The activity retrieved by ID
+     * @returns {Promise<Activity>} A promise which will resolve to the activity retrieved by ID
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
      * @throws {NotFoundError} Will throw if no activity can be found with the given ID
@@ -47,7 +47,7 @@ class ActivityRepository {
      * @param {Object} activity The activity to start
      * @param {string} activity.type The type of activity
      * @param {string} activity.comment The user comment for this activity
-     * @returns {Activity} The started activity
+     * @returns {Promise<Activity>} A promise which will resolve to the started activity
      * @throws {MissingModelInfoError} Will throw if the activity or a required field on the activity is null.
      */
     async startNew(activity) {
@@ -78,7 +78,7 @@ class ActivityRepository {
      * @param {Object} activity
      * @param {string} activity.startTime The date string representing the start time of the activity
      * @param {string} activity.endTime The date string representing the end time of the activity
-     * @returns {Activity} The created activity
+     * @returns {Promise<Activity>} A promise which will resolve to the created activity
      * @throws {MissingModelInfoError} Will throw if activity is null, or any fields are missing or invalid.
      * @throws {InvalidDateError} Will throw if the startTime or endTime date strings are invalid.
      */
@@ -120,7 +120,7 @@ class ActivityRepository {
      * Stop the given activity and return it. Stopped activities will have
      * their end times set to the current time.
      * @param {string} id The id of the activity to stop
-     * @returns The stopped activity
+     * @returns {Promise<Activity>} A promise which will resolve to the stopped activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
@@ -151,7 +151,7 @@ class ActivityRepository {
      * Resume the given activity. Resumed activities will have their start times set
      * to the current time, and their end times will be reset.
      * @param {string} id The id of the activity to resume
-     * @returns {Activity} The resumed activity
+     * @returns {Promise<Activity>} A promise which will resolve to the resumed activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
@@ -179,7 +179,7 @@ class ActivityRepository {
     /**
      * Trash the given activity.
      * @param {string} id The id of the activity to trash
-     * @returns {Activity} The trashed activity
+     * @returns {Promise<Activity>} A promise which will resolve to the trashed activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
@@ -206,7 +206,7 @@ class ActivityRepository {
     /**
      * Untrash the given activity.
      * @param {string} id The id of the activity to untrash
-     * @returns {Activity} The untrashed activity
+     * @returns {Promise<Activity>} A promise which will resolve to the untrashed activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
@@ -240,6 +240,7 @@ class ActivityRepository {
      * updated activity. Will not update end time if null.
      * @param {string} activity.comment The comment of the updated activity. Will not update comment if null.
      * @param {boolean} actiivty.trashed The trashed status of the updated activity. Will not update if null.
+     * @returns {Promise<Activity>} A promise which will resolve to the updated activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
@@ -289,6 +290,7 @@ class ActivityRepository {
     /**
      * Completely remove an activity from the database.
      * @param {string} id The id of the activity to delete from the database
+     * @returns {Promise} A promise which will resolve once the activity has been deleted
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
      * @throws {NotFoundError} Will throw if an activity with the given ID cannot be found.
