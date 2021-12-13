@@ -64,6 +64,8 @@ const NoteSchema = new mongoose.Schema({
 });
 ```
 
+Mongoose assigns each schema an `_id` property which can be used to uniquely reference it.
+
 Related documents are stored together in "Collections."
 
 A **Model** is a class which lets us interact with a collection in the database.
