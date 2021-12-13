@@ -23,11 +23,11 @@ router.get("/:id", async (req, res) => {
         let activity = await Activity.findById(id);
         if (!activity) throw new Error("Invalid ID.");
 
-        req.status(200);
-        req.json(activity);
+        res.status(200);
+        res.json(activity);
     } catch (e) {
         console.error(e);
-        req.status(500);
+        res.status(500);
         res.send(e.toString());
     }
 });
