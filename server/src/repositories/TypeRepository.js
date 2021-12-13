@@ -1,7 +1,9 @@
 import ActivityType from "../model/ActivityType.js";
 import IdNotProvidedError from "./IdNotProvidedError.js";
 import InvalidIdFormatError from "./InvalidIdFormatError.js";
+import MissingModelInfoError from "./MissingModelInfoError.js";
 import NotFoundError from "./NotFoundError.js";
+import AlreadyAddedError from "./AlreadyAddedError.js";
 
 class TypeRepository {
     constructor() {}
@@ -36,14 +38,22 @@ class TypeRepository {
         return type;
     }
 
+    /**
+     * Add a new activity type with the given name
+     * @param {string} name The name of the activity type to add
+     * @throws {MissingModelInfoError} Will throw if the name is not given
+     * @throws {AlreadyAddedError} Will throw if a type with the given name already exists
+     */
     async add(name) {
         const addAsync = async () => {
-            if (!name) throw new Error("Tried to add type without a name.");
+            if (!name) throw new MissingModelInfoError("Type name not given");
 
             const type = new ActivityType({ name });
 
             if ((await ActivityType.count({ name: type.name })) > 0) {
-                throw new Error(`Already added type with name ${type.name}`);
+                throw new AlreadyAddedError(
+                    `Already added type with name ${type.name}`
+                );
             }
 
             await type.save();
