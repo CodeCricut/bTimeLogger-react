@@ -54,16 +54,18 @@ router.post("/add", async (req, res) => {
         res.status(200);
         res.json(type);
     } catch (e) {
-        if (e instanceof MissingModelInfoError) {
-            res.status(400);
-            res.send(e.message);
-        } else if (e instanceof AlreadyAddedError) {
+        if (
+            e instanceof MissingModelInfoError ||
+            e instanceof AlreadyAddedError
+        ) {
+            // Invalid req
             res.status(400);
             res.send(e.message);
         } else {
+            // Server error
             console.error(e);
             res.status(500);
-            res.send(e.toString());
+            res.send("Internal server error.");
         }
     }
 });
@@ -75,9 +77,23 @@ router.delete("/remove/:id", async (req, res) => {
         res.status(200);
         res.send();
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof MissingModelInfoError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(400);
+            res.send("Internal server error.");
+        }
     }
 });
 

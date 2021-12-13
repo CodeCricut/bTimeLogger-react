@@ -63,10 +63,24 @@ class TypeRepository {
         return await addAsync();
     }
 
+    /**
+     * Remove the given activity type from the database.
+     * @param {string} id
+     * @throws {MissingModelInfoError} Will throw if no id provided.
+     * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
+     * @throws {NotFoundError} Will throw if no type can be found with the given id.
+     */
     async delete(id) {
-        if (!id) throw new Error("No ID provided.");
-        const type = ActivityType.findById(id);
-        if (!type) throw new Error("Invalid id.");
+        if (!id) throw new MissingModelInfoError("No ID provided.");
+
+        let type;
+        try {
+            type = await ActivityType.findById(id);
+        } catch (e) {
+            throw new InvalidIdFormatError();
+        }
+
+        if (!type) throw new NotFoundError("Type with the given ID not found.");
 
         await ActivityType.findByIdAndDelete(id);
     }
