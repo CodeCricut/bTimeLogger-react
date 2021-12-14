@@ -46,6 +46,7 @@ class TypeRepository {
      * @throws {AlreadyAddedError} Will throw if a type with the given name already exists
      */
     async add(name) {
+        // TODO: Why is this wrapped in a promise like this?
         const addAsync = async () => {
             if (!name) throw new MissingModelInfoError("Type name not given");
 
