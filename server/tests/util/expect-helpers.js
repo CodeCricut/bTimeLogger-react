@@ -1,5 +1,5 @@
 export const expectActivityTypesEqual = (expected, actual) => {
-    expect(expected.name).toEqual(actual.name);
+    expect(actual.name).toEqual(expected.name);
 };
 
 export const expectActivityTypeArraysEqual = (expected, actual) => {
@@ -11,11 +11,11 @@ export const expectActivityTypeArraysEqual = (expected, actual) => {
 };
 
 export const expectActivitiesEqual = (expected, actual) => {
-    expect(expected.type).toEqual(actual.type);
-    expect(expected.startTime).toEqual(actual.startTime);
-    expect(expected.endTime).toEqual(actual.endTime);
-    expect(expected.comment).toEqual(actual.comment);
-    expect(expected.trashed).toBe(actual.trashed);
+    expect(actual.type).toEqual(expected.type);
+    expect(actual.startTime).toEqual(expected.startTime);
+    expect(actual.endTime).toEqual(expected.endTime);
+    expect(actual.comment).toEqual(expected.comment);
+    expect(actual.trashed).toBe(expected.trashed);
 };
 
 export const expectActivitiesArrayEqual = (expected, actual) => {
