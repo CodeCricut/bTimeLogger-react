@@ -76,7 +76,7 @@ describe("getById", () => {
 
     test("should throw if id not provided", async () => {
         const typeRepo = new TypeRepository();
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.getById(null);
         }).rejects.toThrow(IdNotProvidedError);
     });
@@ -84,14 +84,14 @@ describe("getById", () => {
     test("should throw if invalid id provided", async () => {
         const typeRepo = new TypeRepository();
 
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.getById("INVALID ID");
         }).rejects.toThrow(InvalidIdFormatError);
     });
 
     test("should throw if not found", async () => {
         const typeRepo = new TypeRepository();
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.getById(NON_EXISTANT_ID);
         }).rejects.toThrow(NotFoundError);
     });
@@ -109,10 +109,10 @@ describe("add", () => {
 
     test("should throw if name not given", async () => {
         const typeRepo = new TypeRepository();
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.add("");
         }).rejects.toThrow(MissingModelInfoError);
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.add(null);
         }).rejects.toThrow(MissingModelInfoError);
     });
@@ -121,8 +121,46 @@ describe("add", () => {
         const alreadyAdded = await addFakeActivityType();
         const typeRepo = new TypeRepository();
 
-        expect(async () => {
+        await expect(async () => {
             await typeRepo.add(alreadyAdded.name);
         }).rejects.toThrow(AlreadyAddedError);
+    });
+});
+
+describe("delete", () => {
+    test("should delete if valid id given", async () => {
+        // Arrange
+        const typeRepo = new TypeRepository();
+        const type = await addFakeActivityType();
+        expect(await typeRepo.getById(type.id)).toBeTruthy();
+
+        // Act
+        await typeRepo.delete(type.id);
+
+        // Assert
+        const allTypes = await typeRepo.getAll();
+
+        expect(allTypes).toHaveLength(0);
+    });
+
+    test("should throw if no id given", async () => {
+        const typeRepo = new TypeRepository();
+        await expect(async () => {
+            await typeRepo.delete(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const typeRepo = new TypeRepository();
+        await expect(async () => {
+            await typeRepo.delete("INVALID ID");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if not found", async () => {
+        const typeRepo = new TypeRepository();
+        await expect(async () => {
+            await typeRepo.delete(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
     });
 });
