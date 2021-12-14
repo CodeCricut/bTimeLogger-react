@@ -85,12 +85,7 @@ class TypeRepository {
 
         if (!type) throw new NotFoundError("Type with the given ID not found.");
 
-        await ActivityType.findOneAndDelete(id, (err, docs) => {
-            // It seems must provide a callback to actually execute the delete command
-            if (err) {
-                console.error(err);
-            }
-        });
+        await ActivityType.findOneAndDelete(id);
     }
 }
 
