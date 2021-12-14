@@ -281,7 +281,6 @@ describe("stop", () => {
         expectActivitiesEqual(
             {
                 ...activity.toObject(),
-                startTime: new Date(mockEndTime), // undocumented feature where start time coerced to be endTime if after endTime
                 endTime: new Date(mockEndTime),
             },
             stoppedActivity

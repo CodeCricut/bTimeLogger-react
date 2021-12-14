@@ -138,11 +138,7 @@ class ActivityRepository {
         if (!activity)
             throw new NotFoundError("Activity with the given ID not found.");
 
-        // TODO: document this behavior of forcing start time to be before end time
-        const x = Date.now();
-        const endTime = new Date(x);
-        if (activity.startTime > endTime) activity.startTime = endTime;
-        activity.endTime = endTime;
+        activity.endTime = new Date(Date.now());
         await activity.save();
 
         return activity;
@@ -283,14 +279,7 @@ class ActivityRepository {
         if (comment != null) activity.comment = comment;
         if (trashed != null) activity.trashed = trashed;
 
-        try {
-            await activity.save();
-        } catch (e) {
-            console.log(e);
-            throw new MissingModelInfoError(
-                "Tried to update activity with incomplete or invalid info"
-            );
-        }
+        await activity.save();
 
         return activity;
     }
