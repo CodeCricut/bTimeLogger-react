@@ -3,7 +3,7 @@
 Babel is a JavaScript compiler or "transpiler." It is mainly used to convert
 ES6 to older versions of JavaScript for compatibility.
 
-In this project, it is used for compatibility reasons with the [Jest](todo) testing framework.
+In this project, it is used for compatibility reasons with the [Jest](https://jestjs.io/) testing framework.
 
 ## Plugins
 
@@ -13,7 +13,7 @@ Babel plugins apply code transformations. You can apply plugins or presets to yo
 
 Babel presets can act as sharable sets of Babel plugins and/or configuration options.
 
-For this project, we are using [@babel/preset-env]() for compiling ES2015+ syntax. More on this in the "Configuration" section.
+For this project, we are using [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) for compiling ES2015+ syntax. More on this in the "Configuration" section.
 
 ## Configuration
 
@@ -50,3 +50,5 @@ module.exports = {
     presets: [["@babel/preset-env", { targets: { node: "current" } }]],
 };
 ```
+
+That is all the Babel configuration needed. Additional Jest configuration needed is outlined in [our Jest docs](./jest-testing.md).
