@@ -3,7 +3,7 @@
 **Description**: BTimeLogger React Server is a REST API which is used
 as the backend for a React website.
 
-**Project status**: feature-incomplete, not fully tested, test failures, and known bugs
+**Project status**: feature-complete, fully tested, no test failures, and no known bugs
 
 **Author**: Andrew Richerson
 
