@@ -10,8 +10,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@babel/cli": "^7.16.0",
-        "@babel/runtime": "^7.16.5",
         "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
@@ -21,11 +19,8 @@
     "type": "module",
     "devDependencies": {
         "@babel/core": "^7.16.5",
-        "@babel/node": "^7.16.5",
-        "@babel/plugin-transform-runtime": "^7.16.5",
         "@babel/preset-env": "^7.16.5",
-        "jest": "^27.4.5",
-        "babel-jest": "^27.4.5"
+        "jest": "^27.4.5"
     },
     "jest": {
         "testEnvironment": "node",

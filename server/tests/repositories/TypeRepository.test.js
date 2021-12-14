@@ -1,6 +1,4 @@
-// const TypeRepository = require("../../src/repositories/ActivityRepository.js");
 import { TypeRepository } from "../../src/repositories/TypeRepository.js";
-// const { dbConnect, dbDisconnect } = require("../dbHandler.utils.js");
 import { dbConnect, dbDisconnect } from "../dbHandler.utils.js";
 
 beforeAll(async () => await dbConnect());
