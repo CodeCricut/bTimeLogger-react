@@ -7,8 +7,15 @@ import InvalidIdFormatError from "../../src/repositories/errors/InvalidIdFormatE
 import MissingModelInfoError from "../../src/repositories/errors/MissingModelInfoError.js";
 import NotFoundError from "../../src/repositories/errors/NotFoundError.js";
 import { dbConnect, dbDisconnect, resetDb } from "../dbHandler.utils.js";
-import { expectActivitiesArrayEqual } from "../util/expect-helpers.js";
-import { fakeActivity, fakeActivityType } from "../fixtures/index.js";
+import {
+    expectActivitiesArrayEqual,
+    expectActivitiesEqual,
+} from "../util/expect-helpers.js";
+import {
+    fakeActivity,
+    fakeActivityType,
+    NON_EXISTANT_ID,
+} from "../fixtures/index.js";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
@@ -66,5 +73,37 @@ describe("getAll", () => {
 
         expect(actual).toHaveLength(0);
         expectActivitiesArrayEqual(expected, actual);
+    });
+});
+
+describe("getById", () => {
+    test("should return one with valid id", async () => {
+        const expected = await addFakeActivity();
+        const actRepo = new ActivityRepository();
+
+        const actual = await actRepo.getById(expected.id);
+
+        expectActivitiesEqual(expected, actual);
+    });
+
+    test("should throw if id not provided", async () => {
+        const actRepo = new ActivityRepository();
+        await expect(async () => {
+            await actRepo.getById(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id provided", async () => {
+        const actRepo = new ActivityRepository();
+        await expect(async () => {
+            await actRepo.getById("INVALID ID");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if not found", async () => {
+        const actRepo = new ActivityRepository();
+        await expect(async () => {
+            await actRepo.getById(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
     });
 });
