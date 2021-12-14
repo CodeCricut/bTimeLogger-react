@@ -289,3 +289,50 @@ describe("trash", () => {
         }).rejects.toThrow(NotFoundError);
     });
 });
+
+describe("untrash", () => {
+    test("should untrash valid activity", async () => {
+        const actRepo = new ActivityRepository();
+
+        const activity = await addFakeActivity();
+        await actRepo.trash(activity.id);
+        const trashedActivity = await actRepo.getById(activity.id);
+        expect(trashedActivity.trashed).toBe(true);
+
+        await actRepo.untrash(trashedActivity.id);
+        const untrashed = await actRepo.getById(trashedActivity.id);
+
+        // toObject converts the Mongoose model to an object with properties of the Activity schema
+        expectActivitiesEqual(
+            {
+                ...trashedActivity.toObject(),
+                trashed: false,
+            },
+            untrashed
+        );
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.untrash(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.untrash("invalid id");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity doesn't exist", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.untrash(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
