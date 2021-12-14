@@ -107,3 +107,42 @@ describe("getById", () => {
         }).rejects.toThrow(NotFoundError);
     });
 });
+
+describe("startNew", () => {
+    test("should initialize correct fields given valid activity", async () => {
+        const actRepo = new ActivityRepository();
+        const type = await addFakeActivityType();
+        const expected = {
+            ...fakeActivity,
+            type: type._id,
+            startTime: new Date(),
+            endTime: null,
+            trashed: false,
+        };
+        const actual = await actRepo.startNew({
+            ...fakeActivity,
+            type: type._id,
+        });
+
+        expectActivitiesEqual(expected, actual);
+    });
+
+    test("should throw if given null activity", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.startNew(null);
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given activity with missing info", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.startNew({
+                ...fakeActivity,
+                type: null,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+});
