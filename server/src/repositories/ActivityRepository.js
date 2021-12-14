@@ -1,10 +1,10 @@
 import { isValidDate } from "../helpers/date-helpers.js";
 import Activity from "../model/Activity.js";
-import IdNotProvidedError from "./errors/IdNotProvidedError";
-import InvalidIdFormatError from "./errors/InvalidIdFormatError";
-import MissingModelInfoError from "./errors/MissingModelInfoError";
-import NotFoundError from "./errors/NotFoundError";
-import InvalidDateError from "./errors/InvalidDateError";
+import IdNotProvidedError from "./errors/IdNotProvidedError.js";
+import InvalidIdFormatError from "./errors/InvalidIdFormatError.js";
+import MissingModelInfoError from "./errors/MissingModelInfoError.js";
+import NotFoundError from "./errors/NotFoundError.js";
+import InvalidDateError from "./errors/InvalidDateError.js";
 
 class ActivityRepository {
     constructor() {}
@@ -279,6 +279,7 @@ class ActivityRepository {
         try {
             await activity.save();
         } catch (e) {
+            console.log(e);
             throw new MissingModelInfoError(
                 "Tried to update activity with incomplete or invalid info"
             );
@@ -308,7 +309,7 @@ class ActivityRepository {
         if (!activity)
             throw new NotFoundError("Activity with the given ID not found.");
 
-        await Activity.findOneAndDelete(id);
+        await Activity.findByIdAndDelete(id);
     }
 }
 
