@@ -1,203 +1,249 @@
 import express from "express";
-import Activity from "../model/Activity.js";
+import { ActivityRepository } from "../repositories/ActivityRepository.js";
+import IdNotProvidedError from "../repositories/errors/IdNotProvidedError.js";
+import InvalidDateError from "../repositories/errors/InvalidDateError.js";
+import InvalidIdFormatError from "../repositories/errors/InvalidIdFormatError.js";
+import MissingModelInfoError from "../repositories/errors/MissingModelInfoError.js";
+import NotFoundError from "../repositories/errors/NotFoundError.js";
 
 const router = express.Router();
-// TODO: remove duplication/cleanpu
+const activityRepo = new ActivityRepository();
 
 router.get("/", async (req, res) => {
     try {
-        const activities = await Activity.find({});
+        const activities = await activityRepo.getAll();
         res.json(activities);
     } catch (e) {
         console.error(e);
         res.status(500);
-        res.send();
+        res.send("Internal server error.");
     }
 });
 
 router.get("/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
+        const activity = await activityRepo.getById(req.params.id);
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(500);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.post("/start-new", async (req, res) => {
     try {
-        const toStart = {
-            ...req.body,
-            startTime: new Date(),
-            endTime: null,
-            trashed: false,
-        };
-        let activity = new Activity(toStart);
-
-        await activity.save();
+        const activity = await activityRepo.startNew({ ...req.body });
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (e instanceof MissingModelInfoError) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.post("/create-completed", async (req, res) => {
     try {
-        const toCreate = {
-            ...req.body,
-            trashed: false,
-        };
-        // TODO Issue #7: manually create Date objects for startTime and endTime
-        // TODO Issue #8: accoridng to api-routes documentation, startTime should be required
-        if (!toCreate.endTime)
-            throw new Error(
-                "Tried to create completed activity without endTime."
-            );
-
-        let activity = new Activity(toCreate);
-
-        await activity.save();
+        const activity = await activityRepo.createCompleted({ ...req.body });
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof MissingModelInfoError ||
+            e instanceof InvalidDateError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.patch("/stop/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
-        const endTime = new Date();
-        if (activity.startTime > endTime) activity.startTime = endTime;
-        activity.endTime = endTime;
-
-        await activity.save();
+        const activity = await activityRepo.stop(req.params.id);
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.patch("/resume/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
-        if (!activity.startTime) activity.startTime = new Date();
-        activity.endTime = null;
-
-        await activity.save();
+        const activity = await activityRepo.resume(req.params.id);
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.patch("/trash/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
-        activity.trashed = true;
-
-        await activity.save();
+        const activity = await activityRepo.trash(req.params.id);
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.patch("/untrash/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
-        activity.trashed = false;
-
-        await activity.save();
+        const activity = await activityRepo.untrash(req.params.id);
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.put("/update/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        let activity = await Activity.findById(id);
-        if (!activity) throw new Error("Invalid ID.");
-
-        const { type, startTime, endTime, comment, isTrashed } = req.body;
-
-        if (type) activity.type = type;
-        if (startTime) activity.startTime = startTime;
-        if (endTime) activity.endTime = endTime;
-        if (comment) activity.comment = comment;
-        if (isTrashed) activity.isTrashed = isTrashed;
-
-        await activity.save();
+        const activity = await activityRepo.update(req.params.id, {
+            ...req.body,
+        });
         res.status(200);
         res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError ||
+            e instanceof InvalidDateError ||
+            e instanceof MissingModelInfoError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
 router.delete("/remove/:id", async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) throw new Error("No ID provided.");
-
-        await Activity.findOneAndDelete(id);
+        const activity = await activityRepo.remove(req.params.id);
         res.status(200);
-        res.send();
+        res.json(activity);
     } catch (e) {
-        console.error(e);
-        res.status(400);
-        res.send(e.toString());
+        if (
+            e instanceof IdNotProvidedError ||
+            e instanceof InvalidIdFormatError
+        ) {
+            // Invalid req
+            res.status(400);
+            res.send(e.message);
+        } else if (e instanceof NotFoundError) {
+            // Not found
+            res.status(404);
+            res.send(e.message);
+        } else {
+            // Server error
+            console.error(e);
+            res.status(500);
+            res.send("Internal server error.");
+        }
     }
 });
 
