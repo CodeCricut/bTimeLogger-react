@@ -16,6 +16,7 @@ import {
     fakeActivityType,
     NON_EXISTANT_ID,
 } from "../fixtures/index.js";
+import { jest } from "@jest/globals";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
@@ -112,17 +113,21 @@ describe("startNew", () => {
     test("should initialize correct fields given valid activity", async () => {
         const actRepo = new ActivityRepository();
         const type = await addFakeActivityType();
-        const expected = {
-            ...fakeActivity,
-            type: type._id,
-            startTime: new Date(),
-            endTime: null,
-            trashed: false,
-        };
+
+        const mockStartTime = 1234567890123;
+        jest.spyOn(Date, "now").mockImplementationOnce(() => mockStartTime);
         const actual = await actRepo.startNew({
             ...fakeActivity,
             type: type._id,
         });
+
+        const expected = {
+            ...fakeActivity,
+            type: type._id,
+            startTime: new Date(mockStartTime),
+            endTime: null,
+            trashed: false,
+        };
 
         expectActivitiesEqual(expected, actual);
     });
@@ -144,5 +149,52 @@ describe("startNew", () => {
                 type: null,
             });
         }).rejects.toThrow(MissingModelInfoError);
+    });
+});
+
+describe("stop", () => {
+    test("should set end time to now", async () => {
+        const activity = await addFakeActivity();
+        const actRepo = new ActivityRepository();
+
+        const mockEndTime = 1234567890123;
+        jest.spyOn(Date, "now").mockImplementation(() => mockEndTime);
+        await actRepo.stop(activity.id);
+
+        const stoppedActivity = await actRepo.getById(activity.id);
+
+        // toObject converts the Mongoose model to an object with properties of the Activity schema
+        expectActivitiesEqual(
+            {
+                ...activity.toObject(),
+                startTime: new Date(mockEndTime), // undocumented feature where start time coerced to be endTime if after endTime
+                endTime: new Date(mockEndTime),
+            },
+            stoppedActivity
+        );
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.stop(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.stop("invalid id");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity doesn't exist", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.stop(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
     });
 });
