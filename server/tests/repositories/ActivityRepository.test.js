@@ -198,3 +198,50 @@ describe("stop", () => {
         }).rejects.toThrow(NotFoundError);
     });
 });
+
+describe("resume", () => {
+    test("should set start time to now and reset end time", async () => {
+        const activity = await addFakeActivity();
+        const actRepo = new ActivityRepository();
+
+        const mockStartTime = 1234567890123;
+        jest.spyOn(Date, "now").mockImplementation(() => mockStartTime);
+        await actRepo.resume(activity.id);
+
+        const resumedActivity = await actRepo.getById(activity.id);
+
+        // toObject converts the Mongoose model to an object with properties of the Activity schema
+        expectActivitiesEqual(
+            {
+                ...activity.toObject(),
+                startTime: new Date(mockStartTime), // undocumented feature where start time coerced to be endTime if after endTime
+                endTime: null,
+            },
+            resumedActivity
+        );
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.resume(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.resume("invalid id");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity doesn't exist", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.resume(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
