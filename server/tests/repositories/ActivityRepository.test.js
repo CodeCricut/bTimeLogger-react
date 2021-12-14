@@ -245,3 +245,47 @@ describe("resume", () => {
         }).rejects.toThrow(NotFoundError);
     });
 });
+
+describe("trash", () => {
+    test("should trash valid activity", async () => {
+        const activity = await addFakeActivity();
+        const actRepo = new ActivityRepository();
+
+        await actRepo.trash(activity.id);
+
+        const trashedActivity = await actRepo.getById(activity.id);
+
+        // toObject converts the Mongoose model to an object with properties of the Activity schema
+        expectActivitiesEqual(
+            {
+                ...activity.toObject(),
+                trashed: true,
+            },
+            trashedActivity
+        );
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.trash(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.trash("invalid id");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity doesn't exist", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.trash(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
