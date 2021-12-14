@@ -226,8 +226,7 @@ removed from the database, but will have its `trashed` property set to true.
 -   `comment`
 -   `trashed`
 
-Any property value not given in the request body will remain the same. Note that
-you cannot update values to be null.
+To forego the updating of a property, set the property as `null` in the request body.
 
 Where possible, it is preferable to use endpoints to update these properties individually (such as `/activities/trash/:id`).
 
@@ -239,7 +238,10 @@ Request body:
 {
     "type": "612170912b5a1716dca11c48",
     "comment": "this activity was updated",
-    "endTime": null // will be ignored; can't update to be null
+    "startTime": null, // do not update
+    "endTime": null, // do not update
+    "trashed": null // do not update
+}
 }
 ```
 
