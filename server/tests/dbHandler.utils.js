@@ -17,8 +17,11 @@ export const dbConnect = async () => {
     await mongoose.connect(uri, mongooseOpts);
 };
 
-export const dbDisconnect = async () => {
+export const resetDb = async () => {
     await mongoose.connection.dropDatabase();
+};
+
+export const dbDisconnect = async () => {
     await mongoose.connection.close();
     await mongoDb.stop();
 };
