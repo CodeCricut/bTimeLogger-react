@@ -569,3 +569,40 @@ describe("update", () => {
         }).rejects.toThrow(NotFoundError);
     });
 });
+
+describe("remove", () => {
+    test("should delete activity from database", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        await actRepo.remove(activity.id);
+
+        await expect(async () => {
+            await actRepo.getById(activity.id);
+        }).rejects.toThrow(NotFoundError);
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.remove(null);
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.remove("INVALID ID");
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity not found", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.remove(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
