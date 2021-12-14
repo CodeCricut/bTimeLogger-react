@@ -17,6 +17,7 @@ import {
     NON_EXISTANT_ID,
 } from "../fixtures/index.js";
 import { jest } from "@jest/globals";
+import { TypeRepository } from "../../src/repositories/TypeRepository.js";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
@@ -150,6 +151,10 @@ describe("startNew", () => {
             });
         }).rejects.toThrow(MissingModelInfoError);
     });
+});
+
+describe("createCompleted", () => {
+    // TODO
 });
 
 describe("stop", () => {
@@ -333,6 +338,125 @@ describe("untrash", () => {
 
         await expect(async () => {
             await actRepo.untrash(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
+
+describe("update", () => {
+    test("should not update when no properties on object given", async () => {
+        const actRepo = new ActivityRepository();
+        const expected = await addFakeActivity();
+
+        const actual = await actRepo.update(expected.id, {});
+
+        // toObject converts the Mongoose model to an object with properties of the Activity schema
+        expectActivitiesEqual(expected, actual);
+    });
+
+    test("should update type if given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+        const newType = await new TypeRepository().add("NEW ACTIVITY TYPE");
+
+        const actual = await actRepo.update(activity.id, {
+            type: newType.id,
+        });
+
+        expectActivitiesEqual(
+            { ...activity.toObject(), type: newType._id },
+            actual
+        );
+    });
+
+    test("should update startTime if given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        const newDate = new Date(1234567890123);
+        const actual = await actRepo.update(activity.id, {
+            startTime: newDate.toISOString(),
+        });
+
+        expectActivitiesEqual(
+            { ...activity.toObject(), startTime: newDate },
+            actual
+        );
+    });
+
+    test("should update endTime if given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        const newDate = new Date(1234567890123);
+        const actual = await actRepo.update(activity.id, {
+            endTime: newDate.toISOString(),
+        });
+
+        expectActivitiesEqual(
+            { ...activity.toObject(), endTime: newDate },
+            actual
+        );
+    });
+
+    test("should update comment if given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        const newComment = "NEW COMMENT";
+        const actual = await actRepo.update(activity.id, {
+            comment: newComment,
+        });
+
+        expectActivitiesEqual(
+            { ...activity.toObject(), comment: newComment },
+            actual
+        );
+    });
+
+    test("should update trashed if given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        const newTrashed = true;
+        const actual = await actRepo.update(activity.id, {
+            trashed: newTrashed,
+        });
+
+        expectActivitiesEqual(
+            { ...activity.toObject(), trashed: newTrashed },
+            actual
+        );
+    });
+
+    test("should throw if null activity given", async () => {
+        const actRepo = new ActivityRepository();
+        const expected = await addFakeActivity();
+        await expect(async () => {
+            await actRepo.update(expected.id, null);
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if no id given", async () => {
+        const actRepo = new ActivityRepository();
+        const expected = await addFakeActivity();
+        await expect(async () => {
+            await actRepo.update(null, {});
+        }).rejects.toThrow(IdNotProvidedError);
+    });
+
+    test("should throw if invalid id given", async () => {
+        const actRepo = new ActivityRepository();
+        const expected = await addFakeActivity();
+        await expect(async () => {
+            await actRepo.update("INVALID ID", {});
+        }).rejects.toThrow(InvalidIdFormatError);
+    });
+
+    test("should throw if activity doesn't exist", async () => {
+        const actRepo = new ActivityRepository();
+        const expected = await addFakeActivity();
+        await expect(async () => {
+            await actRepo.update(NON_EXISTANT_ID, {});
         }).rejects.toThrow(NotFoundError);
     });
 });
