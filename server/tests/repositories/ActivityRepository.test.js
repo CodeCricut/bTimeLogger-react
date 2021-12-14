@@ -537,6 +537,28 @@ describe("update", () => {
         );
     });
 
+    test("should throw if invalid start time given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        await expect(async () => {
+            await actRepo.update(activity.id, {
+                startTime: "INVALID DATE",
+            });
+        }).rejects.toThrow(InvalidDateError);
+    });
+
+    test("should throw if invalid end time given", async () => {
+        const actRepo = new ActivityRepository();
+        const activity = await addFakeActivity();
+
+        await expect(async () => {
+            await actRepo.update(activity.id, {
+                endTime: "INVALID DATE",
+            });
+        }).rejects.toThrow(InvalidDateError);
+    });
+
     test("should throw if null activity given", async () => {
         const actRepo = new ActivityRepository();
         const expected = await addFakeActivity();
