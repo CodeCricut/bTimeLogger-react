@@ -233,14 +233,14 @@ class ActivityRepository {
 
     /**
      * @param {string} id The id of the activity to update
-     * @param {Object} activity The activity object with the updated fields
-     * @param {string} activity.type The ID of the type of the updated type. Will not update type if null.
-     * @param {string} activity.startTime The date string representing the start time of the
+     * @param {Object} updateActivity The activity object with the updated fields
+     * @param {string} updateActivity.type The ID of the type of the updated type. Will not update type if null.
+     * @param {string} updateActivity.startTime The date string representing the start time of the
      * updated activity. Will not update start time if null.
-     * @param {string} activity.endTime The date string representing the end time of the
+     * @param {string} updateActivity.endTime The date string representing the end time of the
      * updated activity. Will not update end time if null.
-     * @param {string} activity.comment The comment of the updated activity. Will not update comment if null.
-     * @param {boolean} actiivty.trashed The trashed status of the updated activity. Will not update if null.
+     * @param {string} updateActivity.comment The comment of the updated activity. Will not update comment if null.
+     * @param {boolean} updateActivity.trashed The trashed status of the updated activity. Will not update if null.
      * @returns {Promise<Activity>} A promise which will resolve to the updated activity
      * @throws {IdNotProvidedError} Will throw if id not provided
      * @throws {InvalidIdFormatError} Will throw if the given ID is not a valid ObjectID
@@ -248,8 +248,13 @@ class ActivityRepository {
      * @throws {InvalidDateError} Will throw if the startTime or endTime date strings are invalid.
      * @throws {MissingModelInfoError} Will throw if the fields provided are incomplete or invalid.
      */
-    async update(id, { type, startTime, endTime, comment, trashed }) {
+    async update(id, updateActivity) {
         if (!id) throw new IdNotProvidedError();
+        if (!updateActivity)
+            throw new MissingModelInfoError(
+                "Tried to update activity with null object."
+            );
+        const { type, startTime, endTime, comment, trashed } = updateActivity;
 
         let activity;
         try {
@@ -261,21 +266,22 @@ class ActivityRepository {
         if (!activity)
             throw new NotFoundError("Activity with the given ID not found.");
 
-        if (type !== null) activity.type = type;
-        if (startTime !== null) {
+        // Only update properties if not undefined or null
+        if (type != null) activity.type = type;
+        if (startTime != null) {
             const stDate = new Date(startTime);
             if (!isValidDate(stDate))
                 throw new InvalidDateError("Start time date is invalid.");
             activity.startTime = stDate;
         }
-        if (endTime !== null) {
+        if (endTime != null) {
             const etDate = new Date(endTime);
             if (!isValidDate(etDate))
                 throw new InvalidDateError("End time date is invalid.");
             activity.endTime = etDate;
         }
-        if (comment !== null) activity.comment = comment;
-        if (trashed !== null) activity.trashed = trashed;
+        if (comment != null) activity.comment = comment;
+        if (trashed != null) activity.trashed = trashed;
 
         try {
             await activity.save();
