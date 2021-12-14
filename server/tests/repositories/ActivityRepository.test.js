@@ -18,6 +18,7 @@ import {
 } from "../fixtures/index.js";
 import { jest } from "@jest/globals";
 import { TypeRepository } from "../../src/repositories/TypeRepository.js";
+import InvalidDateError from "../../src/repositories/errors/InvalidDateError.js";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
@@ -154,7 +155,115 @@ describe("startNew", () => {
 });
 
 describe("createCompleted", () => {
-    // TODO
+    test("should initialize correct fields given activity", async () => {
+        const actRepo = new ActivityRepository();
+        const type = await addFakeActivityType();
+
+        const st = new Date(1234567890123);
+        const et = new Date(Date.now());
+        const expected = {
+            ...fakeActivity,
+            type: type._id,
+            startTime: st,
+            endTime: et,
+            trashed: false,
+        };
+
+        const actual = await actRepo.createCompleted({
+            ...fakeActivity,
+            type: type._id,
+            startTime: st,
+            endTime: et,
+        });
+
+        expectActivitiesEqual(expected, actual);
+    });
+
+    test("should throw if not missing type", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = new Date(1234567890123);
+        const et = new Date(Date.now());
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: null,
+                startTime: st,
+                endTime: et,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if not given activity", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.createCompleted(null);
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if not given start time", async () => {
+        const actRepo = new ActivityRepository();
+
+        const et = new Date(Date.now());
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: null,
+                startTime: null,
+                endTime: et,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if not given end time", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = new Date(1234567890123);
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: null,
+                startTime: st,
+                endTime: null,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given invalid start time", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = "invalid date";
+        const et = new Date(Date.now());
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: null,
+                startTime: st,
+                endTime: et,
+            });
+        }).rejects.toThrow(InvalidDateError);
+    });
+
+    test("should throw if given invalid end time", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = new Date(1234567890123);
+        const et = "invalid time";
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: null,
+                startTime: st,
+                endTime: et,
+            });
+        }).rejects.toThrow(InvalidDateError);
+    });
 });
 
 describe("stop", () => {
