@@ -69,12 +69,12 @@ class TypeRepository {
      * Remove the given activity type from the database.
      * @param {string} id
      * @returns {Promise} A promise which will resolve once the type has been deleted.
-     * @throws {MissingModelInfoError} Will throw if no id provided.
+     * @throws {IdNotProvidedError} Will throw if no id provided.
      * @throws {InvalidIdFormatError} Will throw if id is not valid ObjectId
      * @throws {NotFoundError} Will throw if no type can be found with the given id.
      */
     async delete(id) {
-        if (!id) throw new MissingModelInfoError("No ID provided.");
+        if (!id) throw new IdNotProvidedError();
 
         let type;
         try {
@@ -85,7 +85,12 @@ class TypeRepository {
 
         if (!type) throw new NotFoundError("Type with the given ID not found.");
 
-        await ActivityType.findByIdAndDelete(id);
+        await ActivityType.findOneAndDelete(id, (err, docs) => {
+            // It seems must provide a callback to actually execute the delete command
+            if (err) {
+                console.error(err);
+            }
+        });
     }
 }
 
