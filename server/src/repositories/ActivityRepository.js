@@ -58,7 +58,7 @@ class ActivityRepository {
         try {
             startedActivity = new Activity({
                 ...activity,
-                startTime: new Date(),
+                startTime: new Date(Date.now()),
                 endTime: null,
                 trashed: false,
             });
@@ -139,7 +139,8 @@ class ActivityRepository {
             throw new NotFoundError("Activity with the given ID not found.");
 
         // TODO: document this behavior of forcing start time to be before end time
-        const endTime = new Date();
+        const x = Date.now();
+        const endTime = new Date(x);
         if (activity.startTime > endTime) activity.startTime = endTime;
         activity.endTime = endTime;
         await activity.save();
@@ -169,7 +170,7 @@ class ActivityRepository {
         if (!activity)
             throw new NotFoundError("Activity with the given ID not found.");
 
-        activity.startTime = new Date();
+        activity.startTime = new Date(Date.now());
         activity.endTime = null;
         await activity.save();
 
