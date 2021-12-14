@@ -38,6 +38,10 @@ Run the tests with the `jest` command or `npm run test`.
 
 Since we configured Jest to use `babel-jest`, the Babel tranpilation will automatically be applied before running our tests.
 
+**Debugging tests**:
+
+To debug tests, open a new JavaScript Debug Terminal and run `npm test --watch`.
+
 ## Babel Configuration
 
 Jest doesn't support ES6 natively, so a transpiler like Babel must be used.
