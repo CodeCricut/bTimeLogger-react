@@ -5,6 +5,9 @@ import InvalidIdFormatError from "./errors/InvalidIdFormatError.js";
 import MissingModelInfoError from "./errors/MissingModelInfoError.js";
 import NotFoundError from "./errors/NotFoundError.js";
 import InvalidDateError from "./errors/InvalidDateError.js";
+import { TypeRepository } from "./TypeRepository.js";
+
+const typeRepo = new TypeRepository();
 
 class ActivityRepository {
     constructor() {}
@@ -54,6 +57,14 @@ class ActivityRepository {
         if (!activity)
             throw new MissingModelInfoError("Tried to start a null activity.");
 
+        try {
+            await typeRepo.getById(activity.type);
+        } catch (e) {
+            throw new MissingModelInfoError(
+                "Tried starting activity with a missing type, or type which was not found."
+            );
+        }
+
         let startedActivity;
         try {
             startedActivity = new Activity({
@@ -97,6 +108,14 @@ class ActivityRepository {
         const endTime = new Date(activity.endTime);
         if (!isValidDate(endTime))
             throw new InvalidDateError("Format for endTime date is invalid");
+
+        try {
+            await typeRepo.getById(activity.type);
+        } catch (e) {
+            throw new MissingModelInfoError(
+                "Tried starting activity with a missing type, or type which was not found."
+            );
+        }
 
         let createdActivity;
         try {
