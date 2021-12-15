@@ -279,7 +279,13 @@ class ActivityRepository {
         if (comment != null) activity.comment = comment;
         if (trashed != null) activity.trashed = trashed;
 
-        await activity.save();
+        try {
+            await activity.save();
+        } catch (e) {
+            throw new MissingModelInfoError(
+                "Tried to update an activity with incomplete or invalid fields."
+            );
+        }
 
         return activity;
     }
