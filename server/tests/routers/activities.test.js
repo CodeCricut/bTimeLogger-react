@@ -29,15 +29,13 @@ afterAll(async () => {
 
 afterEach(async () => resetDb());
 
-describe("get all activity types", () => {
-    test("should return OK", (done) => {
-        request(app)
-            .get("/types")
-            .expect("Content-Type", /json/)
-            .expect(200, done);
-    });
-});
-
-describe("get activity type by id", () => {});
-describe("add activity type", () => {});
-describe("remove activity types", () => {});
+describe("get all activities", () => {});
+describe("get activity by id", () => {});
+describe("start new activity", () => {});
+describe("create completed activity", () => {});
+describe("stop activity", () => {});
+describe("resume activity", () => {});
+describe("trash activity", () => {});
+describe("untrash activity", () => {});
+describe("update activity", () => {});
+describe("remove activity", () => {});
