@@ -20,12 +20,12 @@ import {
     KeyboardDatePicker,
     KeyboardTimePicker,
 } from "@material-ui/pickers";
-import useDialogFormStyles from "./hooks/useDialogFormStyles";
+import useDialogFormStyles from "../hooks/useDialogFormStyles";
 
-import { RUNNING, COMPLETED } from "./data/activity-statuses";
+import { RUNNING, COMPLETED } from "../data/activity-statuses";
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import { useMainContext } from "./data/MainContext";
-import useDateTimeStyles from "./hooks/useDateTimeStyles";
+import { useMainContext } from "../data/MainContext";
+import useDateTimeStyles from "../hooks/useDateTimeStyles";
 
 const StartActivityDialog = ({
     isOpen,

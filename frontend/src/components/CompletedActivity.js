@@ -9,10 +9,10 @@ import {
 import Moment from "react-moment";
 
 import EditActivityDialog from "./EditActivityDialog";
-import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
-import { formatDuration } from "./util/timeFormatters";
-import { useThemeSwitcherContext } from "./data/ThemeSwitcherContext";
-import useActivityRepository from "./activities/useActivityRepository";
+import useCompletedActivityStyles from "../hooks/useCompletedActivityStyles";
+import { formatDuration } from "../util/timeFormatters";
+import { useThemeSwitcherContext } from "../data/ThemeSwitcherContext";
+import useActivityRepository from "../activities/useActivityRepository";
 
 const CompletedActivity = ({ activity }) => {
     const [theme, _] = useThemeSwitcherContext();

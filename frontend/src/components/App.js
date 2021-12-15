@@ -2,8 +2,8 @@ import React from "react";
 import { CssBaseline } from "@material-ui/core";
 import Moment from "react-moment";
 
-import { MainProvider } from "./data/MainContext";
-import { ThemeSwitcherProvider } from "./data/ThemeSwitcherContext";
+import { MainProvider } from "../data/MainContext";
+import { ThemeSwitcherProvider } from "../data/ThemeSwitcherContext";
 
 import Layout from "./Layout";
 

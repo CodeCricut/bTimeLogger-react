@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
     FormControl,
-    Select,
-    MenuItem,
-    InputLabel,
-    makeStyles,
-    IconButton,
     Box,
-    Paper,
     Typography,
     DialogTitle,
     DialogContent,
@@ -25,10 +19,10 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from "@material-ui/pickers";
-import useDialogFormStyles from "./hooks/useDialogFormStyles";
+import useDialogFormStyles from "../hooks/useDialogFormStyles";
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import useDateTimeStyles from "./hooks/useDateTimeStyles";
-import SearchParams from "./model/SearchParams";
+import useDateTimeStyles from "../hooks/useDateTimeStyles";
+import SearchParams from "../model/SearchParams";
 
 const TuneSearchDialog = ({ isOpen, onClose, queryString, setQueryString }) => {
     const classes = useDialogFormStyles();
@@ -36,10 +30,6 @@ const TuneSearchDialog = ({ isOpen, onClose, queryString, setQueryString }) => {
 
     const tSearchParams = SearchParams.parseQueryString(queryString);
     const [tempSearchParams, setTempSearchParams] = useState(tSearchParams);
-    // useEffect(() => {
-    //     setTempSearchParams(SearchParams.parseQueryString(queryString));
-    // }, [queryString]);
-
     const setTempSearchParam = (paramName, paramValue) => {
         setTempSearchParams((prev) => ({
             ...prev,

@@ -9,10 +9,10 @@ import {
 import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
 
 import StartActivityDialog from "./StartActivityDialog";
-import useInlineStartActivityStyles from "./hooks/useInlineStartActivityStyles";
+import useInlineStartActivityStyles from "../hooks/useInlineStartActivityStyles";
 
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import { useMainContext } from "./data/MainContext";
+import { useMainContext } from "../data/MainContext";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
