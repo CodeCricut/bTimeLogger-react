@@ -142,13 +142,35 @@ describe("startNew", () => {
         }).rejects.toThrow(MissingModelInfoError);
     });
 
-    test("should throw if given activity with missing info", async () => {
+    test("should throw if given activity without type", async () => {
         const actRepo = new ActivityRepository();
 
         await expect(async () => {
             await actRepo.startNew({
                 ...fakeActivity,
                 type: null,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given activity with invalid type", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.startNew({
+                ...fakeActivity,
+                type: "INVALID-TYPE",
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given activity with non-existant type", async () => {
+        const actRepo = new ActivityRepository();
+
+        await expect(async () => {
+            await actRepo.startNew({
+                ...fakeActivity,
+                type: NON_EXISTANT_ID,
             });
         }).rejects.toThrow(MissingModelInfoError);
     });
@@ -179,7 +201,7 @@ describe("createCompleted", () => {
         expectActivitiesEqual(expected, actual);
     });
 
-    test("should throw if not missing type", async () => {
+    test("should throw if given activity without type", async () => {
         const actRepo = new ActivityRepository();
 
         const st = new Date(1234567890123);
@@ -189,6 +211,38 @@ describe("createCompleted", () => {
             await actRepo.createCompleted({
                 ...fakeActivity,
                 type: null,
+                startTime: st,
+                endTime: et,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given activity with invalid type", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = new Date(1234567890123);
+        const et = new Date(Date.now());
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: "INVALID-TYPE",
+                startTime: st,
+                endTime: et,
+            });
+        }).rejects.toThrow(MissingModelInfoError);
+    });
+
+    test("should throw if given activity with non-existent type", async () => {
+        const actRepo = new ActivityRepository();
+
+        const st = new Date(1234567890123);
+        const et = new Date(Date.now());
+
+        await expect(async () => {
+            await actRepo.createCompleted({
+                ...fakeActivity,
+                type: NON_EXISTANT_ID,
                 startTime: st,
                 endTime: et,
             });
