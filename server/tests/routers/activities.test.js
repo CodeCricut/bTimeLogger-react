@@ -13,21 +13,21 @@ let app;
 let server;
 
 beforeAll(async () => {
+    await dbConnect();
     app = express();
     app.use(cors());
     app.use(express.json());
     app.use("/types", typesRouter);
     app.use("/activities", activitiesRouter);
     server = app.listen(process.env.TEST_SERVER_PORT);
-    dbConnect(); // awaiting will let afterEach run; must run to completion
 });
 
 afterAll(async () => {
-    dbDisconnect();
+    await dbDisconnect();
     server.close();
 });
 
-afterEach(async () => resetDb());
+afterEach(async () => await resetDb());
 
 describe("get all activities", () => {});
 describe("get activity by id", () => {});
