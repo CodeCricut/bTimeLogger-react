@@ -27,7 +27,9 @@ export default class SearchParams {
         return !!(this.fromDate || this.toDate);
     }
 
-    /// returns a new SearchParams object based on the queryStr
+    /**
+     * Return a new SearchParams object based on the queryStr
+     */
     static parseQueryString(queryStr) {
         const searchParams = new SearchParams();
 
