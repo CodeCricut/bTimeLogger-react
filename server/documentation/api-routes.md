@@ -37,6 +37,14 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
 ]
 ```
 
+**Error responses**:
+
+-   STATUS 500 - internal server error
+
+```
+ "There was an internal server error while handling the request."
+```
+
 ### GET `/:id`
 
 **Description**: Get an activity by it's ID
@@ -55,6 +63,32 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
     "comment": "this activity was updated",
     "endTime": "2021-08-23T05:00:00.000Z"
 }
+```
+
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
 
 ### POST `/start-new`
@@ -88,6 +122,20 @@ Request body:
     "trashed": false,
     "__v": 0
 }
+```
+
+**Error responses**:
+
+-   STATUS 400 - missing required fields
+
+```
+Could not create activity because one or more fields were missing.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
 
 ### POST `/create-completed`
@@ -128,6 +176,38 @@ Request body:
 }
 ```
 
+**Error responses**:
+
+-   STATUS 400 - missing or invalid fields
+
+```
+Could not create activity because one or more fields were missing or invalid.
+```
+
+-   STATUS 400 - missing start or end time
+
+```
+Tried to create an activity without a start or end time.
+```
+
+-   STATUS 400 - invalid start time
+
+```
+Format for startTime date is invalid.
+```
+
+-   STATUS 400 - invalid end time
+
+```
+Format for endTime date is invalid
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
 ### PATCH `/stop/:id`
 
 **Description**: Stop the activity with the given id, and return the patched activity.
@@ -148,6 +228,32 @@ This means to set the activity's `endTime` to the current date and time.
     "trashed": false,
     "__v": 0
 }
+```
+
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
 
 ### PATCH `/resume/:id`
@@ -175,6 +281,32 @@ A resumed activity will
 }
 ```
 
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
 ### PATCH `/trash/:id`
 
 **Description**: Trash the given activity and return it. A trashed activity is not
@@ -196,6 +328,32 @@ removed from the database, but will have its `trashed` property set to true.
 }
 ```
 
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
 ### PATCH `/untrash/:id`
 
 **Description**: Untrash the given activity and return it. An untrashed activity will have its `trashed` property set to false.
@@ -214,6 +372,32 @@ removed from the database, but will have its `trashed` property set to true.
     "trashed": false,
     "__v": 0
 }
+```
+
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
 
 ### PUT `/update/:id`
@@ -259,6 +443,50 @@ Request body:
 }
 ```
 
+**Error responses**:
+
+-   STATUS 400 - invalid start time
+
+```
+Start time date is invalid.
+```
+
+-   STATUS 400 - invalid end time
+
+```
+End time date is invalid.
+```
+
+-   STATUS 400 - invalid or missing fields
+
+```
+Tried to update an activity with incomplete or invalid fields.
+```
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
 ### DELETE `/remove/:id`
 
 **Description**: Completely remove an activity from the database.
@@ -271,6 +499,32 @@ Request body:
 
 ```json
 
+```
+
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity not found
+
+```
+Activity with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
 
 ## Activity Types
