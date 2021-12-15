@@ -11,29 +11,15 @@ import Moment from "react-moment";
 import EditActivityDialog from "./EditActivityDialog";
 import useCompletedActivityStyles from "./hooks/useCompletedActivityStyles";
 import { formatDuration } from "./util/timeFormatters";
-import { useMainContext } from "./data/MainContext";
-import { RESUME_ACTIVITY, TRASH_ACTIVITY } from "./data/activity-reducer";
 import { useThemeSwitcherContext } from "./data/ThemeSwitcherContext";
 import useActivityRepository from "./activities/useActivityRepository";
 
 const CompletedActivity = ({ activity }) => {
-    console.dir(activity);
-    const [theme, setTheme] = useThemeSwitcherContext();
+    const [theme, _] = useThemeSwitcherContext();
     const classes = useCompletedActivityStyles({ theme });
 
-    const [
-        activityState,
-        {
-            startActivity,
-            createCompletedActivity,
-            stopActivity,
-            resumeActivity,
-            trashActivity,
-            untrashActivity,
-            updateActivity,
-            removeActivity,
-        },
-    ] = useActivityRepository([]);
+    const [activityState, { resumeActivity, trashActivity }] =
+        useActivityRepository([]);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleDropdownOpen = () => {
@@ -122,7 +108,6 @@ const CompletedActivity = ({ activity }) => {
                     className={`${classes.duration} ${classes.subtitle}`}
                 >
                     {formatDuration(activity.startTime, activity.endTime)}
-                    {/* {activity.duration} */}
                 </Typography>
             </Box>
         </React.Fragment>

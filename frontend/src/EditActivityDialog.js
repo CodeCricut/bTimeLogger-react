@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
     FormControl,
     Select,
@@ -23,9 +22,6 @@ import {
 import useDialogFormStyles from "./hooks/useDialogFormStyles";
 
 import { RUNNING, COMPLETED } from "./data/activity-statuses";
-import { useMainContext } from "./data/MainContext";
-import { EDIT_ACTIVITY } from "./data/activity-reducer";
-import { ADD_TYPE } from "./data/type-reducer";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
 import useTypeRepository from "./activity-types/useTypeRepository";
@@ -34,9 +30,7 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
 
-    const [{ types }, addType] = useTypeRepository([]);
-
-    // const [{ types }, dispatch] = useMainContext();
+    const [typeState, addType] = useTypeRepository([]);
 
     const [invalidState, setInvalidState] = useState(false);
 
@@ -80,30 +74,17 @@ const EditActivityDialog = ({ isOpen, onClose, activity }) => {
             name: selectedType,
         };
         addType(selectedType);
-        // dispatch({ type: ADD_TYPE, payload: activityType });
         return activityType;
     };
 
     const editAsRunningActivity = (type) => {
-        // We could give ability to choose start time, but would have to display only fromDate picker when in RUNNING state,
-        // then do validation and so on.
-        // const editedActivity = {
-        //     ...activity,
-        //     type: type,
-        //     comment: comment,
-        // };
-        // dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
+        // TODO
+        console.error("editAsRunningActivity not implemented yet.");
     };
 
     const editAsCompletedActivity = (type) => {
-        // const editedActivity = {
-        //     ...activity,
-        //     type: type,
-        //     comment: comment,
-        //     startTime: fromDate,
-        //     endTime: toDate,
-        // };
-        // dispatch({ type: EDIT_ACTIVITY, payload: editedActivity });
+        // TODO
+        console.error("editAsCompletedActivity not implemented yet.");
     };
 
     const editActivity = () => {

@@ -4,11 +4,7 @@ import {
     FormControl,
     Select,
     MenuItem,
-    InputLabel,
-    makeStyles,
-    IconButton,
     Box,
-    Paper,
     Typography,
     DialogTitle,
     DialogContent,
@@ -16,7 +12,6 @@ import {
     DialogActions,
     Dialog,
     Button,
-    FormGroup,
 } from "@material-ui/core";
 import MomentUtils from "@date-io/moment";
 
@@ -30,11 +25,6 @@ import useDialogFormStyles from "./hooks/useDialogFormStyles";
 import { RUNNING, COMPLETED } from "./data/activity-statuses";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import { useMainContext } from "./data/MainContext";
-import { ADD_TYPE } from "./data/type-reducer";
-import {
-    CREATE_COMPLETED_ACTIVITY,
-    START_ACTIVITY,
-} from "./data/activity-reducer";
 import useDateTimeStyles from "./hooks/useDateTimeStyles";
 
 const StartActivityDialog = ({
@@ -45,7 +35,8 @@ const StartActivityDialog = ({
 }) => {
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
-    const [{ types }, dispatch] = useMainContext();
+    // Should not use main context; replace with useActivityReducer
+    const [_, dispatch] = useMainContext();
 
     const [comment, setComment] = useState("");
 
@@ -75,7 +66,7 @@ const StartActivityDialog = ({
         const activityType = {
             name: selectedType,
         };
-        dispatch({ type: ADD_TYPE, payload: activityType });
+        // dispatch({ type: ADD_TYPE, payload: activityType });
         return activityType;
     };
 
@@ -84,7 +75,7 @@ const StartActivityDialog = ({
             type: activityType,
             comment: comment,
         };
-        dispatch({ type: START_ACTIVITY, payload: activity });
+        // dispatch({ type: START_ACTIVITY, payload: activity });
     };
 
     const createCompletedActivity = (activityType) => {
@@ -94,7 +85,7 @@ const StartActivityDialog = ({
             startTime: fromDate,
             endTime: toDate,
         };
-        dispatch({ type: CREATE_COMPLETED_ACTIVITY, payload: activity });
+        // dispatch({ type: CREATE_COMPLETED_ACTIVITY, payload: activity });
     };
 
     const handleCreate = () => {

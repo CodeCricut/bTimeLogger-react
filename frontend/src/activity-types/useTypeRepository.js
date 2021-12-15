@@ -3,6 +3,7 @@ import { Methods } from "./type-reducer.js";
 import axios from "axios";
 import { useMainContext } from "../data/MainContext.js";
 
+// TODO: TypeRepository should  be its own type that this hook references
 const useTypeRepository = (dependencyArray = []) => {
     const [{ typeState }, dispatch] = useMainContext();
 

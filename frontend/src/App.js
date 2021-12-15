@@ -1,16 +1,15 @@
 import React from "react";
-import { ThemeProvider, CssBaseline } from "@material-ui/core";
-import { DARK, darkTheme, lightTheme } from "./theme";
+import { CssBaseline } from "@material-ui/core";
+import Moment from "react-moment";
+
+import { MainProvider } from "./data/MainContext";
+import { ThemeSwitcherProvider } from "./data/ThemeSwitcherContext";
 
 import Layout from "./Layout";
-import { MainProvider } from "./data/MainContext";
-import Moment from "react-moment";
-import {
-    ThemeSwitcherProvider,
-    useThemeSwitcherContext,
-} from "./data/ThemeSwitcherContext";
 
+// TODO: move config like this to own file
 Moment.globalFormat = "MM/DD HH:mm";
+
 function App() {
     return (
         <MainProvider>
@@ -21,4 +20,5 @@ function App() {
         </MainProvider>
     );
 }
+
 export default App;

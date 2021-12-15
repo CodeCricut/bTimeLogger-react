@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IconButton, Box, Typography } from "@material-ui/core";
 import { Stop as StopIcon } from "@material-ui/icons";
 import Moment from "react-moment";
 import useRunningActivityStyles from "./hooks/useRunningActivityStyles";
 import useDate from "./hooks/useDate";
-import moment from "moment";
 import { formatDuration } from "./util/timeFormatters";
 import { useMainContext } from "./data/MainContext";
-import { STOP_ACTIVITY } from "./data/activity-reducer";
+// import { STOP_ACTIVITY } from "./data/activity-reducer";
 
 const RunningActivity = ({ activity }) => {
-    const [state, dispatch] = useMainContext();
+    const [_, dispatch] = useMainContext();
 
     const classes = useRunningActivityStyles();
     const date = useDate(1000);
 
+    // TODO: should use useActivityRepository
     const stopActivity = () => {
-        dispatch({ type: STOP_ACTIVITY, payload: activity._id });
+        // dispatch({ type: STOP_ACTIVITY, payload: activity._id });
     };
 
     return (

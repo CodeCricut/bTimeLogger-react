@@ -1,19 +1,11 @@
 import React from "react";
 import {
-    Button,
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
-    Divider,
     Toolbar,
     Typography,
     InputBase,
     IconButton,
-    Container,
     AppBar,
     Box,
-    TextField,
 } from "@material-ui/core";
 
 import {
@@ -21,7 +13,6 @@ import {
     Menu as MenuIcon,
     Tune as TuneIcon,
     Settings as SettingsIcon,
-    Close as CloseIcon,
     Clear as ClearIcon,
 } from "@material-ui/icons";
 

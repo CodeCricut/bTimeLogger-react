@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useMainContext } from "../data/MainContext.js";
 
+// TODO: ActivityRepository should be its own unit which this hook references
 const useActivityRepository = (dependencyArray = []) => {
     const [{ activityState }, dispatch] = useMainContext();
     const tryRequestAsync = async (request) => {

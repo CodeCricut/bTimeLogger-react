@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
     FormControl,
-    Select,
-    MenuItem,
-    InputLabel,
     IconButton,
     Box,
     Paper,
@@ -15,13 +12,11 @@ import StartActivityDialog from "./StartActivityDialog";
 import useInlineStartActivityStyles from "./hooks/useInlineStartActivityStyles";
 
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import { ADD_TYPE } from "./data/type-reducer";
 import { useMainContext } from "./data/MainContext";
-import { START_ACTIVITY } from "./data/activity-reducer";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
-    const [{ types }, dispatch] = useMainContext();
+    const [{ typeState }, dispatch] = useMainContext();
 
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);
@@ -40,10 +35,11 @@ const InlineStartActivity = () => {
             name: selectedType,
         };
         const activity = {
-            type: activityType, //
+            type: activityType,
         };
-        dispatch({ type: ADD_TYPE, payload: activityType });
-        dispatch({ type: START_ACTIVITY, payload: activity });
+        // TODO: should use type repository
+        // dispatch({ type: ADD_TYPE, payload: activityType });
+        // dispatch({ type: START_ACTIVITY, payload: activity });
         setSelectedType("");
     };
 
