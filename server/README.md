@@ -36,7 +36,7 @@ npm run debug
 
 ## Dependencies
 
-Dependency details can be found in the "dependencies" section of `package.json`.
+Dependency details can be found in the "dependencies" section of [package.json](./package.json).
 
 The main dependencies of the solution include
 
@@ -47,7 +47,7 @@ The main dependencies of the solution include
 
 ## Software Architecture
 
-The entry point of the application is `src/index.js`. It is responsible for:
+The entry point of the application is [src/index.js](./src/index.js). It is responsible for:
 
 -   connecting to the MongoDB
 -   configuring the API routes to use
@@ -55,13 +55,13 @@ The entry point of the application is `src/index.js`. It is responsible for:
 
 ### Database Model
 
-**Model objects can be found in the `model` directory.**
+**Model objects can be found in the [model](./src/model) directory.**
 
 Mongoose is used to connect the application to a Mongo database. More information on Mongoose can be found in [our Mongoose database documentation](./documentation/mongoose-database.md).
 
 ### Routing and Routers
 
-**Routers can be found in the `routers` directory.**
+**Routers can be found in the [routers](./src/routers) directory.**
 
 Routing refers to "determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on)" (expressjs.com).
 
