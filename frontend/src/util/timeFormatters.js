@@ -1,7 +1,9 @@
 import moment from "moment";
 
 export const formatDuration = (startTime, endTime) => {
-    const duration = moment.duration(Math.abs(endTime - startTime));
+    const duration = moment.duration(
+        Math.abs(new Date(endTime) - new Date(startTime))
+    );
 
     return duration.humanize();
 };

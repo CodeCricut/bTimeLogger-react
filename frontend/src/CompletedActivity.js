@@ -17,6 +17,7 @@ import { useThemeSwitcherContext } from "./data/ThemeSwitcherContext";
 import useActivityRepository from "./activities/useActivityRepository";
 
 const CompletedActivity = ({ activity }) => {
+    console.dir(activity);
     const [theme, setTheme] = useThemeSwitcherContext();
     const classes = useCompletedActivityStyles({ theme });
 
@@ -121,7 +122,7 @@ const CompletedActivity = ({ activity }) => {
                     className={`${classes.duration} ${classes.subtitle}`}
                 >
                     {formatDuration(activity.startTime, activity.endTime)}
-                    {activity.duration}
+                    {/* {activity.duration} */}
                 </Typography>
             </Box>
         </React.Fragment>
