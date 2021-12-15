@@ -96,7 +96,7 @@ There was an internal server error while handling the request.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Not found.
@@ -267,7 +267,7 @@ This means to set the activity's `endTime` to the current date and time.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -320,7 +320,7 @@ A resumed activity will
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -369,7 +369,7 @@ removed from the database, but will have its `trashed` property set to true.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -417,7 +417,7 @@ There was an internal server error while handling the request.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -506,7 +506,7 @@ Tried to update an activity with incomplete or invalid fields.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -548,7 +548,7 @@ There was an internal server error while handling the request.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity not found
+-   STATUS 404 - activity not found
 
 ```
 Activity with the given ID not found.
@@ -634,7 +634,7 @@ There was an internal server error while handling the request.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity type not found
+-   STATUS 404 - activity type not found
 
 ```
 Type with the given ID not found.
@@ -722,7 +722,7 @@ There was an internal server error while handling the request.
 Invalid ID format.
 ```
 
--   STATUS 400 - activity type not found
+-   STATUS 404 - activity type not found
 
 ```
 Type with the given ID not found.
