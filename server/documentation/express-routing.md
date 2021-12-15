@@ -70,3 +70,35 @@ app.use("/activities", activitiesRouter);
 ```
 
 More information can be found in this [tutorial](https://rahmanfadhil.com/express-rest-api/) or the [Express docs](https://expressjs.com/).
+
+**Error handling**:
+
+Express supports middleware functions to "inject" functionality into the application's request-response pipeline. More information can be found in the [docs](https://expressjs.com/en/guide/using-middleware.html).
+
+Both the activity and activity type routers use error handling middleware to catch errors thrown within the route handlers.
+
+An error handler is expressed as so:
+
+```js
+router.use((err, req, res, next) => {
+    // handle error
+    res.status(500);
+    res.send(err.message);
+});
+```
+
+Error middleware should be defined after the handlers they are supposed to act upon.
+
+In order to call the error handler when an error is thrown, the route handlers need to accept a `next` parameter to the handling callback. This `next` which will call the next middleware in the pipeline (the error handler, in our case):
+
+```js
+router.METHOD("ROUTE", (req, res, next) => {
+    try {
+        // ...
+    } catch (e) {
+        next(e);
+    }
+});
+```
+
+For more information on error handling middleware, see this [tutorial](https://www.robinwieruch.de/node-express-error-handling/).
