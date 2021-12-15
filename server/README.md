@@ -75,15 +75,18 @@ No business logic is performed directly through the routers.
 
 ## Testing & Test Results
 
-The server app currently contains no tests, manual or automatic.
+The server has been fully tested using automated unit and integration tests.
 
-Undocumented ad-hoc manual tests have been performed.
+**Test results**: fully tested, no test failures. The latest test results can be found in [`documentation/test-results.md`](./documentation/test-results.md).
 
-### Manual System Tests
+**Run all tests**: Run all tests with `npm run test`.
 
-Manual system tests exercising the API are planned.
+More information on test design and running the test suite can be found in [`documentation/jest-testing.md`](./documentation/jest-testing.md).
 
 ### Unit Tests
 
-Automated unit tests exercising the components of the application such as
-database models and routers are planned.
+Automated unit tests for the database repositories (which contain most business logic of the app) are found in [`tests/repositories/`](./tests/repositories/).
+
+### Integration Tests
+
+Automated integration tests which exercise the API and underlying interaction with the other layers of the app are found in [`tests/routers/`](./tests/routers/).
