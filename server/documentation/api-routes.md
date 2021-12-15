@@ -2,7 +2,7 @@
 
 Routing for the application is done with [Express](https://expressjs.com/). Additional details can be found in the server's README.
 
-**Routers can be found in the `routers` directory.**
+**Routers can be found in the [routers](../src/routers) directory.**
 
 ## Activities
 

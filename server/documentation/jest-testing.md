@@ -14,7 +14,7 @@ npm install --save-dev jest
 
 Jest's configuration can be defined in the `package.json`, or through a `jest.config.js` file.
 
-We have opted for the `package.json` choice with the following configurations:
+We have opted for the [`package.json`](../package.json) choice with the following configurations:
 
 ```json
 "jest": {

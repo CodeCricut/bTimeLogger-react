@@ -42,8 +42,8 @@ in the exact same way as routing with the `app` object did, except it can be mou
 
 In our app, we have two routers:
 
-1. `routers/activities.js` - handles requests made to `/activities`
-2. `routers/types.js` - handles requests made to `/types`
+1. [`routers/activities.js`](../src/routers/activities.js) - handles requests made to `/activities`
+2. [`routers/types.js`](../src/routers/types.js) - handles requests made to `/types`
 
 Each of those routers defines its own route handlers:
 

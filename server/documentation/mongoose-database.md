@@ -1,6 +1,6 @@
 ## Mongoose Database
 
-**Model objects can be found in the `model` directory.**
+**Model objects can be found in the [`model`](../src/model) directory.**
 
 Mongoose is used to connect the application to a Mongo database. Mongo is a NoSQL database.
 

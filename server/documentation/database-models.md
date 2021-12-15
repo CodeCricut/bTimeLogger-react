@@ -6,7 +6,7 @@ Outlined below are the available Mongoose Models used in the application.
 
 ## Activity
 
-**The `Activity` schema and model are available in `src/model/Activity.js`**.
+**The `Activity` schema and model are available in [`src/model/Activity.js`](../src/model/Activity.js)**.
 
 An `Activity` represents something the user did between particular points in time.
 Activities are of a certain `Type`, and can include information such as comments made by the user.
@@ -48,7 +48,7 @@ Note that when an activity object is returned by the Model, **the `type` propert
 
 ## ActivityType
 
-**The `ActivityType` schema and model are available in `src/model/ActivityType.js`**.
+**The `ActivityType` schema and model are available in [`src/model/ActivityType.js`](../src/model/ActivityType.js)**.
 
 An `ActivityType` represents the type of activity the user did at a particular point, such as "Reading" or "Sleeping."
 
