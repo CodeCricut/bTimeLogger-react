@@ -1,5 +1,3 @@
-import React, { useReducer } from "react";
-
 import activityReducer from "../activities/activity-reducer";
 import typeReducer from "../activity-types/type-reducer";
 
