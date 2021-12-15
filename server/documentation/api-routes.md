@@ -4,15 +4,36 @@ Routing for the application is done with [Express](https://expressjs.com/). Addi
 
 **Routers can be found in the [routers](../src/routers) directory.**
 
+**Quick links**:
+
+-   [Activity routes](#activities)
+    -   [Get all activities](#get-all-activities)
+    -   [Get activity by ID](#get-activity-by-id)
+    -   [Start new activity](#start-new-activity)
+    -   [Create completed activity](#create-completed-activity)
+    -   [Stop activity](#stop-activity)
+    -   [Resume activity](#resume-activity)
+    -   [Trash activity](#trash-activity)
+    -   [Untrash activity](#untrash-activity)
+    -   [Update activity](#update-activity)
+    -   [Remove activity](#remove-activity)
+-   [ActivityType routes](#activity-types)
+    -   [Get all activity types](#get-all-activity-types)
+    -   [Get activity type by ID](#get-activity-type-by-id)
+    -   [Add activity type](#add-activity-type)
+    -   [Remove activity type](#remove-activity-type)
+
 ## Activities
 
 Routes pertaining to the `Activity` model are mapped to the `/activities` endpoint via the `src/routers/activities.js` router.
 
-### GET `/`
+### Get all activities
+
+**Route**: GET `/activities`
 
 **Description**: Get an array of all activities
 
-**Example request**: GET `/activites/`
+**Example request**: GET `/activites`
 
 **Example response**
 
@@ -42,10 +63,12 @@ Routes pertaining to the `Activity` model are mapped to the `/activities` endpoi
 -   STATUS 500 - internal server error
 
 ```
- "There was an internal server error while handling the request."
+There was an internal server error while handling the request.
 ```
 
-### GET `/:id`
+### Get activity by ID
+
+**Route**: GET `/activities/:id`
 
 **Description**: Get an activity by it's ID
 
@@ -91,7 +114,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### POST `/start-new`
+### Start new activity
+
+**Route**: POST `/start-new`
 
 **Description**: Start a new activity and return it. Started activities
 
@@ -138,7 +163,9 @@ Could not create activity because one or more fields were missing.
 There was an internal server error while handling the request.
 ```
 
-### POST `/create-completed`
+### Create completed activity
+
+**Route**: POST `/create-completed`
 
 **Description**: Create a completed activity and return it. A completed activity
 
@@ -208,7 +235,9 @@ Format for endTime date is invalid
 There was an internal server error while handling the request.
 ```
 
-### PATCH `/stop/:id`
+### Stop activity
+
+**Route**: PATCH `/stop/:id`
 
 **Description**: Stop the activity with the given id, and return the patched activity.
 
@@ -256,7 +285,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### PATCH `/resume/:id`
+### Resume activity
+
+**Route**: PATCH `/resume/:id`
 
 **Description**: Resume the given activity and return it.
 
@@ -307,7 +338,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### PATCH `/trash/:id`
+### Trash activity
+
+**Route**: PATCH `/trash/:id`
 
 **Description**: Trash the given activity and return it. A trashed activity is not
 removed from the database, but will have its `trashed` property set to true.
@@ -354,7 +387,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### PATCH `/untrash/:id`
+### Untrash activity
+
+**Route**: PATCH `/untrash/:id`
 
 **Description**: Untrash the given activity and return it. An untrashed activity will have its `trashed` property set to false.
 
@@ -400,7 +435,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### PUT `/update/:id`
+### Update activity
+
+**Route**: PUT `/update/:id`
 
 **Description**: Update the given activity and return it. You may update the activity's
 
@@ -487,7 +524,9 @@ No ID provided.
 There was an internal server error while handling the request.
 ```
 
-### DELETE `/remove/:id`
+### Remove activity
+
+**Route**: DELETE `/remove/:id`
 
 **Description**: Completely remove an activity from the database.
 
@@ -531,7 +570,9 @@ There was an internal server error while handling the request.
 
 Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoint via the `src/routers/types.js` router.
 
-### GET `/`
+### Get all activity types
+
+**Route**: GET `/`
 
 **Description**: Get an array of all activity types
 
@@ -559,7 +600,17 @@ Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoin
 ]
 ```
 
-### GET `/:id`
+**Error responses**:
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
+### Get activity type by ID
+
+**Route**: GET `/:id`
 
 **Description**: Get an activity type by its ID
 
@@ -575,7 +626,35 @@ Routes pertaining to the `ActivityType` model are mapped to the `/types` endpoin
 }
 ```
 
-### POST `/add`
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity type not found
+
+```
+Type with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
+### Add activity type
+
+**Route**: POST `/add`
 
 **Description**: Add a new type and return it
 
@@ -599,7 +678,29 @@ Request body:
 }
 ```
 
-### DELETE `/remove/:id`
+**Error responses**:
+
+-   STATUS 400 - duplicate type
+
+```
+Already added type with name '<duplicate type name>'
+```
+
+-   STATUS 400 - type name not given
+
+```
+Type name not given
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
+### Remove activity type
+
+**Route**: DELETE `/remove/:id`
 
 **Description**: Delete a type from the database
 
@@ -611,4 +712,30 @@ Request body:
 
 ```json
 
+```
+
+**Error responses**:
+
+-   STATUS 400 - invalid id format
+
+```
+Invalid ID format.
+```
+
+-   STATUS 400 - activity type not found
+
+```
+Type with the given ID not found.
+```
+
+-   STATUS 400 - id not provided
+
+```
+No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
 ```
