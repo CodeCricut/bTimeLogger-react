@@ -66,19 +66,13 @@ class ActivityRepository {
         }
 
         let startedActivity;
-        try {
-            startedActivity = new Activity({
-                ...activity,
-                startTime: new Date(Date.now()),
-                endTime: null,
-                trashed: false,
-            });
-            await startedActivity.save();
-        } catch (e) {
-            throw new MissingModelInfoError(
-                "Could not create activity because one or more fields were missing."
-            );
-        }
+        startedActivity = new Activity({
+            ...activity,
+            startTime: new Date(Date.now()),
+            endTime: null,
+            trashed: false,
+        });
+        await startedActivity.save();
 
         return startedActivity;
     }
@@ -118,19 +112,13 @@ class ActivityRepository {
         }
 
         let createdActivity;
-        try {
-            createdActivity = new Activity({
-                ...activity,
-                startTime,
-                endTime,
-                trashed: false,
-            });
-            await createdActivity.save();
-        } catch (e) {
-            throw new MissingModelInfoError(
-                "Could not create activity because one or more fields were missing or invalid."
-            );
-        }
+        createdActivity = new Activity({
+            ...activity,
+            startTime,
+            endTime,
+            trashed: false,
+        });
+        await createdActivity.save();
 
         return createdActivity;
     }
@@ -298,13 +286,7 @@ class ActivityRepository {
         if (comment != null) activity.comment = comment;
         if (trashed != null) activity.trashed = trashed;
 
-        try {
-            await activity.save();
-        } catch (e) {
-            throw new MissingModelInfoError(
-                "Tried to update an activity with incomplete or invalid fields."
-            );
-        }
+        await activity.save();
 
         return activity;
     }
