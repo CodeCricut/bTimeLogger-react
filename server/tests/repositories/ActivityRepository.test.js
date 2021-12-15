@@ -117,7 +117,7 @@ describe("startNew", () => {
         const type = await addFakeActivityType();
 
         const mockStartTime = 1234567890123;
-        jest.spyOn(Date, "now").mockImplementationOnce(() => mockStartTime);
+        jest.spyOn(Date, "now").mockImplementation(() => mockStartTime);
         const actual = await actRepo.startNew({
             ...fakeActivity,
             type: type._id,
