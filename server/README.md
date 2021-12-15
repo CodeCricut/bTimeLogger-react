@@ -26,6 +26,12 @@ npm install
 npm run start
 ```
 
+**Debugging**: To debug, open a new JavaScript Debug Terminal in VSCode and run
+
+```
+npm run debug
+```
+
 **Stopping the server**: To stop the server, run `^C` (Ctrl+C).
 
 ## Dependencies
