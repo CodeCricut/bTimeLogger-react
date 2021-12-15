@@ -11,9 +11,6 @@ const useActivityRepository = (dependencyArray = []) => {
             const response = await request();
             if (response.status !== 200)
                 throw new Error("Server did not indicate success.");
-            console.log(
-                `tryRequestAsync activities: ${JSON.stringify(response.data)}`
-            );
             dispatch({
                 type: Methods.DONE_LOADING_ACTIVITIES,
                 payload: {
@@ -26,7 +23,6 @@ const useActivityRepository = (dependencyArray = []) => {
     };
 
     const loadActivities = async () => {
-        console.log("loading activities....");
         await tryRequestAsync(async () => await axios.get("/activities"));
     };
 
