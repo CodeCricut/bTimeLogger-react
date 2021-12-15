@@ -67,6 +67,12 @@ Routing refers to "determining how an application responds to a client request t
 
 Routing is done with the help of the [Express.js](expressjs.com) framework. Additional details can be found in [our Express routing documentation](./documentation/express-routing.md).
 
+### Database interaction
+
+All business logic pertaining to database interaction is done through "repository" classes found in the [repositories directory](./src/repositories).
+
+No business logic is performed directly through the routers.
+
 ## Testing & Test Results
 
 The server app currently contains no tests, manual or automatic.
