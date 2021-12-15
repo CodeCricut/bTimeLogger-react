@@ -2,9 +2,7 @@ import { makeStyles } from "@material-ui/core";
 const useRunningActivityStyles = makeStyles((theme) => ({
     activityBox: {
         display: "grid",
-        // gridTemplateColumns: "[title-start] 300px 100px [title-end] 50px",
         gridTemplateColumns: "[title-start] 3fr 1fr [title-end] 50px",
-        // gridTemplateColumns: "[title-start] 6fr 2fr [title-end] 1fr",
         width: "100%",
         overflow: "hidden",
         "& *": {
@@ -22,7 +20,6 @@ const useRunningActivityStyles = makeStyles((theme) => ({
         height: "fit-content",
         alignSelf: "center",
         color: theme.palette.error.main,
-        // color: "#f44336",
     },
     time: {
         gridRow: "2",

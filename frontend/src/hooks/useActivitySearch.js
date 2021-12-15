@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-    arrayUnique,
     selectActivitesBetweenDates,
     selectActivitiesOfType,
     selectActivitiesWithText,
@@ -14,19 +13,12 @@ const useActivitySearch = (queryString) => {
     const [searchParams, setSearchParams] = useState(
         SearchParams.parseQueryString(queryString)
     );
+    // TODO: this seems to be unnecessary. I left this comment a while ago and am not sure what that means exactly.
+    // I think I meant the queryString dependency is unnecessary
     useEffect(
         () => setSearchParams(SearchParams.parseQueryString(queryString)),
         [queryString]
-    ); // probably unnecessary
-    console.dir(searchParams);
-
-    // const searchParams = SearchParams.parseQueryString(queryString);
-    // const {
-    //     searchTerm,
-    //     selectedType,
-    //     fromDate,
-    //     toDate /*, doSearchBetweenDates*/,
-    // } = searchParams;
+    );
 
     const [{ activities }, dispatch] = useMainContext();
 
@@ -61,11 +53,7 @@ const useActivitySearch = (queryString) => {
                 filteredActivities,
                 searchParams.selectedType
             );
-        if (
-            !!(
-                searchParams.fromDate || searchParams.toDate
-            ) /*doSearchBetweenDates*/
-        ) {
+        if (!!(searchParams.fromDate || searchParams.toDate)) {
             filteredActivities = selectActivitesBetweenDates(
                 filteredActivities,
                 searchParams.fromDate,
