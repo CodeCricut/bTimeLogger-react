@@ -1,10 +1,7 @@
-import React from "react";
 import { Methods } from "./activity-reducer";
 import { useEffect } from "react";
 import axios from "axios";
 import { useMainContext } from "../data/MainContext.js";
-
-// TODO: remove duplication/cleanpu
 
 const useActivityRepository = (dependencyArray = []) => {
     const [{ activityState }, dispatch] = useMainContext();
@@ -31,20 +28,6 @@ const useActivityRepository = (dependencyArray = []) => {
     const loadActivities = async () => {
         console.log("loading activities....");
         await tryRequestAsync(async () => await axios.get("/activities"));
-        // dispatch({ type: Methods.LOADING_ACTIVITIES });
-        // try {
-        //     const response = await axios.get(`/activities`);
-        //     if (response.status !== 200) throw new Error(response.error);
-        //     console.log(`fetched activities: ${JSON.stringify(response.data)}`);
-        //     dispatch({
-        //         type: Methods.DONE_LOADING_ACTIVITIES,
-        //         payload: { activities: response.data },
-        //     });
-        // } catch (e) {
-        //     dispatch({ type: Methods.ACTIVITIES_ERROR, payload: { error: e } });
-        // } finally {
-        //     console.log("done loading activities");
-        // }
     };
 
     const startActivity = async (activity) => {
@@ -56,23 +39,6 @@ const useActivityRepository = (dependencyArray = []) => {
             if (response.status !== 200) throw new Error(response.error);
             return await axios.get("/activities");
         });
-        // dispatch({ type: Methods.LOADING_ACTIVITIES });
-        // try {
-        //     const response = await axios.post(
-        //         `/activities/start-new`,
-        //         activity
-        //     );
-        //     if (response.status !== 200) throw new Error(response.error);
-        //     dispatch({
-        //         type: Methods.DONE_LOADING_ACTIVITIES,
-        //         payload: { activities: response.data },
-        //     });
-        // } catch (e) {
-        //     dispatch({
-        //         type: Methods.ACTIVITIES_ERROR,
-        //         payload: { error: e },
-        //     });
-        // }
     };
 
     const createCompletedActivity = async (activity) => {
@@ -84,23 +50,6 @@ const useActivityRepository = (dependencyArray = []) => {
             if (response.status !== 200) throw new Error(response.error);
             return axios.get("/activities");
         });
-        // dispatch({ type: Methods.LOADING_ACTIVITIES });
-        // try {
-        //     const response = await axios.post(
-        //         `/activities/create-completed`,
-        //         activity
-        //     );
-        //     if (response.status !== 200) throw new Error(response.error);
-        //     dispatch({
-        //         type: Methods.DONE_LOADING_ACTIVITIES,
-        //         payload: { activities: response.data },
-        //     });
-        // } catch (e) {
-        //     dispatch({
-        //         type: Methods.ACTIVITIES_ERROR,
-        //         payload: { error: e },
-        //     });
-        // }
     };
 
     const stopActivity = async (activityId) => {
@@ -149,23 +98,6 @@ const useActivityRepository = (dependencyArray = []) => {
             if (response.status !== 200) throw new Error(response.error);
             return axios.get("/activities");
         });
-        // dispatch({ type: Methods.LOADING_ACTIVITIES });
-        // try {
-        //     console.log(`trahsing activity with id ${activityId}`);
-        //     const response = await axios.patch(
-        //         `/activities/trash/${activityId}`
-        //     );
-        //     if (response.status !== 200) throw new Error(response.error);
-        //     dispatch({
-        //         type: Methods.DONE_LOADING_ACTIVITIES,
-        //         payload: { activities: response.data },
-        //     });
-        // } catch (e) {
-        //     dispatch({
-        //         type: Methods.ACTIVITIES_ERROR,
-        //         payload: { error: e },
-        //     });
-        // }
     };
 
     const untrashActivity = async (activityId) => {
