@@ -3,6 +3,8 @@
 Quick links:
 
 -   [Explicitly Pass Data to Components](#explicitly-pass-data-to-components)
+-   [State Hook](#state-hook) - manage local component state
+-   [Reducer Hook](#reducer-hook) - alternative to state hook when there is complex state logic
 -   [Context API](#context-api) - quick overview of the React Context API as used in the app
     -   [Creating a context](#creating-a-context)
     -   [Context Provider](#context-provider)
@@ -25,6 +27,66 @@ function App() {
 ```
 
 Read [this documentation](https://reactjs.org/docs/components-and-props.html) for more.
+
+## State Hook
+
+```jsx
+const [state, setState] = useState(initialState);
+```
+
+The `useState` Hook allows you to manage state within components. It is not sufficient to simply have local variables inside components because they will not persist across re-renders or trigger re-renders when updated.
+
+```jsx
+function Example() {
+    // Declare a new state variable, which we'll call "count"
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <p>You clicked {count} times</p>
+            <button onClick={() => setCount(count + 1)}>Click me</button>
+        </div>
+    );
+}
+```
+
+Read more in the [docs](https://reactjs.org/docs/hooks-state.html).
+
+## Reducer Hook
+
+```jsx
+const [state, dispatch] = useReducer(reducer, initialArg, init);
+```
+
+The `useReducer` Hook accepts a reducer function of type `(state, action) => newState` and returns the current state and a `dispatch` method.
+
+**Reducer function** A reducer is used to update the state based on an action (and possibly a payload).
+
+```js
+function reducer(state, action) {
+    if (action == "increment") return { count: state.count + 1 };
+    else if (action == "decrement") return { count: state.count - 1 };
+}
+```
+
+Note that the reducer should never modify the state parameter.
+
+**Example**:
+
+```jsx
+function Counter() {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    return (
+        <>
+            Count: {state.count}
+            <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+            <button onClick={() => dispatch({ type: "increment" })}>+</button>
+        </>
+    );
+}
+```
+
+Read more in the [docs](https://reactjs.org/docs/hooks-reference.html).
 
 ## Context API
 
