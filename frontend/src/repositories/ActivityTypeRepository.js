@@ -28,7 +28,7 @@ class ActivityTypeRepository {
      */
     async getById(id) {
         if (!id) throw new Error("Tried to get activity type without id.");
-        const response = await axios.get(`types/${id}`);
+        const response = await axios.get(`/types/${id}`);
         if (response.status !== 200) throw new Error(response.error);
         return mapObjectToModel(response.data);
     }
@@ -42,7 +42,7 @@ class ActivityTypeRepository {
      */
     async add(type) {
         if (!type) throw new Error("Tried adding null type.");
-        const response = await axios.post(`types/add`, type);
+        const response = await axios.post(`/types/add`, type);
         if (response.status !== 200) throw new Error(response.error);
         return mapObjectToModel(response.data);
     }
@@ -55,7 +55,7 @@ class ActivityTypeRepository {
      */
     async remove(id) {
         if (!id) throw new Error("Tried removing type without id");
-        const response = await axios.delete(`types/remove/${id}`);
+        const response = await axios.delete(`/types/remove/${id}`);
         if (response.status !== 200) throw new Error(response.error);
     }
 }
