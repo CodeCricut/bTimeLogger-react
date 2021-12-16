@@ -41,6 +41,7 @@ class ActivityTypeRepository {
      * @throws {Error} Will throw if API does not indicate success.
      */
     async add(type) {
+        if (!type) throw new Error("Tried adding null type.");
         const response = await axios.post(`types/add`, type);
         if (response.status !== 200) throw new Error(response.error);
         return mapObjectToModel(response.data);

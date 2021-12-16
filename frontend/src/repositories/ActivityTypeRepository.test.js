@@ -3,7 +3,10 @@ import MockAdapter from "axios-mock-adapter";
 
 import { allTypes } from "../test-helpers/fixtures/activity-types.js";
 import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
-import { expectActivityTypeArraysEqual } from "../test-helpers/util/expect-helpers.js";
+import {
+    expectActivityTypeArraysEqual,
+    expectActivityTypesEqual,
+} from "../test-helpers/util/expect-helpers.js";
 
 // Allows us to mock the behavior of axios (used for API calls)
 const axiosMock = new MockAdapter(axios);
@@ -38,6 +41,67 @@ describe("getAll", () => {
 
         await expect(async () => {
             await typeRepo.getAll();
+        }).rejects.toThrow(Error);
+    });
+});
+
+describe("getById", () => {
+    it("return type", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const expected = allTypes[0];
+        axiosMock.onGet(`/types/${expected._id}`).reply(200, expected);
+
+        const actual = await typeRepo.getById(expected._id);
+
+        expectActivityTypesEqual(expected, actual);
+    });
+
+    it("throw if not success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const expected = allTypes[0];
+        axiosMock.onGet(`/types/${expected._id}`).reply(404);
+
+        await expect(async () => {
+            await typeRepo.getById(expected._id);
+        }).rejects.toThrow(Error);
+    });
+
+    it("throw if not given id", async () => {
+        await expect(async () => {
+            await typeRepo.getById(null);
+        });
+    });
+});
+
+describe("add", () => {
+    it("return added type if success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const expected = allTypes[0];
+        axiosMock.onPost(`/types/add`).reply(200, expected);
+
+        const actual = await typeRepo.add({ name: expected.name });
+
+        expectActivityTypeArraysEqual(expected, actual);
+    });
+
+    it("throw if not success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+        axiosMock.onPost(`/types/add`).reply(400);
+
+        await expect(async () => {
+            await typeRepo.add(allTypes[0]._id);
+        }).rejects.toThrow(Error);
+    });
+
+    it("throw if not given type", async () => {
+        const typeRepo = new ActivityTypeRepository();
+        axiosMock.onPost(`/types/add`).reply(200);
+
+        await expect(async () => {
+            await typeRepo.add(null);
         }).rejects.toThrow(Error);
     });
 });
