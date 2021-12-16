@@ -1,4 +1,8 @@
-import { ActivityModel, mapObjectToModel } from "./ActivityModel.js";
+import {
+    ActivityModel,
+    mapObjectToModel,
+    mapObjectsToModels,
+} from "./ActivityModel.js";
 
 import {
     expectActivitiesEqual,
@@ -72,7 +76,37 @@ describe("mapObjectToModel", () => {
     });
 });
 
-describe("mapObjectsToModels", () => {});
+describe("mapObjectsToModels", () => {
+    it("return array of models with correct fields", () => {
+        const activity0 = allActivities[0];
+        const expected = [
+            new ActivityModel(
+                activity0._id,
+                activity0.type,
+                activity0.comment,
+                activity0.startTime,
+                activity0.endTime,
+                activity0.trashed
+            ),
+        ];
+
+        const actual = mapObjectsToModels([activity0]);
+
+        expectActivitiesArrayEqual(expected, actual);
+    });
+
+    it("throw if objects null", () => {
+        expect(() => {
+            mapObjectsToModels(null);
+        }).toThrow();
+    });
+
+    it("return empty if empty objects array", () => {
+        const expected = [];
+        const actual = mapObjectsToModels([]);
+        expectActivitiesArrayEqual(expected, actual);
+    });
+});
 
 describe("get startTimeDate", () => {});
 

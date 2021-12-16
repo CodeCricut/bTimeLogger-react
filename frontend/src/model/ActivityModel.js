@@ -81,6 +81,7 @@ const mapObjectToModel = (obj) => {
     if (obj.trashed == null)
         // Null or undefined
         throw new Error("Tried to map object without required field trashed");
+
     return new ActivityModel(
         obj._id,
         obj.type,
@@ -92,7 +93,11 @@ const mapObjectToModel = (obj) => {
 };
 
 const mapObjectsToModels = (objects) => {
-    // TODO
+    const models = [];
+    for (const obj of objects) {
+        models.push(mapObjectToModel(obj));
+    }
+    return models;
 };
 
 export { ActivityModel, mapObjectToModel, mapObjectsToModels };
