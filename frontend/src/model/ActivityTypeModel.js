@@ -29,6 +29,7 @@ class ActivityTypeModel {
 }
 
 const mapObjectToModel = (obj) => {
+    if (!obj) throw new Error("Object is null");
     if (!obj._id) throw new Error("Object missing _id field.");
     if (!obj.name) throw new Error("Object missing name field.");
 
