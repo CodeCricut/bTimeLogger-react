@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton, Box, Typography } from "@material-ui/core";
 import { Stop as StopIcon } from "@material-ui/icons";
 import Moment from "react-moment";
-import useRunningActivityStyles from "../hooks/useRunningActivityStyles";
+import useRunningActivityStyles from "../style/useRunningActivityStyles";
 import useDate from "../hooks/useDate";
 import { formatDuration } from "../util/timeFormatters";
 import { useMainContext } from "../data/MainContext";

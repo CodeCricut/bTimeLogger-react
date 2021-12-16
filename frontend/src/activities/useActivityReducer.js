@@ -1,9 +1,12 @@
+import { useReducer } from "react";
+
 const Methods = {
     LOADING_ACTIVITIES: "LOADING_ACTIVITIES",
     DONE_LOADING_ACTIVITIES: "DONE_LOADING_ACTIVITIES",
     ACTIVITIES_ERROR: "ACTIVITIES_ERROR",
 };
 
+// TODO: make class or add jsdoc
 const initialState = {
     isLoading: false,
     activities: [],
@@ -37,5 +40,11 @@ const reducer = (state, { type, payload }) => {
     }
 };
 
-export default reducer;
-export { Methods, initialState };
+const useActivityReducer = () => useReducer(reducer, initialState);
+
+export {
+    reducer as activityReducer,
+    useActivityReducer,
+    Methods,
+    initialState,
+};

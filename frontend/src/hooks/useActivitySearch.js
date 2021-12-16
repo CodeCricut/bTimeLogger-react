@@ -4,7 +4,7 @@ import {
     selectActivitiesOfType,
     selectActivitiesWithText,
     sortActivitiesByNewest,
-} from "../data/activity-selectors";
+} from "../util/activity-selectors";
 import { useMainContext } from "../data/MainContext";
 
 import SearchParams from "../model/SearchParams";

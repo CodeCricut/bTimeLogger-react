@@ -16,13 +16,13 @@ import InlineStartActivity from "./InlineStartActivity";
 import RunningActivity from "./RunningActivity";
 import CompletedActivity from "./CompletedActivity";
 import TuneSearchDialog from "./TuneSearchDialog";
-import useLayoutStyles from "../hooks/useLayoutStyles";
+import useLayoutStyles from "../style/useLayoutStyles";
 
 import SettingsDialog from "./SettingsDialog";
 import {
     selectNonTrashedActivities,
     sortActivitiesByNewest,
-} from "../data/activity-selectors";
+} from "../util/activity-selectors";
 import useActivitySearch from "../hooks/useActivitySearch";
 import SearchAppBar from "./SearchAppBar";
 

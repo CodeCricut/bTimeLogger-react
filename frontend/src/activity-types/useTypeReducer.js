@@ -1,14 +1,18 @@
+import { useReducer } from "react";
+
 const Methods = {
     LOADING_TYPES: "LOADING_TYPES",
     DONE_LOADING_TYPES: "DONE_LOADING_TYPES",
     TYPES_ERROR: "TYPES_ERROR",
 };
 
+// TODO: make class or add jsdoc
 const initialState = {
     isLoading: false,
     types: [],
     error: null,
 };
+
 const reducer = (state, { type, payload }) => {
     if (!state) throw new Error("No state passed to type-reducer.");
 
@@ -29,5 +33,6 @@ const reducer = (state, { type, payload }) => {
     }
 };
 
-export default reducer;
-export { Methods, initialState };
+const useTypeReducer = () => useReducer(reducer, initialState);
+
+export { reducer as typeReducer, useTypeReducer, Methods, initialState };

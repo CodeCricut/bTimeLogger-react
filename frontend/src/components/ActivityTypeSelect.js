@@ -5,6 +5,7 @@ import useTypeRepository from "../activity-types/useTypeRepository";
 
 const ActivityTypeSelect = ({ selectedType, setSelectedType, onEnter }) => {
     const [{ types }] = useTypeRepository([]);
+
     const [value, setValue] = useState(selectedType);
     const [inputValue, setInputValue] = useState(selectedType);
 

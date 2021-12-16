@@ -1,56 +1,149 @@
-import { useEffect } from "react";
-import { Methods } from "./type-reducer.js";
-import axios from "axios";
-import { useMainContext } from "../data/MainContext.js";
+import { Methods } from "./useTypeReducer.js";
+import { useActivityTypeContext } from "./ActivityTypeContext.js";
+import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
 
-// TODO: TypeRepository should  be its own type that this hook references
+const repo = new ActivityTypeRepository();
+
 const useTypeRepository = (dependencyArray = []) => {
-    const [{ typeState }, dispatch] = useMainContext();
+    const [state, dispatch] = useActivityTypeContext();
 
-    const loadTypes = async () => {
-        dispatch({ type: Methods.LOADING_TYPES });
-        try {
-            const response = await axios.get(`/types`);
-            if (response.status !== 200) throw new Error(response.error);
+    const addSingleType = (type) => {
+        if (state.types.contains(type)) {
             dispatch({
                 type: Methods.DONE_LOADING_TYPES,
-                payload: { types: response.data },
+                payload: { types: [...state.types] },
             });
-        } catch (e) {
-            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+        } else {
+            dispatch({
+                type: Methods.DONE_LOADING_TYPES,
+                payload: { types: [...state.types, type] },
+            });
         }
     };
 
-    const addType = async (typeName) => {
+    const removeSingleType = (type) => {
+        if (state.types.contains(type)) {
+            const index = state.types.indexOf(type);
+            dispatch({
+                type: Methods.DONE_LOADING_TYPES,
+                payload: { types: [...state.types.splice(index, 1)] },
+            });
+        } else {
+            dispatch({
+                type: Methods.DONE_LOADING_TYPES,
+                payload: { types: [...state.types] },
+            });
+        }
+    };
+
+    const setAllTypes = (types) => {
+        dispatch({
+            type: Methods.DONE_LOADING_TYPES,
+            payload: { types },
+        });
+    };
+
+    const reloadAll = async () => {
         dispatch({ type: Methods.LOADING_TYPES });
         try {
-            const type = { name: typeName };
-            const response = await axios.post(`types/add`, type);
-            if (response.status !== 200) throw new Error(response.error);
-
-            await loadTypes();
+            const allTypes = await repo.getAll();
+            setAllTypes(allTypes);
         } catch (e) {
             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
         }
     };
 
-    const removeType = async (typeId) => {
+    const reloadOne = async (id) => {
         dispatch({ type: Methods.LOADING_TYPES });
         try {
-            const response = await axios.delete(`types/remove/${typeId}`);
-            if (response.status !== 200) throw new Error(response.error);
-
-            await loadTypes();
+            const type = await repo.getById(id);
+            addSingleType(type);
         } catch (e) {
             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
         }
     };
 
-    useEffect(() => {
-        loadTypes();
-    }, dependencyArray);
+    const add = async (type) => {
+        dispatch({ type: Methods.LOADING_TYPES });
+        try {
+            const addedType = await repo.add(type);
+            addSingleType(addedType);
+        } catch (e) {
+            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+        }
+    };
 
-    return [typeState, { addType, removeType }];
+    const remove = async (type) => {
+        dispatch({ type: Methods.LOADING_TYPES });
+        try {
+            await repo.remove(type._id);
+            removeSingleType(type);
+        } catch (e) {
+            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+        }
+    };
+
+    return [
+        state,
+        {
+            reloadAll,
+            reloadOne,
+            add,
+            remove,
+        },
+    ];
 };
 
-export default useTypeRepository;
+export { useTypeRepository };
+
+// // TODO: TypeRepository should  be its own type that this hook references
+// const useTypeRepository = (dependencyArray = []) => {
+//     const [{ typeState }, dispatch] = useMainContext();
+
+//     const loadTypes = async () => {
+//         dispatch({ type: Methods.LOADING_TYPES });
+//         try {
+//             const response = await axios.get(`/types`);
+//             if (response.status !== 200) throw new Error(response.error);
+//             dispatch({
+//                 type: Methods.DONE_LOADING_TYPES,
+//                 payload: { types: response.data },
+//             });
+//         } catch (e) {
+//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+//         }
+//     };
+
+//     const addType = async (typeName) => {
+//         dispatch({ type: Methods.LOADING_TYPES });
+//         try {
+//             const type = { name: typeName };
+//             const response = await axios.post(`types/add`, type);
+//             if (response.status !== 200) throw new Error(response.error);
+
+//             await loadTypes();
+//         } catch (e) {
+//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+//         }
+//     };
+
+//     const removeType = async (typeId) => {
+//         dispatch({ type: Methods.LOADING_TYPES });
+//         try {
+//             const response = await axios.delete(`types/remove/${typeId}`);
+//             if (response.status !== 200) throw new Error(response.error);
+
+//             await loadTypes();
+//         } catch (e) {
+//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
+//         }
+//     };
+
+//     useEffect(() => {
+//         loadTypes();
+//     }, dependencyArray);
+
+//     return [typeState, { addType, removeType }];
+// };
+
+// export default useTypeRepository;

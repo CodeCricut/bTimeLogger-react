@@ -16,7 +16,7 @@ import {
     Clear as ClearIcon,
 } from "@material-ui/icons";
 
-import useSearchAppBarStyles from "../hooks/useSearchAppBarStyles";
+import useSearchAppBarStyles from "../style/useSearchAppBarStyles";
 
 const SearchAppBar = ({
     setIsDrawerOpen,

@@ -104,4 +104,9 @@ const mapObjectsToModels = (objects) => {
     return models;
 };
 
-export { ActivityModel, mapObjectToModel, mapObjectsToModels };
+const Status = {
+ RUNNING = "Running",
+    COMPLETED = "Completed"
+}
+
+export { ActivityModel, mapObjectToModel, mapObjectsToModels, Status };

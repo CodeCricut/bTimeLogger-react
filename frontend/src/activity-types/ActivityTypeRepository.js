@@ -3,7 +3,7 @@ import {
     ActivityTypeModel,
     mapObjectToModel,
     mapObjectsToModels,
-} from "../model/ActivityTypeModel.js";
+} from "./ActivityTypeModel.js";
 
 /**
  * Class for interacting with the ActivityType model using the REST API.

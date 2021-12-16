@@ -11,9 +11,9 @@ import {
     makeStyles,
 } from "@material-ui/core";
 import React from "react";
-import { useThemeSwitcherContext } from "../data/ThemeSwitcherContext";
-import useDialogFormStyles from "../hooks/useDialogFormStyles";
-import { DARK, LIGHT } from "../theme";
+import { useThemeSwitcherContext } from "../style/ThemeSwitcherContext";
+import useDialogFormStyles from "../style/useDialogFormStyles";
+import { DARK, LIGHT } from "../style/theme";
 
 const useSettingsStyles = makeStyles((theme) => ({
     content: {

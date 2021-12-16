@@ -4,7 +4,7 @@ import {
     ActivityModel,
     mapObjectToModel,
     mapObjectsToModels,
-} from "../model/ActivityModel.js";
+} from "./ActivityModel.js";
 
 /**
  * Class for interacting with the ActivityModel using the REST API.

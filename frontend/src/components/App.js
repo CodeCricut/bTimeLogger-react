@@ -2,8 +2,9 @@ import React from "react";
 import { CssBaseline } from "@material-ui/core";
 import Moment from "react-moment";
 
-import { MainProvider } from "../data/MainContext";
-import { ThemeSwitcherProvider } from "../data/ThemeSwitcherContext";
+import { ActivityTypeProvider } from "../activity-types/ActivityTypeContext.js";
+import { ActivityProvider } from "../activities/ActivityContext";
+import { ThemeSwitcherProvider } from "../style/ThemeSwitcherContext";
 
 import Layout from "./Layout";
 
@@ -12,12 +13,14 @@ Moment.globalFormat = "MM/DD HH:mm";
 
 function App() {
     return (
-        <MainProvider>
-            <ThemeSwitcherProvider>
-                <CssBaseline />
-                <Layout />
-            </ThemeSwitcherProvider>
-        </MainProvider>
+        <ActivityProvider>
+            <ActivityTypeProvider>
+                <ThemeSwitcherProvider>
+                    <CssBaseline />
+                    <Layout />
+                </ThemeSwitcherProvider>
+            </ActivityTypeProvider>
+        </ActivityProvider>
     );
 }
 
