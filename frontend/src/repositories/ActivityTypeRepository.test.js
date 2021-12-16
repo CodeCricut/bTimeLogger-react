@@ -69,6 +69,8 @@ describe("getById", () => {
     });
 
     it("throw if not given id", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
         await expect(async () => {
             await typeRepo.getById(null);
         });
