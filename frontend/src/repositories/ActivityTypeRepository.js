@@ -54,9 +54,9 @@ class ActivityTypeRepository {
      * @throws {Error} Will throw if API does not indicate success.
      */
     async remove(id) {
+        if (!id) throw new Error("Tried removing type without id");
         const response = await axios.delete(`types/remove/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
     }
 }
 

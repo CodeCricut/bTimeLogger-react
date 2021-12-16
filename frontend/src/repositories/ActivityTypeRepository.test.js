@@ -105,3 +105,32 @@ describe("add", () => {
         }).rejects.toThrow(Error);
     });
 });
+
+describe("remove", () => {
+    it("returns nothing if success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const type = allTypes[0];
+        axiosMock.onDelete(`/types/remove/${type._id}`).reply(200);
+
+        const actual = await typeRepo.remove(type._id);
+        expect(actual).toBeFalsy();
+    });
+
+    it("throw if not success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const type = allTypes[0];
+        axiosMock.onDelete(`/types/remove/${type._id}`).reply(404);
+
+        await expect(async () => {
+            await typeRepo.remove(type._id);
+        }).rejects.toThrow(Error);
+    });
+
+    it("throw if not given id", async () => {
+        await expect(async () => {
+            await typeRepo.remove(null);
+        }).rejects.toThrow(Error);
+    });
+});
