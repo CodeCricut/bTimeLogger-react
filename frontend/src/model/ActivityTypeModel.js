@@ -37,7 +37,7 @@ const mapObjectToModel = (obj) => {
 
 const mapObjectsToModels = (objects) => {
     const models = [];
-    for (const obj in objects) {
+    for (const obj of objects) {
         models.push(mapObjectToModel(obj));
     }
     return models;
