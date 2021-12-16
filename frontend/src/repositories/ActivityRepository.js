@@ -96,3 +96,5 @@ class ActivityRepository {
      */
     async removeActivity(id) {}
 }
+
+export { ActivityRepository };
