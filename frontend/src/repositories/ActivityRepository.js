@@ -1,10 +1,4 @@
-import axios from "axios";
 import { ActivityModel } from "../model/ActivityModel.js";
-import {
-    ActivityTypeModel,
-    mapObjectToModel,
-    mapObjectsToModels,
-} from "../model/ActivityTypeModel.js";
 
 /**
  * Class for interacting with the ActivityModel using the REST API.
