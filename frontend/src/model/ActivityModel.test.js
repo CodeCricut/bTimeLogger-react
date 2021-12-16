@@ -108,6 +108,34 @@ describe("mapObjectsToModels", () => {
     });
 });
 
-describe("get startTimeDate", () => {});
+describe("get startTimeDate", () => {
+    it("returns date if valid startTime", () => {
+        const expected = new Date();
+
+        const model = new ActivityModel();
+        model.startTime = expected.toISOString();
+
+        const actual = model.startTimeDate;
+
+        expect(actual).toEqual(expected);
+    });
+
+    it("returns null if null startTime", () => {
+        const model = new ActivityModel();
+
+        const actual = model.startTimeDate;
+
+        expect(actual).toBeNull();
+    });
+
+    it("returns null if invalid startTime", () => {
+        const model = new ActivityModel();
+        model.startTime = "INVALID DATE";
+
+        const actual = model.startTimeDate;
+
+        expect(actual).toEqual(null);
+    });
+});
 
 describe("get endTimeDate", () => {});

@@ -1,3 +1,5 @@
+import { isValidDateString } from "../../../server/src/helpers/date-helpers";
+
 /**
  * Represents a single activity.
  */
@@ -51,7 +53,8 @@ class ActivityModel {
      * Get the `Date` of the start time.
      */
     get startTimeDate() {
-        return new Date(startTime);
+        if (!this.startTime || !isValidDateString(this.startTime)) return null;
+        return new Date(this.startTime);
     }
 
     /**
