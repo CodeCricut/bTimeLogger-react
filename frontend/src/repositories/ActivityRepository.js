@@ -1,4 +1,10 @@
-import { ActivityModel } from "../model/ActivityModel.js";
+import axios from "axios";
+
+import {
+    ActivityModel,
+    mapObjectToModel,
+    mapObjectsToModels,
+} from "../model/ActivityModel.js";
 
 /**
  * Class for interacting with the ActivityModel using the REST API.
@@ -9,7 +15,11 @@ class ActivityRepository {
      * @returns {Promise<Array<ActivityModel>>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async getAll() {}
+    async getAll() {
+        const response = await axios.get("/activities");
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectsToModels(response.data);
+    }
 
     /**
      * Get an activity by it's ID
