@@ -138,4 +138,32 @@ describe("get startTimeDate", () => {
     });
 });
 
-describe("get endTimeDate", () => {});
+describe("get endTimeDate", () => {
+    it("returns date if valid startTime", () => {
+        const expected = new Date();
+
+        const model = new ActivityModel();
+        model.endTime = expected.toISOString();
+
+        const actual = model.endTimeDate;
+
+        expect(actual).toEqual(expected);
+    });
+
+    it("returns null if null endTime", () => {
+        const model = new ActivityModel();
+
+        const actual = model.endTimeDate;
+
+        expect(actual).toBeNull();
+    });
+
+    it("returns null if invalid endTime", () => {
+        const model = new ActivityModel();
+        model.endTime = "INVALID DATE";
+
+        const actual = model.endTimeDate;
+
+        expect(actual).toEqual(null);
+    });
+});

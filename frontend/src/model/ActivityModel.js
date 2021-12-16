@@ -61,7 +61,8 @@ class ActivityModel {
      * Get the `Date` of the end time.
      */
     get endTimeDate() {
-        return new Date(endTime);
+        if (!this.endTime || !isValidDateString(this.endTime)) return null;
+        return new Date(this.endTime);
     }
 
     /**
