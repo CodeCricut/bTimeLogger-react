@@ -37,14 +37,62 @@ class ActivityModel {
      * @type {string}
      */
     trashed;
+
+    constructor(id, type, comment, startTime, endTime, trashed) {
+        this._id = id;
+        this.type = type;
+        this.comment = comment;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.trashed = trashed;
+    }
+
+    /**
+     * Get the `Date` of the start time.
+     */
+    get startTimeDate() {
+        return new Date(startTime);
+    }
+
+    /**
+     * Get the `Date` of the end time.
+     */
+    get endTimeDate() {
+        return new Date(endTime);
+    }
+
+    /**
+     * Simple accessor alternative to the `_id` property.
+     * @type {string}
+     */
+    get id() {
+        return this._id;
+    }
 }
 
 const mapObjectToModel = (obj) => {
-    // TODO
+    if (!obj) throw new Error("Tried to map null object.");
+    if (!obj._id)
+        throw new Error("Tried to map object without required field _id.");
+    if (!obj.startTime)
+        throw new Error(
+            "Tried to map object without required field startTime."
+        );
+    if (obj.trashed == null)
+        // Null or undefined
+        throw new Error("Tried to map object without required field trashed");
+    return new ActivityModel(
+        obj._id,
+        obj.type,
+        obj.comment,
+        obj.startTime,
+        obj.endTime,
+        obj.trashed
+    );
 };
 
 const mapObjectsToModels = (objects) => {
     // TODO
 };
 
-export { ActivityModel };
+export { ActivityModel, mapObjectToModel, mapObjectsToModels };
