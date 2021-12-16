@@ -26,7 +26,12 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async getById() {}
+    async getById(id) {
+        if (!id) throw new Error("Tried getting activity without id.");
+        const response = await axios.get(`/activities/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Start a new activity and return it.
@@ -36,7 +41,13 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async startNew(activity) {}
+    async startNew(activity) {
+        if (!activity)
+            throw new Error("Tried starting new activity which was null.");
+        const response = await axios.post(`/activities/start-new`, activity);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Create a completed activity and return it.
@@ -46,7 +57,18 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async createCompleted(activity) {}
+    async createCompleted(activity) {
+        if (!activity)
+            throw new Error(
+                "Tried starting create completed activity which was null."
+            );
+        const response = await axios.post(
+            `/activities/create-completed`,
+            activity
+        );
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Stop the activity with the given id and return it.
@@ -54,7 +76,12 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>} The stopped activity.
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async stopActivity(id) {}
+    async stopActivity(id) {
+        if (!id) throw new Error("Tried stopping activity with null id.");
+        const response = await axios.patch(`/activities/stop/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Resume the activity with the given id and return it.
@@ -62,7 +89,12 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async resumeActivity(id) {}
+    async resumeActivity(id) {
+        if (!id) throw new Error("Tried resuming activity with null id.");
+        const response = await axios.patch(`/activities/resume/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Trash the given activity and return it. A trashed activity is not
@@ -72,7 +104,12 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async trashActivity(id) {}
+    async trashActivity(id) {
+        if (!id) throw new Error("Tried trashing activity with null id.");
+        const response = await axios.patch(`/activities/trash/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Untrash the given activity and return it.
@@ -80,7 +117,12 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async untrashActivity(id) {}
+    async untrashActivity(id) {
+        if (!id) throw new Error("Tried untrashing activity with null id.");
+        const response = await axios.patch(`/activities/untrash/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Update the given activity and return it.
@@ -90,7 +132,13 @@ class ActivityRepository {
      * @returns {Promise<ActivityModel>}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async updateActivity(id, activity) {}
+    async updateActivity(id, activity) {
+        if (!id) throw new Error("Tried updating activity with null id.");
+        if (!id) throw new Error("Tried updating activity with null activity.");
+        const response = await axios.put(`/activities/update/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
 
     /**
      * Completely remove an activity from the database.
@@ -98,7 +146,11 @@ class ActivityRepository {
      * @returns {Promise}
      * @throws {Error} Will throw if API does not indicate success.
      */
-    async removeActivity(id) {}
+    async removeActivity(id) {
+        if (!id) throw new Error("Tried removing activity with null id.");
+        const response = await axios.delete(`/activities/remove/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+    }
 }
 
 export { ActivityRepository };
