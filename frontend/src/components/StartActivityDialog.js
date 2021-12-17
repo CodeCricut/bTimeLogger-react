@@ -22,9 +22,8 @@ import {
 } from "@material-ui/pickers";
 import useDialogFormStyles from "../style/useDialogFormStyles";
 
-import { RUNNING, COMPLETED } from "../data/activity-statuses";
+import { Status } from "../activities/ActivityModel.js";
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import { useMainContext } from "../data/MainContext";
 import useDateTimeStyles from "../style/useDateTimeStyles";
 
 const StartActivityDialog = ({
@@ -36,11 +35,10 @@ const StartActivityDialog = ({
     const classes = useDialogFormStyles();
     const dateTimeClasses = useDateTimeStyles();
     // Should not use main context; replace with useActivityReducer
-    const [_, dispatch] = useMainContext();
 
     const [comment, setComment] = useState("");
 
-    const [status, setStatus] = useState(RUNNING);
+    const [status, setStatus] = useState(Status.RUNNING);
 
     const [fromDate, setFromDate] = useState(new Date());
     const [toDate, setToDate] = useState(new Date());
@@ -53,7 +51,7 @@ const StartActivityDialog = ({
     }, [selectedType, fromDate, toDate]);
 
     const reset = () => {
-        setStatus(RUNNING);
+        setStatus(Status.RUNNING);
         setFromDate(new Date());
         setToDate(new Date());
         setComment("");
@@ -91,7 +89,7 @@ const StartActivityDialog = ({
     const handleCreate = () => {
         const activityType = addType();
 
-        if (status === RUNNING) startRunningActivity(activityType);
+        if (status === Status.RUNNING) startRunningActivity(activityType);
         else createCompletedActivity(activityType);
         onClose();
     };
@@ -130,15 +128,21 @@ const StartActivityDialog = ({
                             onChange={(e) => setStatus(e.target.value)}
                             labelId="activity-status-label"
                         >
-                            <MenuItem value={COMPLETED} key={COMPLETED}>
-                                {COMPLETED}
+                            <MenuItem
+                                value={Status.COMPLETED}
+                                key={Status.COMPLETED}
+                            >
+                                {Status.COMPLETED}
                             </MenuItem>
-                            <MenuItem value={RUNNING} key={RUNNING}>
-                                {RUNNING}
+                            <MenuItem
+                                value={Status.RUNNING}
+                                key={Status.RUNNING}
+                            >
+                                {Status.RUNNING}
                             </MenuItem>
                         </Select>
                     </FormControl>
-                    {status == COMPLETED && (
+                    {status == Status.COMPLETED && (
                         <MuiPickersUtilsProvider utils={MomentUtils}>
                             <FormControl className={classes.labeledInput}>
                                 <Typography className={classes.label}>

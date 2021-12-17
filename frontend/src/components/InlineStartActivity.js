@@ -12,11 +12,9 @@ import StartActivityDialog from "./StartActivityDialog";
 import useInlineStartActivityStyles from "../style/useInlineStartActivityStyles";
 
 import ActivityTypeSelect from "./ActivityTypeSelect";
-import { useMainContext } from "../data/MainContext";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
-    const [{ typeState }, dispatch] = useMainContext();
 
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);

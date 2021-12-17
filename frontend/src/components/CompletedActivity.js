@@ -12,7 +12,7 @@ import EditActivityDialog from "./EditActivityDialog";
 import useCompletedActivityStyles from "../style/useCompletedActivityStyles";
 import { formatDuration } from "../util/timeFormatters";
 import { useThemeSwitcherContext } from "../style/ThemeSwitcherContext";
-import useActivityRepository from "../activities/useActivityRepository";
+import { useActivityRepository } from "../activities/useActivityRepository";
 
 const CompletedActivity = ({ activity }) => {
     const [theme, _] = useThemeSwitcherContext();

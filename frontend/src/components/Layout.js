@@ -28,7 +28,7 @@ import SearchAppBar from "./SearchAppBar";
 
 import SearchParams from "../model/SearchParams";
 
-import useActivityRepository from "../activities/useActivityRepository";
+import { useActivityRepository } from "../activities/useActivityRepository";
 const initialQueryString = new SearchParams().queryString;
 
 const Layout = () => {

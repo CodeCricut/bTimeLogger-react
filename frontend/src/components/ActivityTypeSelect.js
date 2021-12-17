@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useState, useEffect } from "react";
-import useTypeRepository from "../activity-types/useTypeRepository";
+import { useTypeRepository } from "../activity-types/useTypeRepository";
 
 const ActivityTypeSelect = ({ selectedType, setSelectedType, onEnter }) => {
     const [{ types }] = useTypeRepository([]);

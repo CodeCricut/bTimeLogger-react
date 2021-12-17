@@ -1,4 +1,4 @@
-import { isValidDateString } from "../../../server/src/helpers/date-helpers";
+import { isValidDateString } from "../util/date-helpers.js";
 
 /**
  * Represents a single activity.
@@ -105,8 +105,8 @@ const mapObjectsToModels = (objects) => {
 };
 
 const Status = {
- RUNNING = "Running",
-    COMPLETED = "Completed"
-}
+    RUNNING: "Running",
+    COMPLETED: "Completed",
+};
 
 export { ActivityModel, mapObjectToModel, mapObjectsToModels, Status };

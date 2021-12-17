@@ -5,7 +5,6 @@ import {
     selectActivitiesWithText,
     sortActivitiesByNewest,
 } from "../util/activity-selectors";
-import { useMainContext } from "../data/MainContext";
 
 import SearchParams from "../model/SearchParams";
 
@@ -20,7 +19,8 @@ const useActivitySearch = (queryString) => {
         [queryString]
     );
 
-    const [{ activities }, dispatch] = useMainContext();
+    // TODO: get activities from useActivityRepository
+    const activities = [];
 
     const [searchResults, setSearchResults] = useState([]);
     const [isShowingSearchResults, setIsShowingSearchResults] = useState(false);

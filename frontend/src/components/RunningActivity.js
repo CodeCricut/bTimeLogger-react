@@ -5,12 +5,8 @@ import Moment from "react-moment";
 import useRunningActivityStyles from "../style/useRunningActivityStyles";
 import useDate from "../hooks/useDate";
 import { formatDuration } from "../util/timeFormatters";
-import { useMainContext } from "../data/MainContext";
-// import { STOP_ACTIVITY } from "./data/activity-reducer";
 
 const RunningActivity = ({ activity }) => {
-    const [_, dispatch] = useMainContext();
-
     const classes = useRunningActivityStyles();
     const date = useDate(1000);
 

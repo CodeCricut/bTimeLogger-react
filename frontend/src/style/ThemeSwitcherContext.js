@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@material-ui/core";
 import React, { createContext, useContext, useState } from "react";
 
-import { DARK, darkTheme, lightTheme } from ".";
+import { DARK, darkTheme, lightTheme } from "./theme.js";
 
 const ThemeSwitcherContext = createContext();
 
