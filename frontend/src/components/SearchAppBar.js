@@ -28,7 +28,6 @@ const SearchAppBar = ({
 }) => {
     const classes = useSearchAppBarStyles();
 
-    console.log("search app bar rendered");
     return (
         <AppBar position="static">
             <Toolbar className={classes.toolBar}>
