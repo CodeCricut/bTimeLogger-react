@@ -7,6 +7,7 @@ import {
 } from "../util/activity-selectors";
 
 import SearchParams from "../model/SearchParams";
+import { useActivityRepository } from "../activities/useActivityRepository";
 
 const useActivitySearch = (queryString) => {
     const [searchParams, setSearchParams] = useState(
@@ -19,8 +20,7 @@ const useActivitySearch = (queryString) => {
         [queryString]
     );
 
-    // TODO: get activities from useActivityRepository
-    const activities = [];
+    const [activities, {}] = useActivityRepository();
 
     const [searchResults, setSearchResults] = useState([]);
     const [isShowingSearchResults, setIsShowingSearchResults] = useState(false);
