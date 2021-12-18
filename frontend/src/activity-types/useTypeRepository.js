@@ -1,149 +1,90 @@
-import { Methods } from "./useTypeReducer.js";
-import { useActivityTypeContext } from "./ActivityTypeContext.js";
+import {
+    DoneLoadingTypesAction,
+    LoadTypesAction,
+    TypesErrorAction,
+} from "./useTypeReducer.js";
 import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
+import { useTypeReducer } from "./useTypeReducer.js";
+import { useEffect } from "react";
 
-const repo = new ActivityTypeRepository();
+export const repo = new ActivityTypeRepository();
 
-const useTypeRepository = (dependencyArray = []) => {
-    const [state, dispatch] = useActivityTypeContext();
+const useTypeRepository = () => {
+    const [state, dispatch] = useTypeReducer();
 
     const addSingleType = (type) => {
-        if (state.types.contains(type)) {
-            dispatch({
-                type: Methods.DONE_LOADING_TYPES,
-                payload: { types: [...state.types] },
-            });
+        if (state.types.includes(type)) {
+            dispatch(new DoneLoadingTypesAction([...state.types]));
         } else {
-            dispatch({
-                type: Methods.DONE_LOADING_TYPES,
-                payload: { types: [...state.types, type] },
-            });
+            dispatch(new DoneLoadingTypesAction([...state.types, type]));
         }
     };
 
     const removeSingleType = (type) => {
-        if (state.types.contains(type)) {
+        if (state.types.includes(type)) {
             const index = state.types.indexOf(type);
-            dispatch({
-                type: Methods.DONE_LOADING_TYPES,
-                payload: { types: [...state.types.splice(index, 1)] },
-            });
+            const newArr = [...state.types];
+            newArr.splice(index, 1);
+            dispatch(new DoneLoadingTypesAction(newArr));
         } else {
-            dispatch({
-                type: Methods.DONE_LOADING_TYPES,
-                payload: { types: [...state.types] },
-            });
+            dispatch(new DoneLoadingTypesAction([...state.types]));
         }
     };
 
     const setAllTypes = (types) => {
-        dispatch({
-            type: Methods.DONE_LOADING_TYPES,
-            payload: { types },
+        dispatch(new DoneLoadingTypesAction([...types]));
+    };
+
+    const tryModifyTypeStateAsync = async (action) => {
+        dispatch(new LoadTypesAction());
+        try {
+            await action();
+        } catch (e) {
+            dispatch(new TypesErrorAction(e));
+        }
+    };
+
+    const reloadAllTypes = async () => {
+        await tryModifyTypeStateAsync(async () => {
+            const allTypes = await repo.getAll();
+            setAllTypes(allTypes);
         });
     };
 
-    const reloadAll = async () => {
-        dispatch({ type: Methods.LOADING_TYPES });
-        try {
-            const allTypes = await repo.getAll();
-            setAllTypes(allTypes);
-        } catch (e) {
-            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-        }
-    };
-
-    const reloadOne = async (id) => {
-        dispatch({ type: Methods.LOADING_TYPES });
-        try {
+    const reloadOneType = async (id) => {
+        await tryModifyTypeStateAsync(async () => {
             const type = await repo.getById(id);
             addSingleType(type);
-        } catch (e) {
-            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-        }
+        });
     };
 
-    const add = async (type) => {
-        dispatch({ type: Methods.LOADING_TYPES });
-        try {
+    const addType = async (type) => {
+        await tryModifyTypeStateAsync(async () => {
             const addedType = await repo.add(type);
             addSingleType(addedType);
-        } catch (e) {
-            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-        }
+        });
     };
 
-    const remove = async (type) => {
-        dispatch({ type: Methods.LOADING_TYPES });
-        try {
+    const removeType = async (type) => {
+        await tryModifyTypeStateAsync(async () => {
             await repo.remove(type._id);
             removeSingleType(type);
-        } catch (e) {
-            dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-        }
+        });
     };
+
+    useEffect(() => {
+        reloadAllTypes();
+    }, []);
 
     return [
         state,
         {
-            reloadAll,
-            reloadOne,
-            add,
-            remove,
+            reloadAllTypes,
+            reloadOneType,
+            addType,
+            removeType,
         },
     ];
 };
 
 export { useTypeRepository };
-
-// // TODO: TypeRepository should  be its own type that this hook references
-// const useTypeRepository = (dependencyArray = []) => {
-//     const [{ typeState }, dispatch] = useMainContext();
-
-//     const loadTypes = async () => {
-//         dispatch({ type: Methods.LOADING_TYPES });
-//         try {
-//             const response = await axios.get(`/types`);
-//             if (response.status !== 200) throw new Error(response.error);
-//             dispatch({
-//                 type: Methods.DONE_LOADING_TYPES,
-//                 payload: { types: response.data },
-//             });
-//         } catch (e) {
-//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-//         }
-//     };
-
-//     const addType = async (typeName) => {
-//         dispatch({ type: Methods.LOADING_TYPES });
-//         try {
-//             const type = { name: typeName };
-//             const response = await axios.post(`types/add`, type);
-//             if (response.status !== 200) throw new Error(response.error);
-
-//             await loadTypes();
-//         } catch (e) {
-//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-//         }
-//     };
-
-//     const removeType = async (typeId) => {
-//         dispatch({ type: Methods.LOADING_TYPES });
-//         try {
-//             const response = await axios.delete(`types/remove/${typeId}`);
-//             if (response.status !== 200) throw new Error(response.error);
-
-//             await loadTypes();
-//         } catch (e) {
-//             dispatch({ type: Methods.TYPES_ERROR, payload: { error: e } });
-//         }
-//     };
-
-//     useEffect(() => {
-//         loadTypes();
-//     }, dependencyArray);
-
-//     return [typeState, { addType, removeType }];
-// };
-
-// export default useTypeRepository;
