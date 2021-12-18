@@ -1,12 +1,10 @@
-import { unmountComponentAtNode, render } from "react-dom";
-import { act } from "react-dom/test-utils";
-import { useActivityRepository, repo } from "./useActivityRepository";
-import { allActivities } from "../test-helpers/fixtures/activities.js";
+import * as React from "react";
+import { render, fireEvent, screen } from "@testing-library/react";
+
 import { jest, expect, describe, it } from "@jest/globals";
 
-import enzyme, { mount, shallow } from "enzyme";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-enzyme.configure({ adapter: new Adapter() });
+import { useActivityRepository, repo } from "./useActivityRepository";
+import { allActivities } from "../test-helpers/fixtures/activities.js";
 
 function TestComponent(props) {
     const [
@@ -25,26 +23,19 @@ function TestComponent(props) {
         },
     ] = useActivityRepository();
 
-    if (state.error) return <div>Error</div>;
-    if (state.isLoading) return <div>Loading</div>;
-    return <div>{state.activities.length} activities</div>;
+    return (
+        <div>
+            <button data-testid="reloadAll" onClick={reloadAll}>
+                Reload all
+            </button>
+            {state.error && <div>Error</div>}
+            {state.isLoading && <div>Loading</div>}
+            <div>{state.activities.length} activities</div>
+        </div>
+    );
 }
 
-let container = null;
-
-beforeEach(() => {
-    // Set up a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
-});
-
-const GET_ALL_LOADING_TIME = 500;
+const GET_ALL_LOADING_TIME = 50;
 
 const getAllActivitesReturnAllMock = () =>
     new Promise((resolve) => {
@@ -69,58 +60,48 @@ function sleepUntilGetAllLoaded() {
     return sleep(GET_ALL_LOADING_TIME * 2);
 }
 
+// This is a compatibility fix for react-testing-library. See also: https://github.com/facebook/react/pull/14853
+const originalError = console.error;
+beforeAll(() => {
+    console.error = (...args) => {
+        if (/Warning.*not wrapped in act/.test(args[0])) {
+            return;
+        }
+        originalError.call(console, ...args);
+    };
+});
+
+afterAll(() => {
+    console.error = originalError;
+});
+
 describe("useActivityRepository", () => {
     describe("dependencyArray", () => {
         it("should load activites after some time", async () => {
             jest.spyOn(repo, "getAll").mockImplementation(
                 getAllActivitesReturnAllMock
             );
-            // https://stackoverflow.com/a/59085508
-            const component = await mount(<TestComponent />);
-            const div = component.find("div");
+            render(<TestComponent />);
 
-            expect(div.text()).toEqual("Loading");
+            expect(screen.queryByText("Loading")).not.toBeNull();
 
-            await act(() => sleepUntilGetAllLoaded());
-            expect(div.text()).toEqual(`${allActivities.length} activities`);
+            await sleepUntilGetAllLoaded();
 
-            // expect(wrapper.text).toEqual(`${allActivities.length} activities`);
-
-            // act(() => {
-            //     render(<TestComponent />, container);
-            // });
-
-            // Should be loading at first
-            // expect(container.textContent).toBe("Loading");
-
-            // // Should have loaded activities after time
-            // await act(() => sleepUntilGetAllLoaded());
-            // expect(container.textContent).toBe(
-            //     `${allActivities.length} activities`
-            // );
+            expect(
+                screen.queryByText(`${allActivities.length} activities`)
+            ).not.toBeNull();
         });
 
         it("should display error after some time", async () => {
             jest.spyOn(repo, "getAll").mockImplementation(
                 getAllActivitesThrowErrorMock
             );
-            const component = await mount(<TestComponent />);
-            const div = component.find("div");
+            render(<TestComponent />);
+            expect(screen.queryByText("Loading")).not.toBeNull();
 
-            expect(div.text()).toEqual("Loading");
+            await sleepUntilGetAllLoaded();
 
-            await act(() => sleepUntilGetAllLoaded());
-            expect(div.text()).toEqual("Error");
-            // act(() => {
-            //     render(<TestComponent />, container);
-            // });
-
-            // Should be loading at first
-            // expect(container.textContent).toBe("Loading");
-
-            // // Should have loaded activities after time
-            // await act(() => sleepUntilGetAllLoaded());
-            // expect(container.textContent).toBe("Error");
+            expect(screen.queryByText("Error")).not.toBeNull();
         });
     });
 
@@ -130,33 +111,21 @@ describe("useActivityRepository", () => {
                 getAllActivitesReturnEmptyMock
             );
 
-            const component = await mount(<TestComponent />);
-            const div = component.find("div");
-            await act(() => sleepUntilGetAllLoaded());
-
-            // Should have no activities at first
-            expect(div.text()).toEqual("0 activities");
+            render(<TestComponent />);
+            await sleepUntilGetAllLoaded();
+            expect(screen.queryByText("0 activities")).not.toBeNull();
 
             // Reload all
             jest.spyOn(repo, "getAll").mockImplementation(
                 getAllActivitesReturnAllMock
             );
-            await act(() => component.instance().reloadAll());
+            fireEvent.click(screen.getByTestId("reloadAll"));
+            await sleepUntilGetAllLoaded();
 
-            // Should have loaded activities
-            expect(div.text()).toEqual(`${allActivities.length} activities`);
-
-            // await act(async () => {`
-            //     render(<TestComponent />, container);
-            //     await sleepUntilGetAllLoaded();
-            // });
-            // Should have no activities at first
-            // expect(container.textContent).toBe("0 activities");
-
-            // // Should have loaded activities after time
-            // expect(container.textContent).toBe(
-            //     `${allActivities.length} activities`
-            // );
+            // Expect to have loaded acts
+            expect(
+                screen.queryByText(`${allActivities.length} activities`)
+            ).not.toBeNull();
         });
 
         it("returns loaded activities", () => {});
