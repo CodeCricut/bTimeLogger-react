@@ -15,8 +15,8 @@ import { expectActivitiesArrayEqual } from "../test-helpers/util/expect-helpers.
  */
 const expectActivityStatesEqual = (expected, actual) => {
     expectActivitiesArrayEqual(expected.activities, actual.activities);
-    expect(expected.isLoading).toBe(actual.isLoading);
-    expect(expected.error).toEqual(actual.error);
+    expect(actual.isLoading).toBe(expected.isLoading);
+    expect(actual.error).toEqual(expected.error);
 };
 
 describe("activityReducer", () => {
@@ -38,28 +38,11 @@ describe("activityReducer", () => {
         }).toThrow(Error);
     });
 
-    // it("throws if no action type", () => {
-    //     const state = new ActivityState();
-    //     const action = new ActivityReducerAction(null, {});
-
-    //     expect(() => {
-    //         activityReducer(state, action);
-    //     }).toThrow(Error);
-    // });
-
-    // it("throws if invalid action type", () => {
-    //     const state = new ActivityState();
-    //     const action = new ActivityReducerAction("INVALID TYPE", {});
-
-    //     expect(() => {
-    //         activityReducer(state, action);
-    //     }).toThrow(Error);
-    // });
-
-    describe("LOADING_ACTIVITIES action", () => {
+    describe("loading activities action", () => {
         it("returns ActivityState with correct fields", () => {
             const state = new ActivityState(allActivities, false);
             const action = new LoadActivitiesAction();
+            // Should set isLoading to true; not modify activities
             const expected = new ActivityState(allActivities, true);
 
             const actual = activityReducer(state, action);
@@ -78,7 +61,7 @@ describe("activityReducer", () => {
         });
     });
 
-    describe("DONE_LOADING action", () => {
+    describe("done loading activites action", () => {
         it("returns ActivityState with correct fields", () => {
             const state = new ActivityState([], true);
             const action = new DoneLoadingActivitesAction([...allActivities]);
@@ -100,7 +83,7 @@ describe("activityReducer", () => {
         });
     });
 
-    describe("ACTIVITIES_ERROR action", () => {
+    describe("error action", () => {
         it("returns ActivityState with correct fields", () => {
             const state = new ActivityState(allActivities, true);
             const error = new Error("error");
