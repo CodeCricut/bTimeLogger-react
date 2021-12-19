@@ -7,9 +7,9 @@ import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
 import { useTypeReducer } from "./useTypeReducer.js";
 import { useEffect } from "react";
 
-export const repo = new ActivityTypeRepository();
-
-const useTypeRepository = () => {
+const useTypeRepository = (
+    activityTypeRepository = new ActivityTypeRepository()
+) => {
     const [state, dispatch] = useTypeReducer();
 
     const addSingleType = (type) => {
@@ -20,6 +20,17 @@ const useTypeRepository = () => {
         }
     };
 
+    const updateSingleType = (type) => {
+        const index = state.types.findIndex((t) => t._id == type._id);
+        const updatedTypes = [...state.types];
+        if (index === -1) {
+            updatedTypes.push(type);
+        } else {
+            updatedTypes[index] = type;
+        }
+        dispatch(new DoneLoadingTypesAction(updatedTypes));
+    };
+
     const removeSingleType = (type) => {
         if (state.types.includes(type)) {
             const index = state.types.indexOf(type);
@@ -27,7 +38,9 @@ const useTypeRepository = () => {
             newArr.splice(index, 1);
             dispatch(new DoneLoadingTypesAction(newArr));
         } else {
-            dispatch(new DoneLoadingTypesAction([...state.types]));
+            throw new Error(
+                "Tried to remove type from type state which didn't exist."
+            );
         }
     };
 
@@ -46,28 +59,28 @@ const useTypeRepository = () => {
 
     const reloadAllTypes = async () => {
         await tryModifyTypeStateAsync(async () => {
-            const allTypes = await repo.getAll();
+            const allTypes = await activityTypeRepository.getAll();
             setAllTypes(allTypes);
         });
     };
 
     const reloadOneType = async (id) => {
         await tryModifyTypeStateAsync(async () => {
-            const type = await repo.getById(id);
-            addSingleType(type);
+            const type = await activityTypeRepository.getById(id);
+            updateSingleType(type);
         });
     };
 
     const addType = async (type) => {
         await tryModifyTypeStateAsync(async () => {
-            const addedType = await repo.add(type);
+            const addedType = await activityTypeRepository.add(type);
             addSingleType(addedType);
         });
     };
 
     const removeType = async (type) => {
         await tryModifyTypeStateAsync(async () => {
-            await repo.remove(type._id);
+            await activityTypeRepository.remove(type._id);
             removeSingleType(type);
         });
     };
