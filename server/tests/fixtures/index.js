@@ -11,3 +11,5 @@ export const fakeActivity = {
 };
 
 export const NON_EXISTANT_ID = "abc783a04b5e80aba5258999";
+
+export const NON_EXISTANT_NAME = "NON_EXISTANT_NAME";

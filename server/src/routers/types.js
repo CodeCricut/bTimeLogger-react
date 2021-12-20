@@ -12,7 +12,12 @@ const router = express.Router();
 const typeRepo = new TypeRepository();
 
 router.get("/", async (req, res, next) => {
-    const types = await typeRepo.getAll().catch(next);
+    let types;
+    if (req.query.name) {
+        types = await typeRepo.getByName(req.query.name).catch(next);
+    } else {
+        types = await typeRepo.getAll().catch(next);
+    }
 
     res.json(types);
 });

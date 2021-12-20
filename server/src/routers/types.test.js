@@ -4,7 +4,10 @@ import {
     resetDb,
 } from "../../tests/dbHandler.utils.js";
 import request from "supertest";
-import { NON_EXISTANT_ID } from "../../tests/fixtures/index.js";
+import {
+    NON_EXISTANT_ID,
+    NON_EXISTANT_NAME,
+} from "../../tests/fixtures/index.js";
 import dotenv from "dotenv";
 import express from "express";
 import typesRouter from "./types.js";
@@ -92,6 +95,31 @@ describe("get activity type by id", () => {
             .get(`/types/${NON_EXISTANT_ID}`)
             .expect("Content-Type", /html/)
             .expect(404);
+    });
+});
+
+describe("get activity by name", () => {
+    test("should return type by name", async () => {
+        const name = "TEST NAME";
+        const type = await addTestType(name);
+
+        const returnedType = await request(app)
+            .get(`/types`)
+            .query({ name })
+            .expect("Content-Type", /json/)
+            .expect(200)
+            .then((response) => response.body);
+
+        expectActivityTypesEqual(type, returnedType);
+    });
+
+    test("should return not found given non-existant name", async () => {
+        await request(app)
+            .get(`/types`)
+            .query({ name: NON_EXISTANT_NAME })
+            .expect("Content-Type", /html/)
+            .expect(404)
+            .then((response) => response.body);
     });
 });
 

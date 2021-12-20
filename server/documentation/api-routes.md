@@ -20,6 +20,7 @@ Routing for the application is done with [Express](https://expressjs.com/). Addi
 -   [ActivityType routes](#activity-types)
     -   [Get all activity types](#get-all-activity-types)
     -   [Get activity type by ID](#get-activity-type-by-id)
+    -   [Get activity type by name](#get-activity-type-by-name)
     -   [Add activity type](#add-activity-type)
     -   [Remove activity type](#remove-activity-type)
 
@@ -644,6 +645,38 @@ Type with the given ID not found.
 
 ```
 No ID provided.
+```
+
+-   STATUS 500 - internal server error
+
+```
+There was an internal server error while handling the request.
+```
+
+### Get activity type by name
+
+**Route**: GET `?name={name}`
+
+**Description**: Get an activity type by its name
+
+**Example request**: GET `/types?name=reading`
+
+**Example response**
+
+```json
+{
+    "_id": "612170912b5a1716dca11c48",
+    "name": "Reading",
+    "__v": 0
+}
+```
+
+**Error responses**:
+
+-   STATUS 404 - activity type not found
+
+```
+Type with the given name not found.
 ```
 
 -   STATUS 500 - internal server error
