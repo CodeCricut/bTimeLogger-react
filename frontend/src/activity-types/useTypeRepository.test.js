@@ -271,7 +271,7 @@ describe("useTypeRepository", () => {
 
             // Add the duplicate type
             // (Repo will throw if duplicate)
-            jest.spyOn(repoMock, "add").mockRejectedValue(new Error());
+            jest.spyOn(repoMock, "getByName").mockResolvedValue(existingType);
             await act(async () => await addType(existingType));
 
             await sleepUntilLoaded();
@@ -293,6 +293,7 @@ describe("useTypeRepository", () => {
             let [state, { addType }] = result.current;
 
             // Add will throw
+            jest.spyOn(repoMock, "getByName").mockRejectedValue(new Error());
             jest.spyOn(repoMock, "add").mockRejectedValue(new Error());
             await act(async () => await addType(codingType));
 
@@ -311,6 +312,7 @@ describe("useTypeRepository", () => {
 
             // Add one
             const addedType = codingType;
+            jest.spyOn(repoMock, "getByName").mockRejectedValue(new Error());
             jest.spyOn(repoMock, "add").mockResolvedValue(addedType);
 
             let actual;
@@ -320,6 +322,24 @@ describe("useTypeRepository", () => {
 
             // Expect to have added types
             expectActivityTypesEqual(addedType, actual);
+        });
+
+        it("returns duplicate type with id populated", async () => {
+            const existingType = readingType;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([existingType]);
+
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+            let [state, { addType }] = result.current;
+
+            // Add the duplicate type
+            // (Repo will throw if duplicate)
+            jest.spyOn(repoMock, "getByName").mockResolvedValue(existingType);
+            let returnedType;
+            await act(async () => {
+                returnedType = await addType(existingType);
+            });
+
+            expectActivityTypesEqual(existingType, returnedType);
         });
     });
 

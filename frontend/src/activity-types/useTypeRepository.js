@@ -98,15 +98,18 @@ const useTypeRepository = (
      */
     const addType = async (type) => {
         return await tryModifyTypeStateAsync(async () => {
-            if (state.types.findIndex((t) => t.name === type.name) !== -1) {
-                // Do nothing if type already exits.
-                return type;
+            try {
+                // TODO: this is a pretty messy api and getByName should probably return null if not found
+                const existingType = await activityTypeRepository.getByName(
+                    type.name
+                );
+                return existingType;
+            } catch (e) {
+                const addedType = await activityTypeRepository.add(type);
+                addSingleType(addedType);
+
+                return addedType;
             }
-
-            const addedType = await activityTypeRepository.add(type);
-            addSingleType(addedType);
-
-            return addedType;
         });
     };
 
