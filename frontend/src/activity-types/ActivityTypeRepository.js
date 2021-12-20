@@ -24,11 +24,26 @@ class ActivityTypeRepository {
      * Get an activity type by its id
      * @param {string} id The id of the type
      * @returns {Promise<ActivityTypeModel>}
-     * @throws {Error} Will throw if API does not indicate success.
+     * @throws {Error} Will throw if API does not indicate success or id not given.
      */
     async getById(id) {
         if (!id) throw new Error("Tried to get activity type without id.");
         const response = await axios.get(`/types/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        return mapObjectToModel(response.data);
+    }
+
+    /**
+     * Get an activity type by its name
+     * @param {string} name The name of the type
+     * @returns {Promise<ActivityTypeModel>}
+     * @throws {Error} Will throw if API does not indicate success or name not given.
+     */
+    async getByName(name) {
+        if (!name) throw new Error("Tried to get activity type without name.");
+        const response = await axios.get(`/types`, {
+            params: { name: name },
+        });
         if (response.status !== 200) throw new Error(response.error);
         return mapObjectToModel(response.data);
     }

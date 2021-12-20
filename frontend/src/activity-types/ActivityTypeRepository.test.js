@@ -77,6 +77,40 @@ describe("getById", () => {
     });
 });
 
+describe("getByName", () => {
+    it("returns type", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        const expected = allTypes[0];
+        axiosMock.onGet(`/types`).reply((config) => {
+            if (config.params.name === expected.name) return [200, expected];
+            else return [404];
+        });
+
+        const actual = await typeRepo.getByName(expected.name);
+
+        expectActivityTypesEqual(expected, actual);
+    });
+
+    it("throw if not success", async () => {
+        const typeRepo = new ActivityTypeRepository();
+        const expected = allTypes[0];
+        axiosMock.onGet(`/types`).reply(404);
+
+        await expect(async () => {
+            await typeRepo.getByName(expected.name);
+        }).rejects.toThrow(Error);
+    });
+
+    it("throw if not given name", async () => {
+        const typeRepo = new ActivityTypeRepository();
+
+        await expect(async () => {
+            await typeRepo.getByName(null);
+        });
+    });
+});
+
 describe("add", () => {
     it("return added type if success", async () => {
         const typeRepo = new ActivityTypeRepository();
