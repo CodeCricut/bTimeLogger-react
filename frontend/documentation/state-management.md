@@ -5,11 +5,11 @@ Quick links:
 -   [Explicitly Pass Data to Components](#explicitly-pass-data-to-components)
 -   [State Hook](#state-hook) - manage local component state
 -   [Reducer Hook](#reducer-hook) - alternative to state hook when there is complex state logic
--   [Context API](#context-api) - quick overview of the React Context API as used in the app
+-   [Context API](#context-api) - quick overview of the React Context API
     -   [Creating a context](#creating-a-context)
     -   [Context Provider](#context-provider)
     -   [Accessing the context](#accessing-the-context)
--   [MainContext](#maincontext) - overview of how context is used in the app
+-   [ThemeSwitcherContext](#themeswitchercontext) - overview of the theme context used in the app
 
 ## Explicitly Pass Data to Components
 
@@ -120,10 +120,11 @@ Context objects have a `Provider` property which allows nested components
 to access the context.
 
 The Provider component accepts a `value` which is essentially the state accessable
+by the components. Note that there are [caveats to consider](https://reactjs.org/docs/context.html#caveats) when using the Provider.
 
 ```jsx
 function App() {
-    const [theme, setState] = useState({
+    const [state, setState] = useState({
         value: { something: "something" },
     });
     return (
@@ -134,11 +135,9 @@ function App() {
 }
 ```
 
-by the components. Note that there are [caveats to consider](https://reactjs.org/docs/context.html#caveats) when using the Provider.
-
 ### Accessing the Context
 
-The `useContext(MyContext)` hook is used in copmonents to access the value of `MyContext`. When the context is updated, the hook will trigger a rerender of the
+The `useContext(MyContext)` hook is used in components to access the value of `MyContext`. When the context is updated, the hook will trigger a rerender of the
 component.
 
 ```jsx
@@ -154,22 +153,33 @@ The entire app is wrapped in the `MainProvider`:
 
 ```jsx
 function App() {
-    return <MainProvider>// entire app tree</MainProvider>;
+    return <MainProvider>{/* entire app tree */}</MainProvider>;
 }
 ```
 
-# MainContext
+# ThemeSwitcherContext
 
-The Context, Provider, and a useful abstraction around `useContext` are found in [`MainContext.js`](../src/data/MainContext.js).
+In this app, a context is used to share theme state and a way to change the theme
+from within components.
 
-**Context**: The context of the app is `MainContext`.
+`ThemeSwitcherContext`, `ThemeSwitcherProvider`, and `useThemeSwitcherContext`
+can be found in [`ThemeSwitcherContext.js`](../src/style/ThemeSwitcherContext.js).
 
-**Provider**: The entire app is wrapped in `MainProvider`, which is the provider of `MainContext`:
+**Provider**: The entire app is wrapped in `ThemeSwitcherProvider`, which is the provider of `ThemeSwitcherContext`:
 
 ```jsx
 function App() {
-    return <MainProvider>{/* component tree */}</MainProvider>;
+    return (
+        <ThemeSwitcherProvider>{/* component tree */}</ThemeSwitcherProvider>
+    );
 }
 ```
 
-**Access context**: the `useMainContext` hook is used to access the `MainContext`.
+**Access theme context**: the `useThemeSwitcherContext` hook is used to access the `ThemeSwitcherContext`:
+
+```jsx
+function MyComponent() {
+    const myState = useThemeSwitcherContext());
+    // ...
+}
+```
