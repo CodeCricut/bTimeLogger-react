@@ -1,182 +1,152 @@
-import { Methods } from "./useActivityReducer";
-import { useActivityContext } from "./ActivityContext";
+import {
+    useActivityReducer,
+    LoadActivitiesAction,
+    DoneLoadingActivitesAction,
+    ActivitiesErrorAction,
+} from "./useActivityReducer";
 import { ActivityRepository } from "./ActivityRepository";
+import { useEffect } from "react";
 
-const repo = new ActivityRepository();
-
-const useActivityRepository = (dependencyArray = []) => {
-    const [state, dispatch] = useActivityContext();
+const useActivityRepository = (
+    activityRepository = new ActivityRepository()
+) => {
+    const [state, dispatch] = useActivityReducer();
 
     const addSingleActivity = (activity) => {
-        if (state.activities.contains(activity)) {
-            dispatch({
-                type: Methods.DONE_LOADING_ACTIVITIES,
-                payload: { activities: [...state.activities] },
-            });
+        if (state.activities.includes(activity)) {
+            dispatch(new DoneLoadingActivitesAction([...state.activities]));
         } else {
-            dispatch({
-                type: Methods.DONE_LOADING_ACTIVITIES,
-                payload: { activities: [...state.activities, activity] },
-            });
+            dispatch(
+                new DoneLoadingActivitesAction([...state.activities, activity])
+            );
         }
     };
 
-    const removeSingleActivity = (activity) => {
-        if (state.activities.contains(activity)) {
-            const index = state.activities.indexOf(activity);
-            dispatch({
-                type: Methods.DONE_LOADING_ACTIVITIES,
-                payload: { activities: [...state.activities.splice(index, 1)] },
-            });
+    const updateSingleActivity = (activity) => {
+        const index = state.activities.findIndex(
+            (act) => act._id == activity._id
+        );
+        const updatedActivities = [...state.activities];
+        if (index === -1) {
+            updatedActivities.push(activity);
         } else {
-            dispatch({
-                type: Methods.DONE_LOADING_ACTIVITIES,
-                payload: { types: [...state.activities] },
-            });
+            updatedActivities[index] = activity;
+        }
+        dispatch(new DoneLoadingActivitesAction(updatedActivities));
+    };
+
+    const removeSingleActivity = (activity) => {
+        if (state.activities.includes(activity)) {
+            const index = state.activities.indexOf(activity);
+            const newArr = [...state.activities];
+            newArr.splice(index, 1);
+            dispatch(new DoneLoadingActivitesAction(newArr));
+        } else {
+            throw new Error(
+                "Tried to remove activity from activity state which didn't exist."
+            );
         }
     };
 
     const setAllActivities = (activities) => {
-        dispatch({
-            type: Methods.DONE_LOADING_TYPES,
-            payload: { activities },
+        dispatch(new DoneLoadingActivitesAction([...activities]));
+    };
+
+    const tryModifyActivityStateAsync = async (action) => {
+        dispatch(new LoadActivitiesAction());
+        try {
+            await action();
+        } catch (e) {
+            dispatch(new ActivitiesErrorAction(e));
+        }
+    };
+
+    const reloadAllActivities = async () => {
+        await tryModifyActivityStateAsync(async () => {
+            const allActivities = await activityRepository.getAll();
+            setAllActivities(allActivities);
         });
     };
 
-    const reloadAll = async () => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const allActivities = await repo.getAll();
-            setAllActivities(allActivities);
-        } catch (e) {
-            dispatch({ type: Methods.ACTIVITIES_ERROR, payload: { error: e } });
-        }
+    const reloadOneActivity = async (id) => {
+        await tryModifyActivityStateAsync(async () => {
+            const activity = await activityRepository.getById(id);
+            updateSingleActivity(activity);
+        });
     };
 
-    const reloadOne = async (id) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.getById(id);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+    const startNewActivity = async (activity) => {
+        await tryModifyActivityStateAsync(async () => {
+            const startedActivity = await activityRepository.startNew(activity);
+            addSingleActivity(startedActivity);
+        });
     };
 
-    const startNew = async (activity) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.startNew(activity);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
-    };
-
-    const createCompleted = async (activity) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.createCompleted(activity);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+    const createCompletedActivity = async (activity) => {
+        await tryModifyActivityStateAsync(async () => {
+            const createdActivity = await activityRepository.createCompleted(
+                activity
+            );
+            addSingleActivity(createdActivity);
+        });
     };
 
     const stopActivity = async (id) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.stopActivity(id);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        await tryModifyActivityStateAsync(async () => {
+            const activity = await activityRepository.stopActivity(id);
+            updateSingleActivity(activity);
+        });
     };
 
     const resumeActivity = async (id) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.resumeActivity(id);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        await tryModifyActivityStateAsync(async () => {
+            const activity = await activityRepository.resumeActivity(id);
+            updateSingleActivity(activity);
+        });
     };
 
     const trashActivity = async (id) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.trashActivity(id);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        await tryModifyActivityStateAsync(async () => {
+            const activity = await activityRepository.trashActivity(id);
+            updateSingleActivity(activity);
+        });
     };
 
     const untrashActivity = async (id) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.untrashActivity(id);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        await tryModifyActivityStateAsync(async () => {
+            const activity = await activityRepository.untrashActivity(id);
+            updateSingleActivity(activity);
+        });
     };
 
     const updateActivity = async (activity) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            const activity = await repo.updateActivity(activity._id, activity);
-            addSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        await tryModifyActivityStateAsync(async () => {
+            const updatedActivity = await activityRepository.updateActivity(
+                activity._id,
+                activity
+            );
+            updateSingleActivity(updatedActivity);
+        });
     };
 
     const removeActivity = async (activity) => {
-        dispatch({ type: Methods.LOADING_ACTIVITIES });
-        try {
-            await repo.removeActivity(activity._id);
+        await tryModifyActivityStateAsync(async () => {
+            await activityRepository.removeActivity(activity._id);
             removeSingleActivity(activity);
-        } catch (e) {
-            dispatch({
-                type: Methods.ACTIVITIES_ERROR,
-                payload: { error: e },
-            });
-        }
+        });
     };
+
+    useEffect(() => {
+        reloadAllActivities();
+    }, []);
 
     return [
         state,
         {
-            reloadAll,
-            reloadOne,
-            startNew,
-            createCompleted,
+            reloadAllActivities,
+            reloadOneActivity,
+            startNewActivity,
+            createCompletedActivity,
             stopActivity,
             resumeActivity,
             trashActivity,
