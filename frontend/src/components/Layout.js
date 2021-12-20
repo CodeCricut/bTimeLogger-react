@@ -13,8 +13,6 @@ import {
 import { Close as CloseIcon } from "@material-ui/icons";
 
 import InlineStartActivity from "./InlineStartActivity";
-import RunningActivity from "./RunningActivity";
-import CompletedActivity from "./CompletedActivity";
 import TuneSearchDialog from "./TuneSearchDialog";
 import useLayoutStyles from "../style/useLayoutStyles";
 
@@ -29,16 +27,22 @@ import SearchAppBar from "./SearchAppBar";
 import SearchParams from "../model/SearchParams";
 
 import { useActivityRepository } from "../activities/useActivityRepository";
+import { ActivityList } from "./ActivityList";
 const initialQueryString = new SearchParams().queryString;
 
 const Layout = () => {
+    // Style
     const classes = useLayoutStyles();
-    const [{ activities }] = useActivityRepository([]);
 
+    // Local layout state
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
     const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
 
+    // Activity state
+    const [{ activities }] = useActivityRepository();
+
+    // Query string state (for activity filtering)
     const [queryString, setQueryString] = useState(initialQueryString);
 
     const [searchResultActivities, isShowingSearchResults] =
@@ -73,20 +77,7 @@ const Layout = () => {
         return (
             <React.Fragment>
                 {searchResultActivities.length > 0 ? (
-                    <List>
-                        {searchResultActivities.map((act) => (
-                            <React.Fragment key={act._id}>
-                                <ListItem>
-                                    {act.endTime ? (
-                                        <CompletedActivity activity={act} />
-                                    ) : (
-                                        <RunningActivity activity={act} />
-                                    )}
-                                </ListItem>
-                                <Divider />
-                            </React.Fragment>
-                        ))}
-                    </List>
+                    <ActivityList activities={searchResultActivities} />
                 ) : (
                     <Typography variant="h4">No search results</Typography>
                 )}
@@ -101,18 +92,7 @@ const Layout = () => {
         return (
             <List>
                 {sortedActivities.length > 0 ? (
-                    sortedActivities.map((act) => (
-                        <React.Fragment key={act._id}>
-                            <ListItem>
-                                {act.endTime ? (
-                                    <CompletedActivity activity={act} />
-                                ) : (
-                                    <RunningActivity activity={act} />
-                                )}
-                            </ListItem>
-                            <Divider />
-                        </React.Fragment>
-                    ))
+                    <ActivityList activities={sortedActivities} />
                 ) : (
                     <Typography variant="h4">No Activities</Typography>
                 )}
