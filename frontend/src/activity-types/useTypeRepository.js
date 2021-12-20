@@ -7,6 +7,7 @@ import {
 import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
 import { useTypeReducer } from "./useTypeReducer.js";
 import { useEffect } from "react";
+import { ActivityTypeModel } from "./ActivityTypeModel.js";
 
 /**
  * Hook for managing local activity type state which syncs with the server. Provides useful abstractions for managing type state, like loading
@@ -58,7 +59,7 @@ const useTypeRepository = (
     const tryModifyTypeStateAsync = async (action) => {
         dispatch(new LoadTypesAction());
         try {
-            await action();
+            return await action();
         } catch (e) {
             dispatch(new TypesErrorAction(e));
         }
@@ -69,9 +70,10 @@ const useTypeRepository = (
      * server state but not local state, it will be added to local state.
      */
     const reloadAllTypes = async () => {
-        await tryModifyTypeStateAsync(async () => {
+        return await tryModifyTypeStateAsync(async () => {
             const allTypes = await activityTypeRepository.getAll();
             setAllTypes(allTypes);
+            return allTypes;
         });
     };
 
@@ -79,40 +81,45 @@ const useTypeRepository = (
      * Reload, or refresh, an activity type that is already in the state. If the type exists
      * in the server state but not local state, it will be added to local state.
      * @param {string} id The id of the activity type to reload
+     * @returns {Promise<ActivityTypeModel>} The reloaded type.
      */
     const reloadOneType = async (id) => {
-        await tryModifyTypeStateAsync(async () => {
+        return await tryModifyTypeStateAsync(async () => {
             const type = await activityTypeRepository.getById(id);
             updateSingleType(type);
+            return type;
         });
     };
 
     /**
      * Add a type to the state. If a duplicate type already exists, do nothing.
      * @param {ActivityTypeModel} type
-     * @returns {Promise}
+     * @returns {Promise<ActivityTypeModel>} The added type (with the ID populated)
      */
     const addType = async (type) => {
-        await tryModifyTypeStateAsync(async () => {
+        return await tryModifyTypeStateAsync(async () => {
             if (state.types.findIndex((t) => t.name === type.name) !== -1) {
                 // Do nothing if type already exits.
-                return;
+                return type;
             }
 
             const addedType = await activityTypeRepository.add(type);
             addSingleType(addedType);
+
+            return addedType;
         });
     };
 
     /**
      * Remove a type from the state
      * @param {ActivityTypeModel} type
-     * @returns {Promise}
+     * @returns {Promise<ActivityTypeModel>} The removed type.
      */
     const removeType = async (type) => {
-        await tryModifyTypeStateAsync(async () => {
+        return await tryModifyTypeStateAsync(async () => {
             await activityTypeRepository.remove(type._id);
             removeSingleType(type);
+            return type;
         });
     };
 

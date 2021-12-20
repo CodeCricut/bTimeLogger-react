@@ -10,6 +10,10 @@ import {
     emptyTypes,
 } from "../test-helpers/fixtures/activity-types";
 import { ActivityTypeRepository } from "./ActivityTypeRepository";
+import {
+    expectActivityTypeArraysEqual,
+    expectActivityTypesEqual,
+} from "../test-helpers/util/expect-helpers.js";
 
 // This is a compatibility fix for react-testing-library. See also: https://github.com/facebook/react/pull/14853
 const originalError = console.error;
@@ -129,6 +133,27 @@ describe("useTypeRepository", () => {
             [state] = result.current;
             expect(state.error).not.toBeNull();
         });
+
+        it("returns reloaded types", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+
+            // Should be empty at first
+            let [state, { reloadAllTypes }] = result.current;
+            expect(state.types.length).toBe(0);
+
+            // Reload types
+            const reloadedTypes = allTypes;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue(reloadedTypes);
+
+            let returnedTypes;
+            await act(async () => {
+                returnedTypes = await reloadAllTypes();
+            });
+
+            // Expect reloaded types to be returned
+            expectActivityTypeArraysEqual(reloadedTypes, returnedTypes);
+        });
     });
 
     describe("reloadOneType", () => {
@@ -190,6 +215,24 @@ describe("useTypeRepository", () => {
             // Expect error in state
             [state] = result.current;
             expect(state.error).not.toBeNull();
+        });
+
+        it("returns reloaded type with ID populated", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
+
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+            let [state, { reloadOneType }] = result.current;
+
+            // Reload one
+            const reloadedType = codingType;
+            jest.spyOn(repoMock, "getById").mockResolvedValue(reloadedType);
+
+            let returnedType;
+            await act(async () => {
+                returnedType = await reloadOneType(reloadedType._id);
+            });
+
+            expectActivityTypesEqual(reloadedType, returnedType);
         });
     });
 
@@ -258,6 +301,26 @@ describe("useTypeRepository", () => {
             [state] = result.current;
             expect(state.error).not.toBeNull();
         });
+
+        it("returns added type with id populated", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
+
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+            await sleepUntilLoaded();
+            let [state, { addType }] = result.current;
+
+            // Add one
+            const addedType = codingType;
+            jest.spyOn(repoMock, "add").mockResolvedValue(addedType);
+
+            let actual;
+            await act(async () => {
+                actual = await addType({ addedType, _id: null });
+            });
+
+            // Expect to have added types
+            expectActivityTypesEqual(addedType, actual);
+        });
     });
 
     describe("removeType", () => {
@@ -300,6 +363,28 @@ describe("useTypeRepository", () => {
 
             // Expect type to still be in state
             expect(state.types).toContain(originalType);
+        });
+
+        it("returns removed type with id populated", async () => {
+            const removedType = codingType;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([removedType]);
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+
+            await sleepUntilLoaded();
+            let [state, { removeType }] = result.current;
+
+            // Expect to have the type already
+            expect(state.types).toContain(removedType);
+
+            // Remove type
+            jest.spyOn(repoMock, "remove").mockResolvedValue();
+            let returnedVal;
+            await act(async () => {
+                returnedVal = await removeType(removedType);
+            });
+
+            // Expect removed type to be returned
+            expectActivityTypesEqual(removedType, returnedVal);
         });
     });
 });
