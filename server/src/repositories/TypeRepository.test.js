@@ -13,11 +13,13 @@ import {
 import {
     fakeActivityType,
     NON_EXISTANT_ID,
+    NON_EXISTANT_NAME,
 } from "../../tests/fixtures/index.js";
 import {
     expectActivityTypeArraysEqual,
     expectActivityTypesEqual,
 } from "../../tests/util/expect-helpers.js";
+import NameNotProvidedError from "./errors/NameNotProvidedError.js";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
@@ -100,6 +102,31 @@ describe("getById", () => {
         const typeRepo = new TypeRepository();
         await expect(async () => {
             await typeRepo.getById(NON_EXISTANT_ID);
+        }).rejects.toThrow(NotFoundError);
+    });
+});
+
+describe("getByName", () => {
+    test("should return one with valid name", async () => {
+        const expected = await addFakeActivityType();
+        const typeRepo = new TypeRepository();
+
+        const actual = await typeRepo.getByName(expected.name);
+
+        expectActivityTypesEqual(expected, actual);
+    });
+
+    test("should throw if name not provided", async () => {
+        const typeRepo = new TypeRepository();
+        await expect(async () => {
+            await typeRepo.getByName(null);
+        }).rejects.toThrow(NameNotProvidedError);
+    });
+
+    test("should throw if not found", async () => {
+        const typeRepo = new TypeRepository();
+        await expect(async () => {
+            await typeRepo.getByName(NON_EXISTANT_NAME);
         }).rejects.toThrow(NotFoundError);
     });
 });

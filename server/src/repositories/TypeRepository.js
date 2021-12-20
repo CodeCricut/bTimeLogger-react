@@ -4,6 +4,7 @@ import InvalidIdFormatError from "./errors/InvalidIdFormatError.js";
 import MissingModelInfoError from "./errors/MissingModelInfoError.js";
 import NotFoundError from "./errors/NotFoundError.js";
 import AlreadyAddedError from "./errors/AlreadyAddedError.js";
+import NameNotProvidedError from "./errors/NameNotProvidedError.js";
 
 class TypeRepository {
     constructor() {}
@@ -35,6 +36,26 @@ class TypeRepository {
         }
 
         if (!type) throw new NotFoundError("Type with the given ID not found.");
+        return type;
+    }
+
+    /**
+     * Try to get an type with the given name.
+     * @param {string} name The name of the type to query for.
+     * @returns {Promise<ActivityType>} A promise which will resolve to the type with the given name.
+     * @throws {NameNotProvidedError} Will throw if the name is not provided.
+     * @throws {NotFoundError} Will throw if a type with the given name can't be found.
+     */
+    async getByName(name) {
+        if (!name)
+            throw new NameNotProvidedError(
+                "Tried to query for type by name, but name was missing"
+            );
+
+        let type = await ActivityType.findOne({ name: name }).exec();
+
+        if (!type)
+            throw new NotFoundError("Type with the given name not found.");
         return type;
     }
 
