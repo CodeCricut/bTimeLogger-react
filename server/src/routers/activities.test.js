@@ -1,16 +1,20 @@
-import { dbConnect, dbDisconnect, resetDb } from "../dbHandler.utils.js";
+import {
+    dbConnect,
+    dbDisconnect,
+    resetDb,
+} from "../../tests/dbHandler.utils.js";
 import request from "supertest";
 
 import dotenv from "dotenv";
 import express from "express";
-import typesRouter from "../../src/routers/types.js";
-import activitiesRouter from "../../src/routers/activities.js";
+import typesRouter from "./types.js";
+import activitiesRouter from "./activities.js";
 import cors from "cors";
 import {
     expectActivitiesArrayEqual,
     expectActivitiesEqual,
-} from "../util/expect-helpers.js";
-import { NON_EXISTANT_ID } from "../fixtures/index.js";
+} from "../../tests/util/expect-helpers.js";
+import { NON_EXISTANT_ID } from "../../tests/fixtures/index.js";
 
 dotenv.config();
 

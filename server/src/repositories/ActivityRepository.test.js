@@ -1,24 +1,28 @@
-import Activity from "../../src/model/Activity.js";
-import ActivityType from "../../src/model/ActivityType.js";
-import { ActivityRepository } from "../../src/repositories/ActivityRepository.js";
-import AlreadyAddedError from "../../src/repositories/errors/AlreadyAddedError.js";
-import IdNotProvidedError from "../../src/repositories/errors/IdNotProvidedError.js";
-import InvalidIdFormatError from "../../src/repositories/errors/InvalidIdFormatError.js";
-import MissingModelInfoError from "../../src/repositories/errors/MissingModelInfoError.js";
-import NotFoundError from "../../src/repositories/errors/NotFoundError.js";
-import { dbConnect, dbDisconnect, resetDb } from "../dbHandler.utils.js";
+import Activity from "../model/Activity.js";
+import ActivityType from "../model/ActivityType.js";
+import { ActivityRepository } from "./ActivityRepository.js";
+import AlreadyAddedError from "./errors/AlreadyAddedError.js";
+import IdNotProvidedError from "./errors/IdNotProvidedError.js";
+import InvalidIdFormatError from "./errors/InvalidIdFormatError.js";
+import MissingModelInfoError from "./errors/MissingModelInfoError.js";
+import NotFoundError from "./errors/NotFoundError.js";
+import {
+    dbConnect,
+    dbDisconnect,
+    resetDb,
+} from "../../tests/dbHandler.utils.js";
 import {
     expectActivitiesArrayEqual,
     expectActivitiesEqual,
-} from "../util/expect-helpers.js";
+} from "../../tests/util/expect-helpers.js";
 import {
     fakeActivity,
     fakeActivityType,
     NON_EXISTANT_ID,
-} from "../fixtures/index.js";
+} from "../../tests/fixtures/index.js";
 import { jest } from "@jest/globals";
-import { TypeRepository } from "../../src/repositories/TypeRepository.js";
-import InvalidDateError from "../../src/repositories/errors/InvalidDateError.js";
+import { TypeRepository } from "./TypeRepository.js";
+import InvalidDateError from "./errors/InvalidDateError.js";
 
 beforeAll(async () => {
     dbConnect(); // awaiting will let afterEach run; must run to completion
