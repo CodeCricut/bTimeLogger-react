@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useTypeRepository } from "../activity-types/useTypeRepository";
 
 const ActivityTypeSelect = ({ selectedType, setSelectedType, onEnter }) => {
-    const [{ types }] = useTypeRepository([]);
+    const [typeState, dis] = useTypeRepository();
 
     const [value, setValue] = useState(selectedType);
     const [inputValue, setInputValue] = useState(selectedType);

@@ -6,15 +6,24 @@ import {
     Paper,
     Tooltip,
 } from "@material-ui/core";
-import { Add as AddIcon, Tune as TuneIcon } from "@material-ui/icons";
+import {
+    Add as AddIcon,
+    ContactsOutlined,
+    Tune as TuneIcon,
+} from "@material-ui/icons";
 
 import StartActivityDialog from "./StartActivityDialog";
 import useInlineStartActivityStyles from "../style/useInlineStartActivityStyles";
 
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { useActivityRepository } from "../activities/useActivityRepository";
+import { useTypeRepository } from "../activity-types/useTypeRepository";
 
 const InlineStartActivity = () => {
     const classes = useInlineStartActivityStyles();
+
+    const [types, { addType }] = useTypeRepository();
+    const [activities, { startNew }] = useActivityRepository();
 
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);
@@ -26,18 +35,22 @@ const InlineStartActivity = () => {
         else setInvalidType(false);
     }, [selectedType]);
 
-    const startActivity = () => {
+    const startActivity = async () => {
         if (invalidType) return;
 
-        const activityType = {
-            name: selectedType,
-        };
-        const activity = {
-            type: activityType,
-        };
         // TODO: should use type repository
-        // dispatch({ type: ADD_TYPE, payload: activityType });
-        // dispatch({ type: START_ACTIVITY, payload: activity });
+        const type = await addType({
+            name: selectedType,
+        });
+        console.log("added type");
+        console.dir(type);
+
+        const activity = await startNew({
+            type: type._id,
+        });
+        console.log("started new activity");
+        console.dir(activity);
+
         setSelectedType("");
     };
 

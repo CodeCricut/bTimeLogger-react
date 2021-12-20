@@ -1,10 +1,7 @@
-import * as React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
 import { jest, expect, describe, it } from "@jest/globals";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 import { useTypeRepository, repo } from "./useTypeRepository";
-
 import {
     allTypes,
     readingType,
