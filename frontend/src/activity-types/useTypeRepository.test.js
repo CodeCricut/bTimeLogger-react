@@ -215,6 +215,33 @@ describe("useTypeRepository", () => {
             expect(state.types).toContain(addedType);
         });
 
+        it("does not modify state or throw if duplicate type", async () => {
+            const existingType = readingType;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([existingType]);
+
+            const { result } = renderHook(() => useTypeRepository(repoMock));
+            await sleepUntilLoaded();
+            let [state, { addType }] = result.current;
+
+            // Should have the existing type
+            expect(state.types).toContain(existingType);
+
+            // Add the duplicate type
+            // (Repo will throw if duplicate)
+            jest.spyOn(repoMock, "add").mockRejectedValue(new Error());
+            await act(async () => await addType(existingType));
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Expect state to have only 1 of the existing type
+            expect(state.types).toContain(existingType);
+            expect(state.types.length).toBe(1);
+
+            // Expect no error
+            expect(state.error).toBeNull();
+        });
+
         it("sets error if couldn't add one", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 

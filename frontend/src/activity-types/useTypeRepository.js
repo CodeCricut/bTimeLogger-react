@@ -88,12 +88,17 @@ const useTypeRepository = (
     };
 
     /**
-     * Add a type to the state
+     * Add a type to the state. If a duplicate type already exists, do nothing.
      * @param {ActivityTypeModel} type
      * @returns {Promise}
      */
     const addType = async (type) => {
         await tryModifyTypeStateAsync(async () => {
+            if (state.types.findIndex((t) => t.name === type.name) !== -1) {
+                // Do nothing if type already exits.
+                return;
+            }
+
             const addedType = await activityTypeRepository.add(type);
             addSingleType(addedType);
         });
