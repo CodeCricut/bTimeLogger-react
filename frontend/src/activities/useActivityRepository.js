@@ -61,7 +61,7 @@ const useActivityRepository = (
     const tryModifyActivityStateAsync = async (action) => {
         dispatch(new LoadActivitiesAction());
         try {
-            await action();
+            return await action();
         } catch (e) {
             dispatch(new ActivitiesErrorAction(e));
         }
@@ -72,9 +72,10 @@ const useActivityRepository = (
      * server state but not local state, it will be added to local state.
      */
     const reloadAllActivities = async () => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const allActivities = await activityRepository.getAll();
             setAllActivities(allActivities);
+            return allActivities;
         });
     };
 
@@ -84,9 +85,10 @@ const useActivityRepository = (
      * @param {string} id The id of the activity to reload
      */
     const reloadOneActivity = async (id) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.getById(id);
             updateSingleActivity(activity);
+            return activity;
         });
     };
 
@@ -95,9 +97,10 @@ const useActivityRepository = (
      * @param {ActivityModel} activity The activity to start
      */
     const startNewActivity = async (activity) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const startedActivity = await activityRepository.startNew(activity);
             addSingleActivity(startedActivity);
+            return startedActivity;
         });
     };
 
@@ -106,11 +109,12 @@ const useActivityRepository = (
      * @param {ActivityModel} activity The activity to create.
      */
     const createCompletedActivity = async (activity) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const createdActivity = await activityRepository.createCompleted(
                 activity
             );
             addSingleActivity(createdActivity);
+            return createdActivity;
         });
     };
 
@@ -119,9 +123,10 @@ const useActivityRepository = (
      * @param {string} id The id of the activity to stop.
      */
     const stopActivity = async (id) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.stopActivity(id);
             updateSingleActivity(activity);
+            return activity;
         });
     };
 
@@ -130,9 +135,10 @@ const useActivityRepository = (
      * @param {string} id The id of the activity to resume.
      */
     const resumeActivity = async (id) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.resumeActivity(id);
             updateSingleActivity(activity);
+            return activity;
         });
     };
 
@@ -141,9 +147,10 @@ const useActivityRepository = (
      * @param {string} id The id of the activity to trash.
      */
     const trashActivity = async (id) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.trashActivity(id);
             updateSingleActivity(activity);
+            return activity;
         });
     };
 
@@ -152,9 +159,10 @@ const useActivityRepository = (
      * @param {string} id The id of the activity to untrash.
      */
     const untrashActivity = async (id) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.untrashActivity(id);
             updateSingleActivity(activity);
+            return activity;
         });
     };
 
@@ -163,12 +171,13 @@ const useActivityRepository = (
      * @param {ActivityModel} activity The updated activity model, which must contain the id of the activity to update.
      */
     const updateActivity = async (activity) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             const updatedActivity = await activityRepository.updateActivity(
                 activity._id,
                 activity
             );
             updateSingleActivity(updatedActivity);
+            return updatedActivity;
         });
     };
 
@@ -177,9 +186,10 @@ const useActivityRepository = (
      * @param {ActivityModel} activity The activity to remove.
      */
     const removeActivity = async (activity) => {
-        await tryModifyActivityStateAsync(async () => {
+        return await tryModifyActivityStateAsync(async () => {
             await activityRepository.removeActivity(activity._id);
             removeSingleActivity(activity);
+            return activity;
         });
     };
 

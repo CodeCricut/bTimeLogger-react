@@ -13,6 +13,10 @@ import {
 } from "../test-helpers/fixtures/activities.js";
 import { ActivityRepository } from "./ActivityRepository";
 import { endTime } from "../test-helpers/fixtures/dates";
+import {
+    expectActivitiesEqual,
+    expectActivitiesArrayEqual,
+} from "../test-helpers/util/expect-helpers.js";
 
 const LOADING_TIME = 50;
 
@@ -144,6 +148,28 @@ describe("useActivityRepository", () => {
             [state] = result.current;
             expect(state.error).not.toBeNull();
         });
+
+        it("returns reloaded activities", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+
+            let [state, { reloadAllActivities }] = result.current;
+
+            // Reload activities
+            const reloadedActivities = allActivities;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue(
+                reloadedActivities
+            );
+            let returnedActivities;
+            await act(async () => {
+                returnedActivities = await reloadAllActivities();
+            });
+
+            // Expect reloaded activities to be returned
+            expectActivitiesArrayEqual(reloadedActivities, returnedActivities);
+        });
     });
 
     describe("reloadOneActivity", () => {
@@ -206,7 +232,31 @@ describe("useActivityRepository", () => {
             expect(state.activities).not.toContain(originalActivity);
         });
 
-        it("sets error if couldn't load one", async () => {});
+        it("sets error if couldn't load one", async () => {
+            // TODO
+        });
+
+        it("returns reloaded activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+            let [state, { reloadOneActivity }] = result.current;
+
+            // Reload one
+            const reloadedActivity = completedStudyingActivity;
+            jest.spyOn(repoMock, "getById").mockResolvedValue(reloadedActivity);
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await reloadOneActivity(
+                    reloadedActivity._id
+                );
+            });
+
+            // Expect reloaded activity to be returned
+            expectActivitiesEqual(reloadedActivity, returnedActivity);
+        });
     });
 
     describe("startNewActivity", () => {
@@ -252,6 +302,26 @@ describe("useActivityRepository", () => {
 
             // Should not have started type
             expect(state.activities).not.toContain(addedActivity);
+        });
+
+        it("should return started activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+            await sleepUntilLoaded();
+            let [state, { startNewActivity }] = result.current;
+
+            // Start new
+            const startedActivity = startedExerciseActivity;
+            jest.spyOn(repoMock, "startNew").mockResolvedValue(startedActivity);
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await startNewActivity(startedActivity);
+            });
+
+            // Should return started activity
+            expectActivitiesEqual(startedActivity, returnedActivity);
         });
     });
 
@@ -305,6 +375,29 @@ describe("useActivityRepository", () => {
 
             // Should not have started activity
             expect(state.activities).not.toContain(createdActivity);
+        });
+
+        it("should returned created activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+            let [state, { createCompletedActivity }] = result.current;
+
+            // Create completed
+            const createdActivity = completedStudyingActivity;
+            jest.spyOn(repoMock, "createCompleted").mockResolvedValue(
+                createdActivity
+            );
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await createCompletedActivity(
+                    createdActivity
+                );
+            });
+
+            // Should return started activity
+            expectActivitiesEqual(createdActivity, returnedActivity);
         });
     });
 
@@ -361,6 +454,32 @@ describe("useActivityRepository", () => {
             // Should not remove or modify original equation
             expect(state.activities).toContain(activity);
         });
+
+        it("returns stopped activity", async () => {
+            const activity = startedExerciseActivity;
+            // Activity should not be stopped
+            expect(activity.endTimeDate).toBeNull();
+
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([activity]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+
+            let [state, { stopActivity }] = result.current;
+
+            // Stop activity
+            const stoppedActivity = startedExerciseActivity;
+            jest.spyOn(repoMock, "stopActivity").mockResolvedValue(
+                stoppedActivity
+            );
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await stopActivity(activity._id);
+            });
+
+            // Should return stopped activity
+            expectActivitiesEqual(stoppedActivity, returnedActivity);
+        });
     });
 
     describe("resumeActivity", () => {
@@ -398,6 +517,28 @@ describe("useActivityRepository", () => {
 
         it("should set error if couldn't resume activity", () => {
             // TODO
+        });
+
+        it("returns resumed activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+
+            let [state, { resumeActivity }] = result.current;
+
+            // Resume activity
+            const resumedActivity = startedExerciseActivity;
+            jest.spyOn(repoMock, "resumeActivity").mockResolvedValue(
+                resumedActivity
+            );
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await resumeActivity(resumedActivity._id);
+            });
+
+            // Should return resumed activity
+            expectActivitiesEqual(resumedActivity, returnedActivity);
         });
     });
 
@@ -438,6 +579,28 @@ describe("useActivityRepository", () => {
 
         it("should set error if couldn't trash activity", () => {
             // TODO
+        });
+
+        it("returns trashed activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+
+            let [state, { trashActivity }] = result.current;
+
+            // Trash activity
+            const trashedActivity = trashedCodingActivity;
+            jest.spyOn(repoMock, "trashActivity").mockResolvedValue(
+                trashedActivity
+            );
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await trashActivity(trashedActivity._id);
+            });
+
+            // Should return trashed activity
+            expectActivitiesEqual(trashedActivity, returnedActivity);
         });
     });
 
@@ -480,44 +643,64 @@ describe("useActivityRepository", () => {
         it("should set error if couldn't untrash activity", () => {
             // TODO
         });
-    });
 
-    describe("updateActivity", () => {
-        it("should update activity", async () => {
-            const originalActivity = trashedCodingActivity;
-            jest.spyOn(repoMock, "getAll").mockResolvedValue([
-                originalActivity,
-            ]);
+        it("returns untrashed activity", async () => {
+            const trashedActivity = trashedCodingActivity;
+            // Activity should be trashed
+            expect(trashedActivity.trashed).toBe(true);
+
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([trashedActivity]);
             const { result } = renderHook(() =>
                 useActivityRepository(repoMock)
             );
             await sleepUntilLoaded();
 
-            let [state, { updateActivity }] = result.current;
+            let [state, { untrashActivity }] = result.current;
 
-            // Should have original
-            expect(state.activities).toContain(originalActivity);
+            // Should have trashed activity
+            expect(state.activities).toContain(trashedActivity);
 
-            // Update activity
-            const expectedUpdatedActivity = {
-                ...completedStudyingActivity,
-                _id: originalActivity._id,
+            // Untrash activity
+            const expectedUntrashedAct = {
+                ...trashedActivity,
+                trashed: false,
             };
-            jest.spyOn(repoMock, "updateActivity").mockResolvedValue(
-                expectedUpdatedActivity
+            jest.spyOn(repoMock, "untrashActivity").mockResolvedValue(
+                expectedUntrashedAct
             );
-            await act(
-                async () => await updateActivity(expectedUpdatedActivity)
-            );
+            await act(async () => await untrashActivity(trashedActivity._id));
 
             await sleepUntilLoaded();
             [state] = result.current;
+            // Should have untrashed activity
+            expect(state.activities).toContain(expectedUntrashedAct);
 
-            // Should have updated activity
-            expect(state.activities).toContain(expectedUpdatedActivity);
+            // Should not have original trashed activity
+            expect(state.activities).not.toContain(trashedActivity);
+        });
+    });
 
-            // Should not have original activity
-            expect(state.activities).not.toContain(originalActivity);
+    describe("updateActivity", () => {
+        it("should update activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+
+            let [state, { updateActivity }] = result.current;
+
+            // Update activity
+            const updatedActivity = startedExerciseActivity;
+            jest.spyOn(repoMock, "updateActivity").mockResolvedValue(
+                updatedActivity
+            );
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await updateActivity(updatedActivity);
+            });
+
+            // Should return updated activity
+            expectActivitiesEqual(updatedActivity, returnedActivity);
         });
 
         it("should set error if couldn't update activity", () => {
@@ -555,6 +738,30 @@ describe("useActivityRepository", () => {
 
         it("should set error if couldn't remove activity", () => {
             // TODO
+        });
+
+        it("returns removed activity", async () => {
+            let removedActivity = trashedCodingActivity;
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([removedActivity]);
+            const { result } = renderHook(() =>
+                useActivityRepository(repoMock)
+            );
+            await sleepUntilLoaded();
+
+            let [state, { removeActivity }] = result.current;
+
+            // Ensure activity is in state
+            expect(state.activities).toContain(removedActivity);
+
+            // Remove activity
+            jest.spyOn(repoMock, "removeActivity").mockResolvedValue();
+            let returnedActivity;
+            await act(async () => {
+                returnedActivity = await removeActivity(removedActivity);
+            });
+
+            // Should return removed type
+            expectActivitiesEqual(removedActivity, returnedActivity);
         });
     });
 });
