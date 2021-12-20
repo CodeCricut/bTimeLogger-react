@@ -7,6 +7,12 @@ import {
 import { ActivityRepository } from "./ActivityRepository";
 import { useEffect } from "react";
 
+/**
+ * Hooks for managing local activity state which syncs with the server. Provides useful abstractions for managing activity
+ * state.
+ * @param {ActivityRepository} activityRepository Optional repository to use for interacting with activity state. Mostly used for injecting test mocks.
+ * @returns {[ActivityState, { reloadAllActivities, reloadOneActivity, startNewActivity, createCompletedActivity, stopActivity, resumeActivity, trashActivity, untrashActivity, updateActivity, removeActivity}]} Array where the first argument is the activity state, and the second is an object with methods to interact with the state.
+ */
 const useActivityRepository = (
     activityRepository = new ActivityRepository()
 ) => {
@@ -61,6 +67,10 @@ const useActivityRepository = (
         }
     };
 
+    /**
+     * Reload, or refresh, all activities that are present in state. If an activity exists in the
+     * server state but not local state, it will be added to local state.
+     */
     const reloadAllActivities = async () => {
         await tryModifyActivityStateAsync(async () => {
             const allActivities = await activityRepository.getAll();
@@ -68,6 +78,11 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Reload, or refresh, an activity that is already in the state. If the activity exists in
+     * the server state but not local state, it will be added to local state.
+     * @param {string} id The id of the activity to reload
+     */
     const reloadOneActivity = async (id) => {
         await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.getById(id);
@@ -75,6 +90,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Start a new activity and add it to local and server state.
+     * @param {ActivityModel} activity The activity to start
+     */
     const startNewActivity = async (activity) => {
         await tryModifyActivityStateAsync(async () => {
             const startedActivity = await activityRepository.startNew(activity);
@@ -82,6 +101,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Create a new completed activity and add it to local and server state.
+     * @param {ActivityModel} activity The activity to create.
+     */
     const createCompletedActivity = async (activity) => {
         await tryModifyActivityStateAsync(async () => {
             const createdActivity = await activityRepository.createCompleted(
@@ -91,6 +114,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Stop an activity and update in local and server state.
+     * @param {string} id The id of the activity to stop.
+     */
     const stopActivity = async (id) => {
         await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.stopActivity(id);
@@ -98,6 +125,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Resume an activity and update it in local and server state.
+     * @param {string} id The id of the activity to resume.
+     */
     const resumeActivity = async (id) => {
         await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.resumeActivity(id);
@@ -105,6 +136,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Trash an activity and update it in local and server state.
+     * @param {string} id The id of the activity to trash.
+     */
     const trashActivity = async (id) => {
         await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.trashActivity(id);
@@ -112,6 +147,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Untrash an activity and update it in local and server state.
+     * @param {string} id The id of the activity to untrash.
+     */
     const untrashActivity = async (id) => {
         await tryModifyActivityStateAsync(async () => {
             const activity = await activityRepository.untrashActivity(id);
@@ -119,6 +158,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Update an activity in local and server state.
+     * @param {ActivityModel} activity The updated activity model, which must contain the id of the activity to update.
+     */
     const updateActivity = async (activity) => {
         await tryModifyActivityStateAsync(async () => {
             const updatedActivity = await activityRepository.updateActivity(
@@ -129,6 +172,10 @@ const useActivityRepository = (
         });
     };
 
+    /**
+     * Remove an activity completely from local and server state. Unlike trashing an activity, this deletes it completely.
+     * @param {ActivityModel} activity The activity to remove.
+     */
     const removeActivity = async (activity) => {
         await tryModifyActivityStateAsync(async () => {
             await activityRepository.removeActivity(activity._id);
