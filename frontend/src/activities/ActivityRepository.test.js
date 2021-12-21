@@ -32,9 +32,14 @@ describe("getAll", () => {
     });
 
     it("return array of activities", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = allActivities;
+
+        jest.spyOn(typeRepo, "getById").mockImplementation(
+            (id) => expected.find((act) => act.type._id === id).type
+        );
         axiosMock.onGet("/activities").reply(200, allActivitiesApiResponse);
 
         const actual = await activityRepo.getAll();
@@ -92,9 +97,11 @@ describe("getById", () => {
 
 describe("startNew", () => {
     it("return started activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPost(`/activities/start-new`)
             .reply(200, singleActivityApiResponse);
@@ -125,9 +132,11 @@ describe("startNew", () => {
 
 describe("createCompleted", () => {
     it("returns created activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPost(`/activities/create-completed`)
             .reply(200, singleActivityApiResponse);
@@ -160,9 +169,11 @@ describe("createCompleted", () => {
 
 describe("stopActivity", () => {
     it("returns stopped activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPatch(`/activities/stop/${expected._id}`)
             .reply(200, singleActivityApiResponse);
@@ -194,9 +205,11 @@ describe("stopActivity", () => {
 
 describe("resumeActivity", () => {
     it("returns resumed activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPatch(`/activities/resume/${expected._id}`)
             .reply(200, singleActivityApiResponse);
@@ -228,9 +241,11 @@ describe("resumeActivity", () => {
 
 describe("trashActivity", () => {
     it("returns trashed activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPatch(`/activities/trash/${expected._id}`)
             .reply(200, singleActivityApiResponse);
@@ -262,9 +277,11 @@ describe("trashActivity", () => {
 
 describe("untrashActivity", () => {
     it("returns untrashed activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPatch(`/activities/untrash/${expected._id}`)
             .reply(200, singleActivityApiResponse);
@@ -296,9 +313,11 @@ describe("untrashActivity", () => {
 
 describe("updateActivity", () => {
     it("returns updated activity if success", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
 
         const expected = singleExpectedActivity;
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onPut(`/activities/update/${expected._id}`)
             .reply(200, singleActivityApiResponse);

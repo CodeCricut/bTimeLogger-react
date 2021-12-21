@@ -28,7 +28,7 @@ class ActivityRepository {
     async getAll() {
         const response = await axios.get("/activities");
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectsToModels(response.data);
+        return await this.#mapActivitiesResponseToModels(response);
     }
 
     /**
@@ -40,11 +40,8 @@ class ActivityRepository {
         if (!id) throw new Error("Tried getting activity without id.");
         const response = await axios.get(`/activities/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        const responseModel = response.data;
 
-        const type = await this.#typeRepository.getById(responseModel.type);
-
-        return mapObjectToModel({ ...responseModel, type });
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -60,7 +57,7 @@ class ActivityRepository {
             throw new Error("Tried starting new activity which was null.");
         const response = await axios.post(`/activities/start-new`, activity);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -81,7 +78,7 @@ class ActivityRepository {
             activity
         );
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -94,7 +91,7 @@ class ActivityRepository {
         if (!id) throw new Error("Tried stopping activity with null id.");
         const response = await axios.patch(`/activities/stop/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -107,7 +104,7 @@ class ActivityRepository {
         if (!id) throw new Error("Tried resuming activity with null id.");
         const response = await axios.patch(`/activities/resume/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -122,7 +119,7 @@ class ActivityRepository {
         if (!id) throw new Error("Tried trashing activity with null id.");
         const response = await axios.patch(`/activities/trash/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -135,7 +132,7 @@ class ActivityRepository {
         if (!id) throw new Error("Tried untrashing activity with null id.");
         const response = await axios.patch(`/activities/untrash/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -151,7 +148,7 @@ class ActivityRepository {
         if (!id) throw new Error("Tried updating activity with null activity.");
         const response = await axios.put(`/activities/update/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        return await this.#mapActivityResponseToModel(response);
     }
 
     /**
@@ -164,6 +161,29 @@ class ActivityRepository {
         if (!id) throw new Error("Tried removing activity with null id.");
         const response = await axios.delete(`/activities/remove/${id}`);
         if (response.status !== 200) throw new Error(response.error);
+    }
+
+    async #mapActivitiesResponseToModels(response) {
+        const responseModels = response.data;
+
+        const activities = [];
+        for (const model of responseModels) {
+            const type = await this.#typeRepository.getById(model.type);
+            activities.push(mapObjectToModel({ ...model, type }));
+        }
+
+        return activities;
+    }
+
+    /**
+     * @returns {Promise<ActivityModel>}
+     */
+    async #mapActivityResponseToModel(response) {
+        const responseModel = response.data;
+
+        const type = await this.#typeRepository.getById(responseModel.type);
+
+        return mapObjectToModel({ ...responseModel, type });
     }
 }
 
