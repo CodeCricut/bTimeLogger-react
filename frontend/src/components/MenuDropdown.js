@@ -4,6 +4,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const styles = {
     menuSelect: {
+        ".MuiSelect-select": {
+            marginLeft: "5px",
+            padding: "0!important",
+        },
         ".MuiSelect-icon": {
             color: "text.secondary",
             backgroundColor: "transparent",

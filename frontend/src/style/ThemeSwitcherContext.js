@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@mui/material";
 import React, { createContext, useContext, useState } from "react";
 
 import { DARK, darkTheme, lightTheme } from "./theme.js";

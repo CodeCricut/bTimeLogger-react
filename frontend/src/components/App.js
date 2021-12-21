@@ -1,5 +1,5 @@
 import React from "react";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline } from "@mui/material";
 import { ThemeSwitcherProvider } from "../style/ThemeSwitcherContext";
 
 import Layout from "./Layout";
