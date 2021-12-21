@@ -60,10 +60,31 @@ const invalidDateActivity = new ActivityModel(
     false
 );
 
-const allActivities = [
+const singleExpectedActivity = completedStudyingActivity;
+/**
+ * Same as singleExpectedActivity, except the type is the ID of the type rather than the ActivityTypeModel
+ */
+const singleActivityApiResponse = {
+    ...completedStudyingActivity,
+    type: completedStudyingActivity.type._id,
+};
+
+/**
+ * All activity fixtures where each activity has its type property populated with a ActivityTypeModel
+ */
+const allActivitiesWithTypes = [
     completedStudyingActivity,
     startedExerciseActivity,
     trashedCodingActivity,
+];
+
+/**
+ * All activity fixtures where each activity has its type property populated with a string representing an ID of an ActivityTypeModel
+ */
+const allActivitiesApiResponse = [
+    { ...completedStudyingActivity, type: completedStudyingActivity.type._id },
+    { ...startedExerciseActivity, type: startedExerciseActivity.type._id },
+    { ...trashedCodingActivity, type: trashedCodingActivity.type._id },
 ];
 
 export {
@@ -73,5 +94,8 @@ export {
     invalidIdActivity,
     invalidTypeActivity,
     invalidDateActivity,
-    allActivities,
+    allActivitiesWithTypes as allActivities,
+    allActivitiesApiResponse,
+    singleExpectedActivity,
+    singleActivityApiResponse,
 };

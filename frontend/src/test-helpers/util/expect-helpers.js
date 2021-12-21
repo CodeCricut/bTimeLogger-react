@@ -1,3 +1,5 @@
+import { expect } from "@jest/globals";
+
 export const expectActivityTypesEqual = (expected, actual) => {
     expect(actual.name).toEqual(expected.name);
     expect(actual._id).toEqual(expected._id);
@@ -14,6 +16,7 @@ export const expectActivityTypeArraysEqual = (expected, actual) => {
 export const expectActivitiesEqual = (expected, actual) => {
     expect(actual._id).toEqual(expected._id);
     expect(actual.type).toEqual(expected.type);
+    expectActivityTypesEqual(expected.type, actual.type);
     expect(actual.comment).toEqual(expected.comment);
     expect(actual.startTime).toEqual(expected.startTime);
     expect(actual.endTime).toEqual(expected.endTime);

@@ -1,7 +1,12 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
-import { allActivities } from "../test-helpers/fixtures/activities.js";
+import {
+    allActivities,
+    allActivitiesApiResponse,
+    singleExpectedActivity,
+    singleActivityApiResponse,
+} from "../test-helpers/fixtures/activities.js";
 
 import { ActivityRepository } from "./ActivityRepository.js";
 import {
@@ -28,7 +33,7 @@ describe("getAll", () => {
         const activityRepo = new ActivityRepository();
 
         const expected = allActivities;
-        axiosMock.onGet("/activities").reply(200, expected);
+        axiosMock.onGet("/activities").reply(200, allActivitiesApiResponse);
 
         const actual = await activityRepo.getAll();
 
@@ -49,9 +54,11 @@ describe("getAll", () => {
 describe("getById", () => {
     it("returns activity", async () => {
         const activityRepo = new ActivityRepository();
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
 
-        axiosMock.onGet(`/activities/${expected._id}`).reply(200, expected);
+        axiosMock
+            .onGet(`/activities/${expected._id}`)
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.getById(expected._id);
 
@@ -60,7 +67,7 @@ describe("getById", () => {
 
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
 
         axiosMock.onGet(`/activities/${expected._id}`).reply(404);
 
@@ -82,10 +89,12 @@ describe("startNew", () => {
     it("return started activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
-        axiosMock.onPost(`/activities/start-new`).reply(200, expected);
+        const expected = singleExpectedActivity;
+        axiosMock
+            .onPost(`/activities/start-new`)
+            .reply(200, singleActivityApiResponse);
 
-        const actual = await activityRepo.startNew(allActivities[0]);
+        const actual = await activityRepo.startNew(expected);
 
         expectActivitiesEqual(expected, actual);
     });
@@ -96,7 +105,7 @@ describe("startNew", () => {
         axiosMock.onPost(`/activities/start-new`).reply(400);
 
         await expect(async () => {
-            await activityRepo.startNew(allActivities[0]);
+            await activityRepo.startNew(singleExpectedActivity);
         }).rejects.toThrow(Error);
     });
 
@@ -113,10 +122,14 @@ describe("createCompleted", () => {
     it("returns created activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
-        axiosMock.onPost(`/activities/create-completed`).reply(200, expected);
+        const expected = singleExpectedActivity;
+        axiosMock
+            .onPost(`/activities/create-completed`)
+            .reply(200, singleActivityApiResponse);
 
-        const actual = await activityRepo.createCompleted(allActivities[0]);
+        const actual = await activityRepo.createCompleted(
+            singleExpectedActivity
+        );
 
         expectActivitiesEqual(expected, actual);
     });
@@ -127,7 +140,7 @@ describe("createCompleted", () => {
         axiosMock.onPost(`/activities/create-completed`).reply(400);
 
         await expect(async () => {
-            await activityRepo.createCompleted(allActivities[0]);
+            await activityRepo.createCompleted(singleExpectedActivity);
         }).rejects.toThrow(Error);
     });
 
@@ -144,10 +157,10 @@ describe("stopActivity", () => {
     it("returns stopped activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
         axiosMock
             .onPatch(`/activities/stop/${expected._id}`)
-            .reply(200, expected);
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.stopActivity(expected._id);
 
@@ -157,7 +170,7 @@ describe("stopActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onPatch(`/activities/stop/${activity._id}`).reply(400);
 
         await expect(async () => {
@@ -178,10 +191,10 @@ describe("resumeActivity", () => {
     it("returns resumed activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
         axiosMock
             .onPatch(`/activities/resume/${expected._id}`)
-            .reply(200, expected);
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.resumeActivity(expected._id);
 
@@ -191,7 +204,7 @@ describe("resumeActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onPatch(`/activities/resume/${activity._id}`).reply(400);
 
         await expect(async () => {
@@ -212,10 +225,10 @@ describe("trashActivity", () => {
     it("returns trashed activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
         axiosMock
             .onPatch(`/activities/trash/${expected._id}`)
-            .reply(200, expected);
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.trashActivity(expected._id);
 
@@ -225,7 +238,7 @@ describe("trashActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onPatch(`/activities/trash/${activity._id}`).reply(400);
 
         await expect(async () => {
@@ -246,10 +259,10 @@ describe("untrashActivity", () => {
     it("returns untrashed activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
         axiosMock
             .onPatch(`/activities/untrash/${expected._id}`)
-            .reply(200, expected);
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.untrashActivity(expected._id);
 
@@ -259,7 +272,7 @@ describe("untrashActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onPatch(`/activities/untrash/${activity._id}`).reply(400);
 
         await expect(async () => {
@@ -280,10 +293,10 @@ describe("updateActivity", () => {
     it("returns updated activity if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const expected = allActivities[0];
+        const expected = singleExpectedActivity;
         axiosMock
             .onPut(`/activities/update/${expected._id}`)
-            .reply(200, expected);
+            .reply(200, singleActivityApiResponse);
 
         const actual = await activityRepo.updateActivity(
             expected._id,
@@ -296,7 +309,7 @@ describe("updateActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onPut(`/activities/update/${activity._id}`).reply(400);
 
         await expect(async () => {
@@ -307,7 +320,7 @@ describe("updateActivity", () => {
     it("throws if id not given", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
 
         await expect(async () => {
             await activityRepo.updateActivity(null, activity);
@@ -317,7 +330,7 @@ describe("updateActivity", () => {
     it("throws if activity null", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
 
         await expect(async () => {
             await activityRepo.updateActivity(activity._id, null);
@@ -329,7 +342,7 @@ describe("removeActivity", () => {
     it("does not throw if success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onDelete(`/activities/remove/${activity._id}`).reply(200);
 
         await activityRepo.removeActivity(activity._id);
@@ -338,7 +351,7 @@ describe("removeActivity", () => {
     it("throws if not success", async () => {
         const activityRepo = new ActivityRepository();
 
-        const activity = allActivities[0];
+        const activity = singleExpectedActivity;
         axiosMock.onDelete(`/activities/remove/${activity._id}`).reply(400);
 
         await expect(async () => {
