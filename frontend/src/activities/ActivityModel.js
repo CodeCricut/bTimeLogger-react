@@ -1,4 +1,5 @@
 import { isValidDateString } from "../util/date-helpers.js";
+import { ActivityTypeModel } from "../activity-types/ActivityTypeModel.js";
 
 /**
  * Represents a single activity.
@@ -11,8 +12,8 @@ class ActivityModel {
     _id;
 
     /**
-     * The id of the activity type associated with this activity.
-     * @type {string}
+     * The activity type associated with this activity.
+     * @type {ActivityTypeModel}
      */
     type;
 
