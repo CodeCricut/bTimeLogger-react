@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { ActivityTypeRepository } from "../activity-types/ActivityTypeRepository.js";
 import {
     ActivityModel,
     mapObjectToModel,
@@ -10,6 +11,15 @@ import {
  * Class for interacting with the ActivityModel using the REST API.
  */
 class ActivityRepository {
+    #typeRepository;
+
+    /**
+     * @param {ActivityTypeRepository} typeRepository The repository used to load types for activities.
+     */
+    constructor(typeRepository = new ActivityTypeRepository()) {
+        this.#typeRepository = typeRepository;
+    }
+
     /**
      * Get an array of all activities.
      * @returns {Promise<Array<ActivityModel>>}
@@ -30,7 +40,11 @@ class ActivityRepository {
         if (!id) throw new Error("Tried getting activity without id.");
         const response = await axios.get(`/activities/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        return mapObjectToModel(response.data);
+        const responseModel = response.data;
+
+        const type = await this.#typeRepository.getById(responseModel.type);
+
+        return mapObjectToModel({ ...responseModel, type });
     }
 
     /**

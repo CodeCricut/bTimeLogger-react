@@ -1,5 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import { jest, expect, describe, it } from "@jest/globals";
 
 import {
     allActivities,
@@ -13,6 +14,7 @@ import {
     expectActivitiesEqual,
     expectActivitiesArrayEqual,
 } from "../test-helpers/util/expect-helpers.js";
+import { ActivityTypeRepository } from "../activity-types/ActivityTypeRepository.js";
 
 // Allows us to mock the behavior of axios (used for API calls)
 const axiosMock = new MockAdapter(axios);
@@ -53,9 +55,12 @@ describe("getAll", () => {
 
 describe("getById", () => {
     it("returns activity", async () => {
-        const activityRepo = new ActivityRepository();
+        const typeRepo = new ActivityTypeRepository();
+        const activityRepo = new ActivityRepository(typeRepo);
+
         const expected = singleExpectedActivity;
 
+        jest.spyOn(typeRepo, "getById").mockResolvedValue(expected.type);
         axiosMock
             .onGet(`/activities/${expected._id}`)
             .reply(200, singleActivityApiResponse);
