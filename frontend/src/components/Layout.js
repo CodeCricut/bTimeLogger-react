@@ -6,14 +6,17 @@ const styles = {
     startActivityContainer: {},
     activityList: {},
 };
-const Layout = ({ renderStartActivity, renderActivityList }) => {
+const Layout = ({ renderAppBar, renderStartActivity, renderActivityList }) => {
     return (
-        <Container sx={styles.layoutContainer}>
-            <Box sx={styles.startActivityContainer}>
-                {renderStartActivity()}
-            </Box>
-            <Box sx={styles.activityList}>{renderActivityList()}</Box>
-        </Container>
+        <React.Fragment>
+            {renderAppBar()}
+            <Container sx={styles.layoutContainer}>
+                <Box sx={styles.startActivityContainer}>
+                    {renderStartActivity()}
+                </Box>
+                <Box sx={styles.activityList}>{renderActivityList()}</Box>
+            </Container>
+        </React.Fragment>
     );
 };
 

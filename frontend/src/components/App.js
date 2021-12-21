@@ -11,6 +11,7 @@ import useDate from "../hooks/useDate.js";
 
 import { useActivityRepository } from "../activities/useActivityRepository.js";
 import StartedActivityMenu from "./StartedActivityMenu.js";
+import SearchAppBar from "./SearchAppBar";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
@@ -36,6 +37,13 @@ function App() {
         <ThemeSwitcherProvider>
             <CssBaseline />
             <Layout
+                renderAppBar={() => (
+                    <SearchAppBar
+                        renderHeader={() => "BTimeLogger"}
+                        renderRightSide={() => "right side"}
+                        renderSearchbox={() => "search box"}
+                    />
+                )}
                 renderStartActivity={() => {}}
                 renderActivityList={() => (
                     <ActivityList
