@@ -43,7 +43,7 @@ const style = {
  * @param {function(ActivityModel)} props.handleResume
  * @param {function(ActivityModel)} props.handleTrash
  */
-const Activity = ({ activity, renderMenu }) => {
+const Activity = ({ activity, renderMenu, renderDuration }) => {
     return (
         <Box sx={style.activityBox}>
             <Box sx={style.activityName}>
@@ -56,12 +56,7 @@ const Activity = ({ activity, renderMenu }) => {
                 <ActivityTimes activity={activity} />
             </Box>
 
-            <Box sx={style.duration}>
-                <Duration
-                    startDate={activity.startTimeDate}
-                    endDate={activity.endTimeDate}
-                />
-            </Box>
+            <Box sx={style.duration}>{renderDuration()}</Box>
         </Box>
     );
 };

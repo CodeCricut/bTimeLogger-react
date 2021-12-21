@@ -2,12 +2,15 @@ import React from "react";
 import ActivityList from "./ActivityList.js";
 import Activity from "./Activity.js";
 import CompletedActivityMenu from "./CompletedActivityMenu";
+import Duration from "./Duration.js";
+import useDate from "../hooks/useDate.js";
 
 import { useActivityRepository } from "../activities/useActivityRepository.js";
 import StartedActivityMenu from "./StartedActivityMenu.js";
 
 const Layout = () => {
     const [activityState] = useActivityRepository();
+    const currentDate = useDate();
 
     const handleEdit = () => {
         console.log("handle edit");
@@ -39,6 +42,12 @@ const Layout = () => {
                                 handleTrash={() => handleTrash(activity)}
                             />
                         )}
+                        renderDuration={() => (
+                            <Duration
+                                startDate={activity.startTimeDate}
+                                endDate={activity.endTimeDate}
+                            />
+                        )}
                     />
                 )}
                 renderStartedActivity={(activity) => (
@@ -46,6 +55,12 @@ const Layout = () => {
                         activity={activity}
                         renderMenu={() => (
                             <StartedActivityMenu handleStop={handleStop} />
+                        )}
+                        renderDuration={() => (
+                            <Duration
+                                startDate={activity.startTimeDate}
+                                endDate={currentDate}
+                            />
                         )}
                     />
                 )}
