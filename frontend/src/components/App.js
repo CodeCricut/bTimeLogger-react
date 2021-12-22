@@ -11,18 +11,24 @@ import Duration from "./Duration.js";
 import useDate from "../hooks/useDate.js";
 
 import { useActivityRepository } from "../activities/useActivityRepository.js";
+import { useTypeRepository } from "../activity-types/useTypeRepository.js";
 import StartedActivityMenu from "./StartedActivityMenu.js";
 import SearchAppBar from "./SearchAppBar";
 import AppBarHeader from "./AppBarHeader";
 import AppBarSearchBox from "./AppBarSearchBox";
 import SettingsButton from "./SettingsButton";
 import AppDrawer from "./AppDrawer";
+import InlineStartActivity from "./InlineStartActivity";
+import ActivityTypeSelect from "./ActivityTypeSelect";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
+    const [typeState, {}] = useTypeRepository();
     const currentDate = useDate();
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    const [selectedType, setSelectedType] = useState("initial type");
 
     const handleEdit = () => {
         console.log("handle edit");
@@ -76,7 +82,20 @@ function App() {
                         )}
                     />
                 )}
-                renderStartActivity={() => {}}
+                renderStartActivity={() => (
+                    <InlineStartActivity
+                        startActivity={() => console.log("start activity")}
+                        tuneActivity={() => console.log("tune activity")}
+                        renderTypeSelect={() => (
+                            <ActivityTypeSelect
+                                onEnter={() => console.log("type selected")}
+                                types={typeState.types}
+                                selectedType={selectedType}
+                                setSelectedType={setSelectedType}
+                            />
+                        )}
+                    />
+                )}
                 renderActivityList={() => (
                     <ActivityList
                         activities={activityState.activities}
