@@ -14,6 +14,7 @@ import StartedActivityMenu from "./StartedActivityMenu.js";
 import SearchAppBar from "./SearchAppBar";
 import AppBarHeader from "./AppBarHeader";
 import AppBarSearchBox from "./AppBarSearchBox";
+import SettingsButton from "./SettingsButton";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
@@ -56,7 +57,11 @@ function App() {
                                 originalTerm="original"
                             />
                         )}
-                        renderRightSide={() => "right side"}
+                        renderRightSide={() => (
+                            <SettingsButton
+                                onClick={() => console.log("open settings")}
+                            />
+                        )}
                     />
                 )}
                 renderStartActivity={() => {}}

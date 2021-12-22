@@ -23,11 +23,16 @@ const styles = {
         alignItems: "center",
         justifyContent: "flex-start",
     },
-    menuButton: {},
     searchContainer: {
         display: "flex",
     },
-    rightSideContainer: {},
+    rightSideContainer: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        marginLeft: {
+            xs: 2,
+        },
+    },
 };
 
 const SearchAppBar = ({ renderHeader, renderSearchbox, renderRightSide }) => {

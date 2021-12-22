@@ -35,7 +35,6 @@ const styles = {
         pointerEvents: "none",
         height: 1,
     },
-    inputBase: {},
     clearButton: {
         color: "inherit",
     },
