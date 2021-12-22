@@ -20,6 +20,8 @@ import SettingsButton from "./SettingsButton";
 import AppDrawer from "./AppDrawer";
 import InlineStartActivity from "./InlineStartActivity";
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { ActivityProvider } from "../activities/ActivityContext";
+import { ActivityTypeProvider } from "../activity-types/ActivityTypeContext";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
@@ -48,98 +50,124 @@ function App() {
 
     return (
         <ThemeSwitcherProvider>
-            <CssBaseline />
-            <AppDrawer
-                open={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-            >
-                {["Intervals", "Statistics", "Trash"].map((text, index) => (
-                    <ListItem button key={index}>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </AppDrawer>
-            <Layout
-                renderAppBar={() => (
-                    <SearchAppBar
-                        renderHeader={() => (
-                            <AppBarHeader
-                                title={"bTimeLogger"}
-                                handleOpenDrawer={() => setIsDrawerOpen(true)}
-                            />
+            <ActivityProvider>
+                <ActivityTypeProvider>
+                    <CssBaseline />
+                    <AppDrawer
+                        open={isDrawerOpen}
+                        onClose={() => setIsDrawerOpen(false)}
+                    >
+                        {["Intervals", "Statistics", "Trash"].map(
+                            (text, index) => (
+                                <ListItem button key={index}>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            )
                         )}
-                        renderSearchbox={() => (
-                            <AppBarSearchBox
-                                handleSearch={(term) => console.log(term)}
-                                handleTune={() => console.log("tune")}
-                                originalTerm="original"
-                            />
-                        )}
-                        renderRightSide={() => (
-                            <SettingsButton
-                                onClick={() => console.log("open settings")}
-                            />
-                        )}
-                    />
-                )}
-                renderStartActivity={() => (
-                    <InlineStartActivity
-                        startActivity={() => console.log("start activity")}
-                        tuneActivity={() => console.log("tune activity")}
-                        renderTypeSelect={() => (
-                            <ActivityTypeSelect
-                                onEnter={() => console.log("type selected")}
-                                types={typeState.types}
-                                selectedType={selectedType}
-                                setSelectedType={setSelectedType}
-                            />
-                        )}
-                    />
-                )}
-                renderActivityList={() => (
-                    <ActivityList
-                        activities={activityState.activities}
-                        renderCompletedActivity={(activity) => (
-                            <Activity
-                                activity={activity}
-                                renderMenu={() => (
-                                    <CompletedActivityMenu
-                                        handleEdit={() => handleEdit(activity)}
-                                        handleResume={() =>
-                                            handleResume(activity)
-                                        }
-                                        handleTrash={() =>
-                                            handleTrash(activity)
+                    </AppDrawer>
+
+                    {/* TODO: make components reference context and remove render props */}
+                    <Layout
+                        renderAppBar={() => (
+                            <SearchAppBar
+                                renderHeader={() => (
+                                    <AppBarHeader
+                                        title={"bTimeLogger"}
+                                        handleOpenDrawer={() =>
+                                            setIsDrawerOpen(true)
                                         }
                                     />
                                 )}
-                                renderDuration={() => (
-                                    <Duration
-                                        startDate={activity.startTimeDate}
-                                        endDate={activity.endTimeDate}
+                                renderSearchbox={() => (
+                                    <AppBarSearchBox
+                                        handleSearch={(term) =>
+                                            console.log(term)
+                                        }
+                                        handleTune={() => console.log("tune")}
+                                        originalTerm="original"
+                                    />
+                                )}
+                                renderRightSide={() => (
+                                    <SettingsButton
+                                        onClick={() =>
+                                            console.log("open settings")
+                                        }
                                     />
                                 )}
                             />
                         )}
-                        renderStartedActivity={(activity) => (
-                            <Activity
-                                activity={activity}
-                                renderMenu={() => (
-                                    <StartedActivityMenu
-                                        handleStop={handleStop}
+                        renderStartActivity={() => (
+                            <InlineStartActivity
+                                startActivity={() =>
+                                    console.log("start activity")
+                                }
+                                tuneActivity={() =>
+                                    console.log("tune activity")
+                                }
+                                renderTypeSelect={() => (
+                                    <ActivityTypeSelect
+                                        onEnter={() =>
+                                            console.log("type selected")
+                                        }
+                                        types={typeState.types}
+                                        selectedType={selectedType}
+                                        setSelectedType={setSelectedType}
                                     />
                                 )}
-                                renderDuration={() => (
-                                    <Duration
-                                        startDate={activity.startTimeDate}
-                                        endDate={currentDate}
+                            />
+                        )}
+                        renderActivityList={() => (
+                            <ActivityList
+                                activities={activityState.activities}
+                                renderCompletedActivity={(activity) => (
+                                    <Activity
+                                        activity={activity}
+                                        renderMenu={() => (
+                                            <CompletedActivityMenu
+                                                handleEdit={() =>
+                                                    handleEdit(activity)
+                                                }
+                                                handleResume={() =>
+                                                    handleResume(activity)
+                                                }
+                                                handleTrash={() =>
+                                                    handleTrash(activity)
+                                                }
+                                            />
+                                        )}
+                                        renderDuration={() => (
+                                            <Duration
+                                                startDate={
+                                                    activity.startTimeDate
+                                                }
+                                                endDate={activity.endTimeDate}
+                                            />
+                                        )}
+                                    />
+                                )}
+                                renderStartedActivity={(activity) => (
+                                    <Activity
+                                        activity={activity}
+                                        renderMenu={() => (
+                                            <StartedActivityMenu
+                                                handleStop={handleStop}
+                                            />
+                                        )}
+                                        renderDuration={() => (
+                                            <Duration
+                                                startDate={
+                                                    activity.startTimeDate
+                                                }
+                                                endDate={currentDate}
+                                            />
+                                        )}
                                     />
                                 )}
                             />
                         )}
                     />
-                )}
-            />
+                </ActivityTypeProvider>
+            </ActivityProvider>
         </ThemeSwitcherProvider>
     );
 }

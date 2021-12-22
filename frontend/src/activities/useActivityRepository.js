@@ -1,11 +1,11 @@
 import {
-    useActivityReducer,
     LoadActivitiesAction,
     DoneLoadingActivitesAction,
     ActivitiesErrorAction,
 } from "./useActivityReducer";
 import { ActivityRepository } from "./ActivityRepository";
 import { useEffect } from "react";
+import { useActivityContext } from "./ActivityContext";
 
 /**
  * Hooks for managing local activity state which syncs with the server. Provides useful abstractions for managing activity
@@ -16,7 +16,7 @@ import { useEffect } from "react";
 const useActivityRepository = (
     activityRepository = new ActivityRepository()
 ) => {
-    const [state, dispatch] = useActivityReducer();
+    const [state, dispatch] = useActivityContext();
 
     const addSingleActivity = (activity) => {
         if (state.activities.includes(activity)) {

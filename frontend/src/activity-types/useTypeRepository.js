@@ -5,9 +5,9 @@ import {
     TypeState,
 } from "./useTypeReducer.js";
 import { ActivityTypeRepository } from "./ActivityTypeRepository.js";
-import { useTypeReducer } from "./useTypeReducer.js";
 import { useEffect } from "react";
 import { ActivityTypeModel } from "./ActivityTypeModel.js";
+import { useActivityTypeContext } from "./ActivityTypeContext.js";
 
 /**
  * Hook for managing local activity type state which syncs with the server. Provides useful abstractions for managing type state, like loading
@@ -18,7 +18,7 @@ import { ActivityTypeModel } from "./ActivityTypeModel.js";
 const useTypeRepository = (
     activityTypeRepository = new ActivityTypeRepository()
 ) => {
-    const [state, dispatch] = useTypeReducer();
+    const [state, dispatch] = useActivityTypeContext();
 
     const addSingleType = (type) => {
         if (state.types.includes(type)) {
