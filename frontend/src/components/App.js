@@ -12,6 +12,8 @@ import useDate from "../hooks/useDate.js";
 import { useActivityRepository } from "../activities/useActivityRepository.js";
 import StartedActivityMenu from "./StartedActivityMenu.js";
 import SearchAppBar from "./SearchAppBar";
+import AppBarHeader from "./AppBarHeader";
+import AppBarSearchBox from "./AppBarSearchBox";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
@@ -39,9 +41,22 @@ function App() {
             <Layout
                 renderAppBar={() => (
                     <SearchAppBar
-                        renderHeader={() => "BTimeLogger"}
+                        renderHeader={() => (
+                            <AppBarHeader
+                                title={"bTimeLogger"}
+                                handleOpenDrawer={() =>
+                                    console.log("open drawer")
+                                }
+                            />
+                        )}
+                        renderSearchbox={() => (
+                            <AppBarSearchBox
+                                handleSearch={(term) => console.log(term)}
+                                handleTune={() => console.log("tune")}
+                                originalTerm="original"
+                            />
+                        )}
                         renderRightSide={() => "right side"}
-                        renderSearchbox={() => "search box"}
                     />
                 )}
                 renderStartActivity={() => {}}
