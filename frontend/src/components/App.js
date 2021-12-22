@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { CssBaseline } from "@mui/material";
 import { ThemeSwitcherProvider } from "../style/ThemeSwitcherContext";
+import { ListItem, ListItemText } from "@mui/material";
 
 import Layout from "./Layout";
 import ActivityList from "./ActivityList.js";
@@ -15,10 +16,13 @@ import SearchAppBar from "./SearchAppBar";
 import AppBarHeader from "./AppBarHeader";
 import AppBarSearchBox from "./AppBarSearchBox";
 import SettingsButton from "./SettingsButton";
+import AppDrawer from "./AppDrawer";
 
 function App() {
     const [activityState, {}] = useActivityRepository();
     const currentDate = useDate();
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const handleEdit = () => {
         console.log("handle edit");
@@ -39,15 +43,23 @@ function App() {
     return (
         <ThemeSwitcherProvider>
             <CssBaseline />
+            <AppDrawer
+                open={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+            >
+                {["Intervals", "Statistics", "Trash"].map((text, index) => (
+                    <ListItem button key={index}>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+            </AppDrawer>
             <Layout
                 renderAppBar={() => (
                     <SearchAppBar
                         renderHeader={() => (
                             <AppBarHeader
                                 title={"bTimeLogger"}
-                                handleOpenDrawer={() =>
-                                    console.log("open drawer")
-                                }
+                                handleOpenDrawer={() => setIsDrawerOpen(true)}
                             />
                         )}
                         renderSearchbox={() => (
