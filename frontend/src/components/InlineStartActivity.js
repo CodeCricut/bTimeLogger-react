@@ -4,6 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import TuneIcon from "@mui/icons-material/Tune";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { useTypeRepository } from "../activity-types/useTypeRepository";
 
 const styles = {
     outline: {
@@ -26,13 +27,18 @@ const styles = {
     menuButton: {},
 };
 
-const InlineStartActivity = ({
-    renderTypeSelect,
-    startActivity,
-    tuneActivity,
-}) => {
+const InlineStartActivity = () => {
+    const [typeState, {}] = useTypeRepository();
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);
+
+    function startActivity() {
+        console.log("start activity " + selectedType);
+    }
+
+    function tuneActivity() {
+        console.log("tune activity");
+    }
 
     useEffect(() => {
         if (!selectedType) setInvalidType(true);
@@ -42,13 +48,20 @@ const InlineStartActivity = ({
     return (
         <Paper variant="outlined" sx={styles.outline}>
             <FormControl sx={styles.formControl}>
-                <Box sx={styles.select}>{renderTypeSelect()}</Box>
+                <Box sx={styles.select}>
+                    <ActivityTypeSelect
+                        onEnter={() => startActivity()}
+                        types={typeState.types}
+                        selectedType={selectedType}
+                        setSelectedType={setSelectedType}
+                    />
+                </Box>
                 <Box sx={styles.formButtons}>
                     <Tooltip title="Start Activity">
                         <span>
                             <IconButton
                                 disabled={invalidType}
-                                className={styles.menuButton}
+                                sx={styles.menuButton}
                                 color="inherit"
                                 onClick={startActivity}
                             >

@@ -8,6 +8,12 @@ import {
     Box,
 } from "@mui/material";
 
+import AppBarHeader from "./AppBarHeader";
+import AppBarSearchBox from "./AppBarSearchBox";
+import SettingsButton from "./SettingsButton";
+import InlineStartActivity from "./InlineStartActivity";
+import ActivityTypeSelect from "./ActivityTypeSelect";
+
 const styles = {
     toolbar: {
         display: "grid",
@@ -35,13 +41,28 @@ const styles = {
     },
 };
 
-const SearchAppBar = ({ renderHeader, renderSearchbox, renderRightSide }) => {
+const SearchAppBar = ({ openDrawer }) => {
     return (
         <AppBar position="static">
             <Toolbar sx={styles.toolbar}>
-                <Box sx={styles.toolbarHeader}>{renderHeader()}</Box>
-                <Box sx={styles.searchContainer}>{renderSearchbox()}</Box>
-                <Box sx={styles.rightSideContainer}>{renderRightSide()}</Box>
+                <Box sx={styles.toolbarHeader}>
+                    <AppBarHeader
+                        title={"bTimeLogger"}
+                        handleOpenDrawer={openDrawer}
+                    />
+                </Box>
+                <Box sx={styles.searchContainer}>
+                    <AppBarSearchBox
+                        handleSearch={(term) => console.log(term)}
+                        handleTune={() => console.log("tune")}
+                        originalTerm="original"
+                    />
+                </Box>
+                <Box sx={styles.rightSideContainer}>
+                    <SettingsButton
+                        onClick={() => console.log("open settings")}
+                    />
+                </Box>
             </Toolbar>
         </AppBar>
     );
