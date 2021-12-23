@@ -45,6 +45,12 @@ const styles = {
     },
 };
 
+/**
+ * @param {object} props
+ * @param {function} props.handleSearch Callback when the user searches for something.
+ * @param {function} props.handleTune Callback when the user selects the tune search button.
+ * @param {string} props.originalTerm The default value to populate the search box with, if any.
+ */
 const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm = "" }) => {
     const [term, setTerm] = useState(originalTerm);
 
@@ -52,6 +58,11 @@ const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm = "" }) => {
         if (e.key === "Enter") {
             handleSearch(term);
         }
+    };
+
+    const handleClearSearch = () => {
+        setTerm("");
+        handleSearch("");
     };
 
     return (
@@ -70,7 +81,7 @@ const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm = "" }) => {
                     inputProps={{ "aria-label": "search" }}
                 />
             </Box>
-            <IconButton sx={styles.clearButton} onClick={() => setTerm("")}>
+            <IconButton sx={styles.clearButton} onClick={handleClearSearch}>
                 <ClearIcon />
             </IconButton>
             <IconButton sx={styles.tuneIcon} onClick={() => handleTune(term)}>

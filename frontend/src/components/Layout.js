@@ -26,11 +26,15 @@ const Layout = () => {
     const [isStartActivityDialogOpen, setIsStartActivityDialogOpen] =
         useState(false);
 
-    const [queryString, setQueryString] = useState("reading");
+    const [queryString, setQueryString] = useState("");
 
     return (
         <React.Fragment>
-            <SearchAppBar openDrawer={() => setIsDrawerOpen(true)} />
+            <SearchAppBar
+                openDrawer={() => setIsDrawerOpen(true)}
+                queryString={queryString}
+                setQueryString={setQueryString}
+            />
             <AppDrawer
                 open={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
