@@ -12,6 +12,7 @@ import InlineStartActivity from "./InlineStartActivity";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import ActivityList from "./ActivityList.js";
 import AppDrawerItems from "./AppDrawerItems";
+import StartActivityDialog from "./StartActivityDialog";
 
 const styles = {
     layoutContainer: {},
@@ -22,6 +23,8 @@ const styles = {
 const Layout = () => {
     const [activityState, {}] = useActivityRepository();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isStartActivityDialogOpen, setIsStartActivityDialogOpen] =
+        useState(false);
 
     return (
         <React.Fragment>
@@ -32,9 +35,17 @@ const Layout = () => {
             >
                 <AppDrawerItems />
             </AppDrawer>
+            <StartActivityDialog
+                isOpen={isStartActivityDialogOpen}
+                onClose={() => setIsStartActivityDialogOpen(false)}
+            />
             <Container sx={styles.layoutContainer}>
                 <Box sx={styles.startActivityContainer}>
-                    <InlineStartActivity />
+                    <InlineStartActivity
+                        openStartActivityDialog={() =>
+                            setIsStartActivityDialogOpen(true)
+                        }
+                    />
                 </Box>
                 <Box sx={styles.activityList}>
                     <ActivityList activities={activityState.activities} />
