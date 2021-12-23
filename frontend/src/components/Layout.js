@@ -13,6 +13,7 @@ import ActivityTypeSelect from "./ActivityTypeSelect";
 import ActivityList from "./ActivityList.js";
 import AppDrawerItems from "./AppDrawerItems";
 import StartActivityDialog from "./StartActivityDialog";
+import FilteredActivityList from "./FilteredActivityList";
 
 const styles = {
     layoutContainer: {},
@@ -21,10 +22,11 @@ const styles = {
 };
 
 const Layout = () => {
-    const [activityState, {}] = useActivityRepository();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isStartActivityDialogOpen, setIsStartActivityDialogOpen] =
         useState(false);
+
+    const [queryString, setQueryString] = useState("reading");
 
     return (
         <React.Fragment>
@@ -48,7 +50,7 @@ const Layout = () => {
                     />
                 </Box>
                 <Box sx={styles.activityList}>
-                    <ActivityList activities={activityState.activities} />
+                    <FilteredActivityList queryString={queryString} />
                 </Box>
             </Container>
         </React.Fragment>

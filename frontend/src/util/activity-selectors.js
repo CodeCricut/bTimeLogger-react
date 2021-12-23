@@ -1,19 +1,60 @@
-export const selectRunningActivities = (activities) =>
-    activities.filter((act) => !act.endTime);
+import { ActivityModel } from "../activities/ActivityModel";
+import SearchParams from "../model/SearchParams";
 
-export const selectCompletedActivities = (activities) =>
-    activities.filter((act) => act.endTime);
+/**
+ * Get the filtered list of activities based on the search parameters.
+ * @param {Array[ActivityModel]} activities
+ * @param {SearchParams} searchParams
+ */
+function getSearchedActivities(activities, searchParams) {
+    let filteredActivities = [...activities];
 
-export const selectNonTrashedActivities = (activities) =>
-    activities.filter((act) => !act.trashed);
+    if (searchParams.searchTerm) {
+        filteredActivities = selectActivitiesWithText(
+            activities,
+            searchParams.searchTerm
+        );
+    }
 
-export const selectTrashedActivities = (activities) =>
-    activities.filter((act) => act.trashed);
+    if (searchParams.selectedType) {
+        filteredActivities = selectActivitiesOfType(
+            filteredActivities,
+            searchParams.selectedType
+        );
+    }
 
-export const selectActivitiesOfType = (activities, typeName) =>
-    activities.filter((act) => act.type.name === typeName);
+    if (!!(searchParams.fromDate || searchParams.toDate)) {
+        filteredActivities = selectActivitesBetweenDates(
+            filteredActivities,
+            searchParams.fromDate,
+            searchParams.toDate
+        );
+    }
 
-export const selectActivitiesWithCommentText = (activities, searchText) => {
+    return sortActivitiesByNewest(filteredActivities);
+}
+
+function selectRunningActivities(activities) {
+    return activities.filter((act) => !act.endTime);
+}
+
+function selectCompletedActivities(activities) {
+    return activities.filter((act) => act.endTime);
+}
+
+function selectNonTrashedActivities(activities) {
+    return activities.filter((act) => !act.trashed);
+}
+
+function selectTrashedActivities(activities) {
+    return activities.filter((act) => act.trashed);
+}
+
+function selectActivitiesOfType(activities, typeName) {
+    return activities.filter((act) => act.type.name === typeName);
+}
+
+function selectActivitiesWithCommentText(activities, searchText) {
     if (!searchText) return [];
 
     return activities.filter((act) => {
@@ -24,9 +65,9 @@ export const selectActivitiesWithCommentText = (activities, searchText) => {
             act.comment.toLowerCase().indexOf(searchText.toLowerCase()) >= 0;
         return searchContainsComment || commentContainsSearch;
     });
-};
+}
 
-export const selectActivitiesWithTypeText = (activities, typeText) => {
+function selectActivitiesWithTypeText(activities, typeText) {
     if (!typeText) return [];
 
     return activities.filter((act) => {
@@ -36,9 +77,9 @@ export const selectActivitiesWithTypeText = (activities, typeText) => {
             act.type.name.toLowerCase().indexOf(typeText.toLowerCase()) >= 0
         );
     });
-};
+}
 
-export const selectActivitiesWithText = (activities, searchText) => {
+function selectActivitiesWithText(activities, searchText) {
     const withCommentText = selectActivitiesWithCommentText(
         activities,
         searchText
@@ -46,9 +87,9 @@ export const selectActivitiesWithText = (activities, searchText) => {
     const withTypeText = selectActivitiesWithTypeText(activities, searchText);
 
     return arrayUnique(withCommentText.concat(withTypeText));
-};
+}
 
-export const arrayUnique = (array) => {
+function arrayUnique(array) {
     const a = [...array];
     for (var i = 0; i < a.length; ++i) {
         for (var j = i + 1; j < a.length; ++j) {
@@ -57,9 +98,9 @@ export const arrayUnique = (array) => {
     }
 
     return a;
-};
+}
 
-export const arrayJoinShared = (array1, array2) => {
+function arrayJoinShared(array1, array2) {
     const arrayA = [...array1];
     const arrayB = [...array2];
 
@@ -82,37 +123,41 @@ export const arrayJoinShared = (array1, array2) => {
     }
 
     return joined;
-};
+}
 
-const pushUniqueElementsIntoArr = (sourceArr, recieverArr) => {
+function pushUniqueElementsIntoArr(sourceArr, recieverArr) {
     for (let i = 0; i < sourceArr.length; i++) {
         if (recieverArr.findIndex((item) => item === sourceArr[i]) === -1)
             recieverArr.push(sourceArr[i]);
     }
-};
+}
 
-export const selectActivitiesBeforeDate = (activities, endTime) => {
+function selectActivitiesBeforeDate(activities, endTime) {
     if (!endTime) return [...activities];
     return activities.filter((act) =>
         act.startTime ? act.startTime < endTime : true
     );
-};
+}
 
-export const selectActivitiesAfterDate = (activities, startTime) => {
+function selectActivitiesAfterDate(activities, startTime) {
     if (!startTime) return [...activities];
     return activities.filter((act) =>
         act.endTime ? act.endTime > startTime : true
     );
-};
+}
 
-export const selectActivitesBetweenDates = (activities, startTime, endTime) => {
+function selectActivitesBetweenDates(activities, startTime, endTime) {
     const beforeDate = selectActivitiesBeforeDate(activities, endTime);
     const afterDate = selectActivitiesAfterDate(activities, startTime);
     return arrayJoinShared(beforeDate, afterDate);
-};
+}
 
-export const sortActivitiesByNewest = (activities) =>
-    activities.sort((act1, act2) => act2.startTime - act1.startTime);
+function sortActivitiesByNewest(activities) {
+    return activities.sort((act1, act2) => act2.startTime - act1.startTime);
+}
 
-export const sortActivitiesByOldest = (activities) =>
-    activities.sort((act1, act2) => act1.startTime - act2.startTime);
+function sortActivitiesByOldest(activities) {
+    return activities.sort((act1, act2) => act1.startTime - act2.startTime);
+}
+
+export { getSearchedActivities };
