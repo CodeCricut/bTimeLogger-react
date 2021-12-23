@@ -5,6 +5,9 @@ import TuneIcon from "@mui/icons-material/Tune";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import { useTypeRepository } from "../activity-types/useTypeRepository";
+import { useActivityRepository } from "../activities/useActivityRepository";
+import { ActivityModel } from "../activities/ActivityModel";
+import { ActivityTypeModel } from "../activity-types/ActivityTypeModel";
 
 const styles = {
     outline: {
@@ -28,12 +31,17 @@ const styles = {
 };
 
 const InlineStartActivity = ({ openStartActivityDialog }) => {
-    const [typeState, {}] = useTypeRepository();
+    const [typeState, { addType }] = useTypeRepository();
+    const [activityState, { startNewActivity }] = useActivityRepository();
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);
 
-    function startActivity() {
-        console.log("start activity " + selectedType);
+    async function startActivity() {
+        if (invalidType) return;
+        const type = await addType(new ActivityTypeModel("", selectedType));
+        const activity = new ActivityModel(null, type._id, "");
+        const startedActivity = await startNewActivity(activity);
+        setSelectedType("");
     }
 
     function tuneActivity() {
@@ -50,7 +58,7 @@ const InlineStartActivity = ({ openStartActivityDialog }) => {
             <FormControl sx={styles.formControl}>
                 <Box sx={styles.select}>
                     <ActivityTypeSelect
-                        onEnter={() => startActivity()}
+                        onEnter={async () => await startActivity()}
                         types={typeState.types}
                         selectedType={selectedType}
                         setSelectedType={setSelectedType}
@@ -63,7 +71,7 @@ const InlineStartActivity = ({ openStartActivityDialog }) => {
                                 disabled={invalidType}
                                 sx={styles.menuButton}
                                 color="inherit"
-                                onClick={startActivity}
+                                onClick={async () => await startActivity()}
                             >
                                 <AddIcon />
                             </IconButton>
