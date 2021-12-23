@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, InputBase, IconButton } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
@@ -51,8 +51,13 @@ const styles = {
  * @param {function} props.handleTune Callback when the user selects the tune search button.
  * @param {string} props.originalTerm The default value to populate the search box with, if any.
  */
-const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm = "" }) => {
+const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm }) => {
     const [term, setTerm] = useState(originalTerm);
+
+    // Update the search box when the search term changes from the outside
+    useEffect(() => {
+        setTerm(originalTerm);
+    }, [originalTerm]);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {

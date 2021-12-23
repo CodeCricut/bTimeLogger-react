@@ -10,3 +10,5 @@ export const formatDuration = (startTime, endTime) => {
 
 export const formatDate = (date) => moment(date).format("MM/DD/YYYY");
 export const formatDateTime = (date) => moment(date).format();
+
+export const formatQueryDate = (date) => date.toISOString();

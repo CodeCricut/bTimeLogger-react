@@ -1,5 +1,5 @@
 import moment from "moment";
-import { formatDate } from "../util/timeFormatters";
+import { formatQueryDate } from "../util/timeFormatters";
 
 export default class SearchParams {
     searchTerm = "";
@@ -14,8 +14,9 @@ export default class SearchParams {
     get queryString() {
         let queryStr = "";
         if (this.selectedType) queryStr += `selectedType:${this.selectedType}&`;
-        if (this.fromDate) queryStr += `fromDate:${formatDate(this.fromDate)}&`;
-        if (this.toDate) queryStr += `toDate:${formatDate(this.toDate)}&`;
+        if (this.fromDate)
+            queryStr += `fromDate:${formatQueryDate(this.fromDate)}&`;
+        if (this.toDate) queryStr += `toDate:${formatQueryDate(this.toDate)}&`;
         if (this.searchTerm) queryStr += `searchTerm:${this.searchTerm}&`;
 
         queryStr = queryStr.slice(0, queryStr.length - 1);

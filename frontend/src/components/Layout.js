@@ -14,6 +14,7 @@ import ActivityList from "./ActivityList.js";
 import AppDrawerItems from "./AppDrawerItems";
 import StartActivityDialog from "./StartActivityDialog";
 import FilteredActivityList from "./FilteredActivityList";
+import TuneSearchDialog from "./TuneSearchDialog";
 
 const styles = {
     layoutContainer: {},
@@ -23,8 +24,11 @@ const styles = {
 
 const Layout = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
     const [isStartActivityDialogOpen, setIsStartActivityDialogOpen] =
         useState(false);
+
+    const [isTuneSearchDialogOpen, setIsTuneSearchDialogOpen] = useState(false);
 
     const [queryString, setQueryString] = useState("");
 
@@ -34,6 +38,7 @@ const Layout = () => {
                 openDrawer={() => setIsDrawerOpen(true)}
                 queryString={queryString}
                 setQueryString={setQueryString}
+                onOpenTuneDialog={() => setIsTuneSearchDialogOpen(true)}
             />
             <AppDrawer
                 open={isDrawerOpen}
@@ -44,6 +49,12 @@ const Layout = () => {
             <StartActivityDialog
                 isOpen={isStartActivityDialogOpen}
                 onClose={() => setIsStartActivityDialogOpen(false)}
+            />
+            <TuneSearchDialog
+                isOpen={isTuneSearchDialogOpen}
+                onClose={() => setIsTuneSearchDialogOpen(false)}
+                queryString={queryString}
+                setQueryString={setQueryString}
             />
             <Container sx={styles.layoutContainer}>
                 <Box sx={styles.startActivityContainer}>

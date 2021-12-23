@@ -47,9 +47,14 @@ const styles = {
  * @param {function} props.openDrawer Callback when the app drawer should be opened.
  * @param {string} props.queryString The query string in the search box.
  * @param {function} props.setQueryString Callback when the user searches for something.
- * @returns
+ * @param {function} props.onOpenTuneDialog Callback whent the user chooses to open the tune search dialog.
  */
-const SearchAppBar = ({ openDrawer, queryString, setQueryString }) => {
+const SearchAppBar = ({
+    openDrawer,
+    queryString,
+    setQueryString,
+    onOpenTuneDialog,
+}) => {
     return (
         <AppBar position="static">
             <Toolbar sx={styles.toolbar}>
@@ -62,7 +67,7 @@ const SearchAppBar = ({ openDrawer, queryString, setQueryString }) => {
                 <Box sx={styles.searchContainer}>
                     <AppBarSearchBox
                         handleSearch={(term) => setQueryString(term)}
-                        handleTune={() => console.log("tune")}
+                        handleTune={onOpenTuneDialog}
                         originalTerm={queryString}
                     />
                 </Box>
