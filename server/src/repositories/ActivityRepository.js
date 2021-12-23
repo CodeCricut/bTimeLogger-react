@@ -65,9 +65,9 @@ class ActivityRepository {
             );
         }
 
-        let startedActivity;
-        startedActivity = new Activity({
-            ...activity,
+        let startedActivity = new Activity({
+            type: activity.type,
+            comment: activity.comment ?? "",
             startTime: new Date(Date.now()),
             endTime: null,
             trashed: false,
@@ -81,6 +81,8 @@ class ActivityRepository {
      * Create a completed activity. Completed activities must have their start and
      * end times populated, and will not be trashed.
      * @param {Object} activity
+     * @param {string} activity.type The type of activity
+     * @param {string} activity.comment The user comment for this activity
      * @param {string} activity.startTime The date string representing the start time of the activity
      * @param {string} activity.endTime The date string representing the end time of the activity
      * @returns {Promise<Activity>} A promise which will resolve to the created activity
@@ -111,9 +113,9 @@ class ActivityRepository {
             );
         }
 
-        let createdActivity;
-        createdActivity = new Activity({
-            ...activity,
+        let createdActivity = new Activity({
+            type: activity.type,
+            comment: activity.comment ?? "",
             startTime,
             endTime,
             trashed: false,
