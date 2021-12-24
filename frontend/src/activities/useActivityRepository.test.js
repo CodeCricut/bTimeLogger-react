@@ -17,6 +17,20 @@ import {
     expectActivitiesEqual,
     expectActivitiesArrayEqual,
 } from "../test-helpers/util/expect-helpers.js";
+import { ActivityProvider } from "./ActivityContext";
+import { ActivityTypeProvider } from "../activity-types/ActivityTypeContext";
+
+const wrapper = ({ children }) => (
+    <ActivityTypeProvider>
+        <ActivityProvider>{children}</ActivityProvider>
+    </ActivityTypeProvider>
+);
+
+function renderUseRepoTestHook() {
+    return renderHook(() => useActivityRepository(repoMock), {
+        wrapper,
+    });
+}
 
 const LOADING_TIME = 50;
 
@@ -65,9 +79,7 @@ describe("useActivityRepository", () => {
             jest.spyOn(repoMock, "getAll").mockReturnValue(
                 resolveAfterLoadingTime(allActivities)
             );
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
 
             // Wait until loaded
@@ -83,9 +95,7 @@ describe("useActivityRepository", () => {
             jest.spyOn(repoMock, "getAll").mockReturnValue(
                 resolveAfterLoadingTime(allActivities)
             );
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
 
             // Wait until loaded
@@ -99,9 +109,7 @@ describe("useActivityRepository", () => {
 
         it("has error after some time", async () => {
             jest.spyOn(repoMock, "getAll").mockReturnValue(throwErrorAsync);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
 
             // Wait until loaded
@@ -116,9 +124,7 @@ describe("useActivityRepository", () => {
     describe("reloadAllActivities", () => {
         it("loads all activities and sets them in state", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             // Should be empty at first
             let [state, { reloadAllActivities }] = result.current;
@@ -135,9 +141,7 @@ describe("useActivityRepository", () => {
 
         it("sets error if couldn't load all", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadAllActivities }] = result.current;
 
             // Reload activities
@@ -151,9 +155,7 @@ describe("useActivityRepository", () => {
 
         it("returns reloaded activities", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             let [state, { reloadAllActivities }] = result.current;
 
@@ -176,9 +178,7 @@ describe("useActivityRepository", () => {
         it("loads one activity and adds it to the state", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
 
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadOneActivity }] = result.current;
 
             // Should have none at first
@@ -207,9 +207,7 @@ describe("useActivityRepository", () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([
                 originalActivity,
             ]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { reloadOneActivity }] = result.current;
@@ -239,9 +237,7 @@ describe("useActivityRepository", () => {
         it("returns reloaded activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
 
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadOneActivity }] = result.current;
 
             // Reload one
@@ -262,9 +258,7 @@ describe("useActivityRepository", () => {
     describe("startNewActivity", () => {
         it("should add started activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { startNewActivity }] = result.current;
 
@@ -284,9 +278,7 @@ describe("useActivityRepository", () => {
 
         it("should set error if couldn't start activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { startNewActivity }] = result.current;
 
             // Start new will throw
@@ -306,9 +298,7 @@ describe("useActivityRepository", () => {
 
         it("should return started activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { startNewActivity }] = result.current;
 
@@ -328,9 +318,7 @@ describe("useActivityRepository", () => {
     describe("createCompletedActivity", () => {
         it("should add completed activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { createCompletedActivity }] = result.current;
 
@@ -354,9 +342,7 @@ describe("useActivityRepository", () => {
 
         it("should set error if couldn't create completed activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { createCompletedActivity }] = result.current;
 
             // Create completed will throw error
@@ -379,9 +365,7 @@ describe("useActivityRepository", () => {
 
         it("should returned created activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { createCompletedActivity }] = result.current;
 
             // Create completed
@@ -408,9 +392,7 @@ describe("useActivityRepository", () => {
             expect(activity.endTimeDate).toBeNull();
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([activity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { stopActivity }] = result.current;
@@ -437,9 +419,7 @@ describe("useActivityRepository", () => {
         it("should set error if couldn't stop activity", async () => {
             const activity = startedExerciseActivity;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([activity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             let [state, { stopActivity }] = result.current;
 
             // Stop activity will throw error
@@ -461,9 +441,7 @@ describe("useActivityRepository", () => {
             expect(activity.endTimeDate).toBeNull();
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([activity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             let [state, { stopActivity }] = result.current;
 
@@ -489,9 +467,7 @@ describe("useActivityRepository", () => {
             expect(stoppedActivity.endTimeDate).not.toBeNull();
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([stoppedActivity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { resumeActivity }] = result.current;
@@ -521,9 +497,7 @@ describe("useActivityRepository", () => {
 
         it("returns resumed activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             let [state, { resumeActivity }] = result.current;
 
@@ -551,9 +525,7 @@ describe("useActivityRepository", () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([
                 untrashedActivity,
             ]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { trashActivity }] = result.current;
@@ -583,9 +555,7 @@ describe("useActivityRepository", () => {
 
         it("returns trashed activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             let [state, { trashActivity }] = result.current;
 
@@ -611,9 +581,7 @@ describe("useActivityRepository", () => {
             expect(trashedActivity.trashed).toBe(true);
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([trashedActivity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { untrashActivity }] = result.current;
@@ -650,9 +618,7 @@ describe("useActivityRepository", () => {
             expect(trashedActivity.trashed).toBe(true);
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([trashedActivity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { untrashActivity }] = result.current;
@@ -683,9 +649,7 @@ describe("useActivityRepository", () => {
     describe("updateActivity", () => {
         it("should update activity", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
 
             let [state, { updateActivity }] = result.current;
 
@@ -714,9 +678,7 @@ describe("useActivityRepository", () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([
                 originalActivity,
             ]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { removeActivity }] = result.current;
@@ -743,9 +705,7 @@ describe("useActivityRepository", () => {
         it("returns removed activity", async () => {
             let removedActivity = trashedCodingActivity;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([removedActivity]);
-            const { result } = renderHook(() =>
-                useActivityRepository(repoMock)
-            );
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { removeActivity }] = result.current;
