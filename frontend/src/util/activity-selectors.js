@@ -160,4 +160,11 @@ function sortActivitiesByOldest(activities) {
     return activities.sort((act1, act2) => act1.startTime - act2.startTime);
 }
 
-export { getSearchedActivities };
+export {
+    getSearchedActivities,
+    arrayJoinShared,
+    selectActivitesBetweenDates,
+    selectActivitiesAfterDate,
+    selectActivitiesBeforeDate,
+    selectActivitiesWithText,
+};
