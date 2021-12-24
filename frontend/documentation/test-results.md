@@ -1,37 +1,37 @@
 # Test Results
 
-**Last run**: 12/24/2021 at 12:27 AM (commit 4deaba770c4df3025191add01fcabb51387894b7)
+**Last run**: 12/24/2021 at 12:27 AM (commit d60244ba88a9154b6e780e097a4ea30899ae36b9)
 
 ## Results
 
-Test Suites: 6 failed, 6 passed, 12 total
+Test Suites: 4 failed, 8 passed, 12 total
 
-Tests: 56 failed, 91 passed, 147 total
+Tests: 11 failed, 136 passed, 147 total
 
 Snapshots: 0 total
 
-Time: 6.514 s
+Time: 6.946 s
 
 ## Coverage
 
 | File                      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                      |
 | ------------------------- | ------- | -------- | ------- | ------- | -------------------------------------- |
-| All files                 | 33.04   | 39.49    | 21.25   | 33.92   |
+| All files                 | 49.38   | 42.85    | 40.41   | 51.63   |
 | src                       | 0       | 100      | 100     | 0       |
 | config.js                 | 0       | 100      | 100     | 0       | 4-7                                    |
 | index.js                  | 0       | 100      | 100     | 0       | 8                                      |
-| src/activities            | 55.29   | 72       | 44.44   | 56.77   |
-| ActivityContext.js        | 66.66   | 100      | 50      | 60      | 7-8                                    |
+| src/activities            | 92.16   | 77.33    | 98.14   | 97.91   |
+| ActivityContext.js        | 100     | 100      | 100     | 100     |
 | ActivityModel.js          | 96.55   | 100      | 83.33   | 96.15   | 74                                     |
 | ActivityRepository.js     | 82.6    | 70.73    | 100     | 100     | 30-42,59,80,93,106,121,134,148-150,163 |
-| useActivityReducer.js     | 90.62   | 81.81    | 85.71   | 96.55   | 108                                    |
-| useActivityRepository.js  | 2.46    | 0        | 3.57    | 2.46    | 21-200                                 |
-| src/activity-types        | 51.11   | 59.52    | 47.05   | 53.38   |
-| ActivityTypeContext.js    | 66.66   | 100      | 50      | 60      | 6-7                                    |
+| useActivityReducer.js     | 93.75   | 81.81    | 100     | 96.55   | 108                                    |
+| useActivityRepository.js  | 97.53   | 57.14    | 100     | 97.53   | 23,51                                  |
+| src/activity-types        | 90.37   | 69.04    | 97.05   | 96.61   |
+| ActivityTypeContext.js    | 100     | 100      | 100     | 100     |
 | ActivityTypeModel.js      | 93.75   | 100      | 75      | 92.3    | 27                                     |
 | ActivityTypeRepository.js | 70.37   | 55.55    | 100     | 100     | 19-47,61-74                            |
-| useTypeReducer.js         | 90.62   | 81.81    | 85.71   | 96.55   | 106                                    |
-| useTypeRepository.js      | 3.7     | 0        | 6.25    | 3.77    | 23-133                                 |
+| useTypeReducer.js         | 93.75   | 81.81    | 100     | 96.55   | 106                                    |
+| useTypeRepository.js      | 96.29   | 57.14    | 100     | 96.22   | 25,49                                  |
 | src/components            | 3.6     | 5.26     | 2.32    | 3.72    |
 | Activity.js               | 0       | 100      | 0       | 0       | 9-47                                   |
 | ActivityForm.js           | 0       | 0        | 0       | 0       | 20-133                                 |
