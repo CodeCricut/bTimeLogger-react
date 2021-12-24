@@ -13,11 +13,11 @@ export default class SearchParams {
 
     get queryString() {
         let queryStr = "";
-        if (this.selectedType) queryStr += `selectedType:${this.selectedType}&`;
+        if (this.selectedType) queryStr += `selectedType=${this.selectedType}&`;
         if (this.fromDate)
-            queryStr += `fromDate:${formatQueryDate(this.fromDate)}&`;
-        if (this.toDate) queryStr += `toDate:${formatQueryDate(this.toDate)}&`;
-        if (this.searchTerm) queryStr += `searchTerm:${this.searchTerm}&`;
+            queryStr += `fromDate=${formatQueryDate(this.fromDate)}&`;
+        if (this.toDate) queryStr += `toDate=${formatQueryDate(this.toDate)}&`;
+        if (this.searchTerm) queryStr += `searchTerm=${this.searchTerm}&`;
 
         queryStr = queryStr.slice(0, queryStr.length - 1);
 
@@ -37,7 +37,7 @@ export default class SearchParams {
         const parts = queryStr.trim().split("&");
 
         for (const part of parts) {
-            const [key, value] = part.split(":");
+            const [key, value] = part.split("=");
 
             if (key === "fromDate" || key === "toDate")
                 searchParams[key] = moment(value).toDate();

@@ -30,3 +30,10 @@ export const expectActivitiesArrayEqual = (expected, actual) => {
         expectActivitiesEqual(expected[i], actual[i]);
     }
 };
+
+export const expectSearchParamsEqual = (expected, actual) => {
+    expect(actual.searchTerm).toEqual(expected.searchTerm);
+    expect(actual.selectedType).toEqual(expected.selectedType);
+    expect(actual.fromDate).toEqual(expected.fromDate);
+    expect(actual.toDate).toEqual(expected.toDate);
+};
