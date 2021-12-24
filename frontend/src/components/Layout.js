@@ -12,7 +12,7 @@ import InlineStartActivity from "./InlineStartActivity";
 import ActivityTypeSelect from "./ActivityTypeSelect";
 import ActivityList from "./ActivityList.js";
 import AppDrawerItems from "./AppDrawerItems";
-import StartActivityDialog from "./StartActivityDialog";
+import MakeActivityDialog from "./MakeActivityDialog";
 import FilteredActivityList from "./FilteredActivityList";
 import TuneSearchDialog from "./TuneSearchDialog";
 
@@ -25,7 +25,7 @@ const styles = {
 const Layout = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    const [isStartActivityDialogOpen, setIsStartActivityDialogOpen] =
+    const [isMakeActivityDialogOpen, setIsMakeActivityDialogOpen] =
         useState(false);
 
     const [isTuneSearchDialogOpen, setIsTuneSearchDialogOpen] = useState(false);
@@ -46,9 +46,9 @@ const Layout = () => {
             >
                 <AppDrawerItems />
             </AppDrawer>
-            <StartActivityDialog
-                isOpen={isStartActivityDialogOpen}
-                onClose={() => setIsStartActivityDialogOpen(false)}
+            <MakeActivityDialog
+                isOpen={isMakeActivityDialogOpen}
+                onClose={() => setIsMakeActivityDialogOpen(false)}
             />
             <TuneSearchDialog
                 isOpen={isTuneSearchDialogOpen}
@@ -59,8 +59,8 @@ const Layout = () => {
             <Container sx={styles.layoutContainer}>
                 <Box sx={styles.startActivityContainer}>
                     <InlineStartActivity
-                        openStartActivityDialog={() =>
-                            setIsStartActivityDialogOpen(true)
+                        openMakeActivityDialog={() =>
+                            setIsMakeActivityDialogOpen(true)
                         }
                     />
                 </Box>

@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import {
-    FormControl,
-    Select,
-    MenuItem,
-    Box,
-    Typography,
     DialogTitle,
     DialogContent,
-    TextField,
     DialogActions,
     Dialog,
     Button,
@@ -21,7 +15,7 @@ import useActivityFormState from "../hooks/useActivityFormState.js";
 import { useActivityRepository } from "../activities/useActivityRepository.js";
 import { useTypeRepository } from "../activity-types/useTypeRepository.js";
 
-const StartActivityDialog = ({ isOpen, onClose }) => {
+const MakeActivityDialog = ({ isOpen, onClose }) => {
     const [typeState, { addType }] = useTypeRepository();
     const [activityState, { startNewActivity, createCompletedActivity }] =
         useActivityRepository();
@@ -103,4 +97,4 @@ const StartActivityDialog = ({ isOpen, onClose }) => {
     }
 };
 
-export default StartActivityDialog;
+export default MakeActivityDialog;

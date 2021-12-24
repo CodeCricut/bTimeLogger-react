@@ -30,7 +30,7 @@ const styles = {
     menuButton: {},
 };
 
-const InlineStartActivity = ({ openStartActivityDialog }) => {
+const InlineStartActivity = ({ openMakeActivityDialog }) => {
     const [typeState, { addType }] = useTypeRepository();
     const [activityState, { startNewActivity }] = useActivityRepository();
     const [selectedType, setSelectedType] = useState("");
@@ -46,7 +46,7 @@ const InlineStartActivity = ({ openStartActivityDialog }) => {
     }
 
     function tuneActivity() {
-        openStartActivityDialog();
+        openMakeActivityDialog();
     }
 
     useEffect(() => {
