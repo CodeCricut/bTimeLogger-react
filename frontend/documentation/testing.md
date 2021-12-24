@@ -16,3 +16,11 @@ npm run test
 ```
 
 This will launch Jest in watch mode. Every time you save a file, it will re-run the tests.
+
+**Collecting Test Results**:
+
+To collect test results for [`test-results.md`](./test-results.md), run the following command:
+
+```
+npm test -- src --coverage --silent --watchAll=false
+```

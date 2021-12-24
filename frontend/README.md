@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# BTimeLogger React Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Description**: BTimeLogger React Frontend is a web app which allows users to track and analyze how they spend their time on a daily basis.
 
-## Available Scripts
+The app is a single-page web app built with [React](https://reactjs.org/) and the the
+[MUI](https://mui.com/) component library.
 
-In the project directory, you can run:
+The app interacts with a custom REST API found in the `server` project. For more information, see the server project's [README](../server/README.md).
 
-### `npm start`
+**Project status**: feature-incomplete, not fully tested, test failures, and known bugs
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Author**: Andrew Richerson
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Running the Website
 
-### `npm test`
+**Prerequisites**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The following softwares must be installed before the server can run:
 
-### `npm run build`
+-   [Node.js](https://nodejs.org/en/)
+-   [Node Package Manager (NPM)](https://www.npmjs.com/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The server must be running before you can use the frontend app. For detailed instructions on starting the server, see the server project's [README](../server/README.md).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Installing dependencies**: The first time you run the app, you will have to install dependencies first with
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm install
+```
 
-### `npm run eject`
+**Starting the app**: To run the app, run
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+npm run start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Debugging**:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+For detailed instructions on debugging the app, see the [VS Code docs](https://code.visualstudio.com/docs/nodejs/reactjs-tutorial#_debugging-react).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Once the `.vscode/launch.json` file is present, open a new VS Code Javascript Debug Terminal and run `npm run start`, then press
+`F5` or the green arrow in the Debug menu of VS Code.
 
-## Learn More
+**Stopping the app**: To stop the app, run `^C` (Ctrl+C).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Dependency details can be found in the "dependencies" section of [package.json](./package.json).
 
-### Code Splitting
+The main dependencies of the solution include
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+-   [React](https://www.npmjs.com/package/react) - web app framework
+-   [Axios](https://www.npmjs.com/package/axios) - HTTP client for interacting with REST API
+-   [MUI](https://mui.com/) - React UI library
 
-### Analyzing the Bundle Size
+## Software Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The entry point of the application is [src/index.js](./src/index.js). It is responsible for:
 
-### Making a Progressive Web App
+-   rendering the React component tree in the `root` element of the HTML document
+-   configuring global defaults
+-   importing globally used fonts and other resources
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Components
 
-### Advanced Configuration
+The app is built up of modular React "components" found in the `src/components` directory.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The main component is the `App` component.
 
-### Deployment
+### State Management
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Details about local and global state management can be found in [`state-management.md`](./documentation/state-management.md)
 
-### `npm run build` fails to minify
+### API interaction
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+API interaction is done through the "repository" classes (`ActivityRepository` and `ActivityTypeRepository`.) To achieve the interaction, the Axios library is used.
+
+### Style
+
+Information about styling can be found in our [MUI documentation](./documentation/mui.md).
+
+## Testing & Test Results
+
+The frontend has not been fully tested. Additional UI and unit tests are planned
+to achieve near 100% coverage and passing rate.
+
+**Test results**: not fully tested, test failures. The latest test results can be found in [`documentation/test-results.md`](./documentation/test-results.md).
+
+**Run all tests**: Run all tests with `npm run test`.
+
+More information on test design and running the test suite can be found in [`documentation/testing.md`](./documentation/testing.md).
