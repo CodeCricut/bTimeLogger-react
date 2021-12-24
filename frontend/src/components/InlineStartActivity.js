@@ -37,10 +37,11 @@ const InlineStartActivity = ({ openStartActivityDialog }) => {
     const [invalidType, setInvalidType] = useState(false);
 
     async function startActivity() {
+        // TODO: it is pretty messy to have to add a type just to add an activity. Ideally, we would have some nice function like startNewActivity(selectedTypeName).
         if (invalidType) return;
         const type = await addType(new ActivityTypeModel("", selectedType));
         const activity = new ActivityModel(null, type._id, "");
-        const startedActivity = await startNewActivity(activity);
+        await startNewActivity(activity);
         setSelectedType("");
     }
 
