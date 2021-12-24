@@ -29,6 +29,7 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexGrow: 1,
     },
     searchIconContainer: {
         padding: (theme) => theme.spacing(0, 2),
@@ -86,12 +87,17 @@ const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm }) => {
                     inputProps={{ "aria-label": "search" }}
                 />
             </Box>
-            <IconButton sx={styles.clearButton} onClick={handleClearSearch}>
-                <ClearIcon />
-            </IconButton>
-            <IconButton sx={styles.tuneIcon} onClick={() => handleTune(term)}>
-                <TuneIcon />
-            </IconButton>
+            <Box>
+                <IconButton sx={styles.clearButton} onClick={handleClearSearch}>
+                    <ClearIcon />
+                </IconButton>
+                <IconButton
+                    sx={styles.tuneIcon}
+                    onClick={() => handleTune(term)}
+                >
+                    <TuneIcon />
+                </IconButton>
+            </Box>
         </Box>
     );
 };
