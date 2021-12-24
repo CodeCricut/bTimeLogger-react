@@ -76,7 +76,7 @@ const ActivityForm = ({ activityFormState, activityFormDispatch }) => {
                 </Select>
             </FormControl>
 
-            {isActivityRunning && (
+            {!isActivityRunning && (
                 <>
                     <FormControl sx={styles.labeledInput}>
                         <Typography sx={styles.label}>From</Typography>
