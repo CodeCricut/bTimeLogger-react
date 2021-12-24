@@ -15,15 +15,3 @@ test("shows provided tooltip on hover", () => {
 
     screen.getByText(tooltip);
 });
-
-test("shows default tooltip 'Options'", () => {
-    const expectedTooltip = "Options";
-    render(
-        <MenuDropdown>
-            <MenuItem />
-        </MenuDropdown>
-    );
-    fireEvent.mouseOver(screen.getByRole("button"));
-
-    screen.getByText(expectedTooltip);
-});
