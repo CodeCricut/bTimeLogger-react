@@ -88,4 +88,4 @@ to achieve near 100% coverage and passing rate.
 
 **Run all tests**: Run all tests with `npm run test`.
 
-More information on test design and running the test suite can be found in [`documentation/testing.md`](./documentation/testing.md).
+More information on test design and running the test suite can be found in [`documentation/testing.md`](./documentation/testing.md)
