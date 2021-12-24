@@ -14,6 +14,8 @@ import {
     expectActivityTypeArraysEqual,
     expectActivityTypesEqual,
 } from "../test-helpers/util/expect-helpers.js";
+import { ActivityTypeProvider } from "./ActivityTypeContext";
+import { ActivityProvider } from "../activities/ActivityContext";
 
 // This is a compatibility fix for react-testing-library. See also: https://github.com/facebook/react/pull/14853
 const originalError = console.error;
@@ -31,6 +33,18 @@ afterAll(() => {
 });
 
 const repoMock = new ActivityTypeRepository();
+
+const wrapper = ({ children }) => (
+    <ActivityTypeProvider>
+        <ActivityProvider>{children}</ActivityProvider>
+    </ActivityTypeProvider>
+);
+
+function renderUseRepoTestHook() {
+    return renderHook(() => useTypeRepository(repoMock), {
+        wrapper,
+    });
+}
 
 const LOADING_TIME = 50;
 
@@ -62,7 +76,7 @@ describe("useTypeRepository", () => {
             jest.spyOn(repoMock, "getAll").mockReturnValue(
                 resolveAfterLoadingTime(allTypes)
             );
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
 
             expect(state.isLoading).toBe(true);
@@ -77,7 +91,7 @@ describe("useTypeRepository", () => {
             jest.spyOn(repoMock, "getAll").mockReturnValue(
                 resolveAfterLoadingTime(allTypes)
             );
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
             expect(state.types.length).toBe(0);
 
@@ -90,7 +104,7 @@ describe("useTypeRepository", () => {
         it("has error after some time", async () => {
             jest.spyOn(repoMock, "getAll").mockImplementation(throwErrorAsync);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state] = result.current;
 
             expect(state.error).toBeNull();
@@ -105,7 +119,7 @@ describe("useTypeRepository", () => {
     describe("reloadAllTypes", () => {
         it("loads all activity types and sets them in state", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             // Should be empty at first
             let [state, { reloadAllTypes }] = result.current;
@@ -122,7 +136,7 @@ describe("useTypeRepository", () => {
 
         it("sets error if couldn't load all", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadAllTypes }] = result.current;
 
             // Reload types
@@ -136,7 +150,7 @@ describe("useTypeRepository", () => {
 
         it("returns reloaded types", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             // Should be empty at first
             let [state, { reloadAllTypes }] = result.current;
@@ -160,7 +174,7 @@ describe("useTypeRepository", () => {
         it("loads one activity type and adds it to the state", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadOneType }] = result.current;
 
             // Should have none at first
@@ -181,7 +195,7 @@ describe("useTypeRepository", () => {
             const newType = { ...readingType, _id: originalType._id };
 
             jest.spyOn(repoMock, "getAll").mockResolvedValue([originalType]);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { reloadOneType }] = result.current;
@@ -204,7 +218,7 @@ describe("useTypeRepository", () => {
 
         it("sets error if couldn't load one", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue([codingType]);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             let [state, { reloadOneType }] = result.current;
 
@@ -220,7 +234,7 @@ describe("useTypeRepository", () => {
         it("returns reloaded type with ID populated", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state, { reloadOneType }] = result.current;
 
             // Reload one
@@ -240,7 +254,7 @@ describe("useTypeRepository", () => {
         it("adds one activity type", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { addType }] = result.current;
 
@@ -262,7 +276,7 @@ describe("useTypeRepository", () => {
             const existingType = readingType;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([existingType]);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { addType }] = result.current;
 
@@ -288,7 +302,7 @@ describe("useTypeRepository", () => {
         it("sets error if couldn't add one", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             let [state, { addType }] = result.current;
 
@@ -306,7 +320,7 @@ describe("useTypeRepository", () => {
         it("returns added type with id populated", async () => {
             jest.spyOn(repoMock, "getAll").mockResolvedValue(emptyTypes);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
             let [state, { addType }] = result.current;
 
@@ -328,7 +342,7 @@ describe("useTypeRepository", () => {
             const existingType = readingType;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([existingType]);
 
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             let [state, { addType }] = result.current;
 
             // Add the duplicate type
@@ -347,7 +361,7 @@ describe("useTypeRepository", () => {
         it("removes one activity type", async () => {
             const originalType = codingType;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([originalType]);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
             await sleepUntilLoaded();
 
             let [state, { removeType }] = result.current;
@@ -367,7 +381,7 @@ describe("useTypeRepository", () => {
         it("sets error if couldn't remove one", async () => {
             const originalType = codingType;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([originalType]);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             let [state, { removeType }] = result.current;
 
@@ -388,7 +402,7 @@ describe("useTypeRepository", () => {
         it("returns removed type with id populated", async () => {
             const removedType = codingType;
             jest.spyOn(repoMock, "getAll").mockResolvedValue([removedType]);
-            const { result } = renderHook(() => useTypeRepository(repoMock));
+            const { result } = renderUseRepoTestHook();
 
             await sleepUntilLoaded();
             let [state, { removeType }] = result.current;
