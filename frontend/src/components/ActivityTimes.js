@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import Moment from "react-moment";
-
 import { ActivityModel } from "../activities/ActivityModel";
 
 const style = {
@@ -29,14 +28,14 @@ const ActivityTimes = ({ activity }) => {
                     </Box>
                     {" - "}
                     <Box sx={style.dateTime} component="span">
-                        <Moment>{activity.endTimeDate}</Moment>
+                        <Moment local>{activity.endTimeDate}</Moment>
                     </Box>
                 </React.Fragment>
             ) : (
                 <React.Fragment>
                     Started at{" "}
                     <Box sx={style.dateTime} component="span">
-                        <Moment>{activity.startTimeDate}</Moment>
+                        <Moment local>{activity.startTimeDate}</Moment>
                     </Box>
                 </React.Fragment>
             )}
