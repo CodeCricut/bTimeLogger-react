@@ -13,7 +13,7 @@ import { useActivityTypeContext } from "./ActivityTypeContext.js";
  * Hook for managing local activity type state which syncs with the server. Provides useful abstractions for managing type state, like loading
  * all types or adding new types, and access to the TypeState returned by useTypeReducer.
  * @param {ActivityTypeRepository} activityTypeRepository Optional repository to use for interacting with type state. Mostly used for injecting test mocks.
- * @returns {[TypeState, { reloadAllTypes, reloadOneType, addType, removeType, }]} Array where the first argument is the type state, and the second is an object with methods to interact with the state.
+ * @returns {Array<TypeState|{reloadAllTypes, reloadOneType, addType, removeType}>} Array where the first argument is the type state, and the second is an object with methods to interact with the state.
  */
 const useTypeRepository = (
     activityTypeRepository = new ActivityTypeRepository()

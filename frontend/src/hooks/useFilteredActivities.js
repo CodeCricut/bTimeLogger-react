@@ -4,7 +4,7 @@ import SearchParams from "../model/SearchParams.js";
 import { getSearchedActivities } from "../util/activity-selectors.js";
 
 /**
- * @param {Array<ActivityModel} activities The activities to filter from
+ * @param {Array<ActivityModel>} activities The activities to filter from
  * @param {SearchParams} searchParams The search parameters to use to filter the activities
  * @returns {Array<ActivityModel>} The filtered activities
  */

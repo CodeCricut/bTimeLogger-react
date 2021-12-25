@@ -3,7 +3,7 @@ import SearchParams from "../model/SearchParams";
 
 /**
  * Get the filtered list of activities based on the search parameters.
- * @param {Array[ActivityModel]} activities
+ * @param {Array<ActivityModel>} activities
  * @param {SearchParams} searchParams
  */
 function getSearchedActivities(activities, searchParams) {

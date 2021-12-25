@@ -4,7 +4,7 @@ import { ActivityTypeModel } from "../activity-types/ActivityTypeModel.js";
 
 /**
  * @param {ActivityModel} activity The original activity.
- * @returns {[{activity: ActivityModel, invalidState:boolean, isActivityRunning: boolean}, [setComment, setFromDate, setToDate, setType]]}
+ * @returns {Array<{activity: ActivityModel, invalidState:boolean, isActivityRunning: boolean}|{setComment, setFromDate, setToDate, setType}>} Array where the first element is the form state object, and the second is an object with functions for modifying the form state.
  */
 const useActivityFormState = () => {
     const [activity, setActivity] = useState(

@@ -11,7 +11,7 @@ import { useActivityContext } from "./ActivityContext";
  * Hooks for managing local activity state which syncs with the server. Provides useful abstractions for managing activity
  * state.
  * @param {ActivityRepository} activityRepository Optional repository to use for interacting with activity state. Mostly used for injecting test mocks.
- * @returns {[ActivityState, { reloadAllActivities, reloadOneActivity, startNewActivity, createCompletedActivity, stopActivity, resumeActivity, trashActivity, untrashActivity, updateActivity, removeActivity}]} Array where the first argument is the activity state, and the second is an object with methods to interact with the state.
+ * @returns {Array<ActivityState|{ reloadAllActivities, reloadOneActivity, startNewActivity, createCompletedActivity, stopActivity, resumeActivity, trashActivity, untrashActivity, updateActivity, removeActivity}>} Array where the first argument is the activity state, and the second is an object with methods to interact with the state.
  */
 const useActivityRepository = (
     activityRepository = new ActivityRepository()

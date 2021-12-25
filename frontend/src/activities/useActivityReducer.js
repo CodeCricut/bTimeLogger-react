@@ -110,8 +110,7 @@ const activityReducer = (state, action) => {
 };
 
 /**
- *
- * @returns {[ActivityState, Dispatch<ActivityReducerAction>]}
+ * @returns {Array<ActivityState|Dispatch<ActivityReducerAction>>} Tuple array where the first element is the activity state, and the second is the dispatch function.
  */
 const useActivityReducer = () => useReducer(activityReducer, initialState);
 

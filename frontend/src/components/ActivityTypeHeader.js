@@ -15,7 +15,6 @@ const style = {
 /**
  * @param {object} props
  * @param {ActivityModel} props.activity
- * @returns
  */
 const ActivityTypeHeader = ({ activity }) => {
     return (
