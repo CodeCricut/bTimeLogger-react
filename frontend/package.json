@@ -29,7 +29,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
+        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./documentation/tutorials\""
     },
     "eslintConfig": {
         "extends": [

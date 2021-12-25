@@ -7,6 +7,8 @@ const ThemeSwitcherContext = createContext();
 
 /**
  * Global theme provider.
+ *
+ * @tutorial theme-switcher
  */
 const ThemeSwitcherProvider = ({ children }) => {
     const [theme, setTheme] = useState(DARK);
