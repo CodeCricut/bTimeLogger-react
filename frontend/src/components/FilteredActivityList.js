@@ -4,6 +4,7 @@ import { useActivityRepository } from "../activities/useActivityRepository.js";
 import ActivityList from "./ActivityList.js";
 import useSearchParams from "../hooks/useSearchParams.js";
 import useFilteredActivities from "../hooks/useFilteredActivities.js";
+import LoadingStatus from "./LoadingStatus.js";
 
 /**
  * @param {object} props
@@ -17,7 +18,12 @@ const FilteredActivityList = ({ queryString }) => {
         searchParams
     );
 
-    return <ActivityList activities={filteredActivities} />;
+    return (
+        <>
+            <LoadingStatus isLoading={activityState.isLoading} />
+            <ActivityList activities={filteredActivities} />
+        </>
+    );
 };
 
 export default FilteredActivityList;
