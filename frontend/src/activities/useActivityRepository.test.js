@@ -231,7 +231,24 @@ describe("useActivityRepository", () => {
         });
 
         it("sets error if couldn't load one", async () => {
-            // TODO
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([[]]);
+            const { result } = renderUseRepoTestHook();
+            await sleepUntilLoaded();
+
+            let [state, { reloadOneActivity }] = result.current;
+
+            // Update activity will throw
+            jest.spyOn(repoMock, "getById").mockRejectedValue(new Error());
+            await act(
+                async () =>
+                    await reloadOneActivity(completedStudyingActivity._id)
+            );
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Should have error
+            expect(state.error).not.toBeNull();
         });
 
         it("returns reloaded activity", async () => {
@@ -491,8 +508,25 @@ describe("useActivityRepository", () => {
             expect(state.activities).not.toContain(stoppedActivity);
         });
 
-        it("should set error if couldn't resume activity", () => {
-            // TODO
+        it("should set error if couldn't resume activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([]);
+            const { result } = renderUseRepoTestHook();
+
+            let [state, { resumeActivity }] = result.current;
+
+            // Resume activity will throw error
+            jest.spyOn(repoMock, "resumeActivity").mockRejectedValue(
+                new Error()
+            );
+
+            await act(
+                async () => await resumeActivity(completedStudyingActivity._id)
+            );
+
+            // Should have error
+            await sleepUntilLoaded();
+            [state] = result.current;
+            expect(state.error).not.toBeNull();
         });
 
         it("returns resumed activity", async () => {
@@ -549,8 +583,26 @@ describe("useActivityRepository", () => {
             expect(state.activities).not.toContain(untrashedActivity);
         });
 
-        it("should set error if couldn't trash activity", () => {
-            // TODO
+        it("should set error if couldn't trash activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([[]]);
+            const { result } = renderUseRepoTestHook();
+            await sleepUntilLoaded();
+
+            let [state, { trashActivity }] = result.current;
+
+            // Trash activity will throw
+            jest.spyOn(repoMock, "trashActivity").mockRejectedValue(
+                new Error()
+            );
+            await act(
+                async () => await trashActivity(completedStudyingActivity._id)
+            );
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Should have error
+            expect(state.error).not.toBeNull();
         });
 
         it("returns trashed activity", async () => {
@@ -608,8 +660,26 @@ describe("useActivityRepository", () => {
             expect(state.activities).not.toContain(trashedActivity);
         });
 
-        it("should set error if couldn't untrash activity", () => {
-            // TODO
+        it("should set error if couldn't untrash activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([[]]);
+            const { result } = renderUseRepoTestHook();
+            await sleepUntilLoaded();
+
+            let [state, { untrashActivity }] = result.current;
+
+            // Untrash activity will throw
+            jest.spyOn(repoMock, "untrashActivity").mockRejectedValue(
+                new Error()
+            );
+            await act(
+                async () => await untrashActivity(completedStudyingActivity._id)
+            );
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Should have error
+            expect(state.error).not.toBeNull();
         });
 
         it("returns untrashed activity", async () => {
@@ -667,8 +737,26 @@ describe("useActivityRepository", () => {
             expectActivitiesEqual(updatedActivity, returnedActivity);
         });
 
-        it("should set error if couldn't update activity", () => {
-            // TODO
+        it("should set error if couldn't update activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([[]]);
+            const { result } = renderUseRepoTestHook();
+            await sleepUntilLoaded();
+
+            let [state, { updateActivity }] = result.current;
+
+            // Update activity will throw
+            jest.spyOn(repoMock, "updateActivity").mockRejectedValue(
+                new Error()
+            );
+            await act(
+                async () => await updateActivity(completedStudyingActivity._id)
+            );
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Should have error
+            expect(state.error).not.toBeNull();
         });
     });
 
@@ -698,8 +786,26 @@ describe("useActivityRepository", () => {
             expect(state.activities).not.toContain(originalActivity);
         });
 
-        it("should set error if couldn't remove activity", () => {
-            // TODO
+        it("should set error if couldn't remove activity", async () => {
+            jest.spyOn(repoMock, "getAll").mockResolvedValue([[]]);
+            const { result } = renderUseRepoTestHook();
+            await sleepUntilLoaded();
+
+            let [state, { removeActivity }] = result.current;
+
+            // Update activity will throw
+            jest.spyOn(repoMock, "removeActivity").mockRejectedValue(
+                new Error()
+            );
+            await act(
+                async () => await removeActivity(completedStudyingActivity._id)
+            );
+
+            await sleepUntilLoaded();
+            [state] = result.current;
+
+            // Should have error
+            expect(state.error).not.toBeNull();
         });
 
         it("returns removed activity", async () => {
