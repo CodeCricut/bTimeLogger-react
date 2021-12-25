@@ -41,21 +41,23 @@ const TuneSearchForm = ({ tuneFormState, tuneFormDispatch }) => {
                 />
             </FormControl>
 
-            <Box sx={styles.inputShort}>
-                <ActivityTypeSelect
-                    types={typeState.types}
-                    onEnter={() => {}}
-                    selectedType={searchParams.selectedType}
-                    setSelectedType={setSelectedType}
-                />
-            </Box>
+            <ActivityTypeSelect
+                types={typeState.types}
+                onEnter={() => {}}
+                selectedType={searchParams.selectedType}
+                setSelectedType={setSelectedType}
+            />
 
             <FormControl sx={styles.labeledInput}>
                 <Typography sx={styles.label}>Search Between Dates</Typography>
-                <Checkbox
-                    checked={!!doSearchBetweenDates}
-                    onChange={(e) => setDoSearchBetweenDates(e.target.checked)}
-                />
+                <Box sx={styles.inputShort}>
+                    <Checkbox
+                        checked={!!doSearchBetweenDates}
+                        onChange={(e) =>
+                            setDoSearchBetweenDates(e.target.checked)
+                        }
+                    />
+                </Box>
             </FormControl>
 
             {doSearchBetweenDates && (

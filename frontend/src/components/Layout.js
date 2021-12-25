@@ -15,11 +15,22 @@ import AppDrawerItems from "./AppDrawerItems";
 import MakeActivityDialog from "./MakeActivityDialog";
 import FilteredActivityList from "./FilteredActivityList";
 import TuneSearchDialog from "./TuneSearchDialog";
+import LoadingStatus from "./LoadingStatus";
 
 const styles = {
     layoutContainer: {},
-    startActivityContainer: {},
-    activityList: {},
+    startActivityContainer: {
+        width: {
+            xs: 1,
+            sm: 1 / 2,
+            margin: "auto",
+            padding: "10px 0",
+        },
+    },
+    activityList: {
+        width: 1,
+        maxHeight: 1,
+    },
 };
 
 const Layout = () => {

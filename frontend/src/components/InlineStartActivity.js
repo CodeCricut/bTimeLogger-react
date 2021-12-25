@@ -24,9 +24,11 @@ const styles = {
     },
     select: {
         minWidth: 120,
-        width: "50%",
+        width: 0.9,
     },
-    formButtons: {},
+    formButtons: {
+        display: "flex",
+    },
     menuButton: {},
 };
 

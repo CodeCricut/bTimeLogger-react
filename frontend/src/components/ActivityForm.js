@@ -38,14 +38,13 @@ const ActivityForm = ({ activityFormState, activityFormDispatch }) => {
 
     return (
         <Box sx={styles.form}>
-            <Box sx={styles.inputShort}>
-                <ActivityTypeSelect
-                    types={typeState.types}
-                    onEnter={() => {}}
-                    selectedType={typeName}
-                    setSelectedType={setTypeName}
-                />
-            </Box>
+            <ActivityTypeSelect
+                types={typeState.types}
+                onEnter={() => {}}
+                selectedType={typeName}
+                setSelectedType={setTypeName}
+            />
+
             <FormControl sx={styles.labeledInput}>
                 <Typography sx={styles.label}>Comment</Typography>
                 <TextField

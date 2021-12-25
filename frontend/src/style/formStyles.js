@@ -2,15 +2,15 @@ export default {
     form: {
         "& > *": {
             width: 1,
-            marginBottom: 3,
+            marginBottom: "5px",
         },
+        minWidth: "50vw",
     },
     labeledInput: {
         display: "grid",
-        gridTemplateColumns: "100px auto 4fr 2fr",
         gridTemplateColumns: {
             xs: "1fr",
-            sm: "",
+            sm: "2fr 4fr",
         },
         alignItems: "center",
     },
@@ -20,12 +20,15 @@ export default {
     },
     inputShort: {
         gridColumn: {
-            md: "3 / 4",
+            xs: "1",
+            sm: "2",
         },
     },
     inputLong: {
-        gridColumn: {
-            md: "3 / 4",
-        },
+        gridColumn: "1 / -1",
+    },
+    dateTimeContainer: {
+        gridColumn: "1 / -1",
+        padding: "10px 0",
     },
 };

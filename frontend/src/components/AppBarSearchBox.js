@@ -36,6 +36,9 @@ const styles = {
         pointerEvents: "none",
         height: 1,
     },
+    buttons: {
+        display: "flex",
+    },
     clearButton: {
         color: "inherit",
     },
@@ -87,7 +90,7 @@ const AppBarSearchBox = ({ handleSearch, handleTune, originalTerm }) => {
                     inputProps={{ "aria-label": "search" }}
                 />
             </Box>
-            <Box>
+            <Box sx={styles.buttons}>
                 <IconButton sx={styles.clearButton} onClick={handleClearSearch}>
                     <ClearIcon />
                 </IconButton>
