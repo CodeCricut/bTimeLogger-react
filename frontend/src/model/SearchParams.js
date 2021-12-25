@@ -2,6 +2,9 @@ import { formatQueryDate } from "../util/timeFormatters";
 
 /**
  * Parameters for searching for activities.
+ *
+ * Contains fields pertaining to filtering the search for activities. It is used by
+ * components such as the search bar and filtered activity list.
  */
 export default class SearchParams {
     searchTerm = "";

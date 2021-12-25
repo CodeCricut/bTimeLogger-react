@@ -3,6 +3,9 @@ import { ActivityTypeModel } from "../activity-types/ActivityTypeModel.js";
 
 /**
  * Represents a single activity.
+ *
+ * The model relates closely to the `Activity` model in the server app, and is used to
+ * both post and receive activities from the REST API.
  */
 class ActivityModel {
     /**

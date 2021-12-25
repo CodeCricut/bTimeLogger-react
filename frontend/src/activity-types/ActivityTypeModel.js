@@ -1,5 +1,8 @@
 /**
  * Represents a single activity type.
+ *
+ * The model relates closely to the `ActivityType` model in the server app, and is used to
+ * both post and receive activity types from the REST API.
  */
 class ActivityTypeModel {
     /**
