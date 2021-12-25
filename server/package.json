@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node src/index.js",
         "debug": "node src/index.js --inspect",
-        "test": "jest --runInBand --detectOpenHandles"
+        "test": "jest --runInBand --detectOpenHandles",
+        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./documentation/tutorials\""
     },
     "author": "",
     "license": "ISC",

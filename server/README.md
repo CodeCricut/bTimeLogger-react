@@ -90,3 +90,19 @@ Automated unit tests for the database repositories (which contain most business 
 ### Integration Tests
 
 Automated integration tests which exercise the API and underlying interaction with the other layers of the app are found in [`tests/routers/`](./tests/routers/).
+
+## Documentation
+
+[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/docs/index.html`.
+
+To generate updated docs, you must first have `jsdoc` installed:
+
+```
+npm install -g jsdoc
+```
+
+After that, run
+
+```
+npm run generate-docs
+```
