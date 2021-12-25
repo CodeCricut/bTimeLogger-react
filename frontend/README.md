@@ -89,3 +89,19 @@ to achieve near 100% coverage and passing rate.
 **Run all tests**: Run all tests with `npm run test`.
 
 More information on test design and running the test suite can be found in [`documentation/testing.md`](./documentation/testing.md)
+
+## Documentation
+
+[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/docs/index.html`.
+
+To generate updated docs, you must first have `jsdoc` installed:
+
+```
+npm install -g jsdoc
+```
+
+After that, run
+
+```
+npm run generate-docs
+```
