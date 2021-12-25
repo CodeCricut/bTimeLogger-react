@@ -160,26 +160,12 @@ function App() {
 # ThemeSwitcherContext
 
 In this app, a context is used to share theme state and a way to change the theme
-from within components.
+from within components. Details can be found in {@tutorial theme-switcher}.
 
-`ThemeSwitcherContext`, `ThemeSwitcherProvider`, and `useThemeSwitcherContext`
-can be found in [`ThemeSwitcherContext.js`](../src/style/ThemeSwitcherContext.js).
+# ActivityContext
 
-**Provider**: The entire app is wrapped in `ThemeSwitcherProvider`, which is the provider of `ThemeSwitcherContext`:
+In this app, a context is used to share activity state. Details can be found in {@tutorial activity-state}.
 
-```jsx
-function App() {
-    return (
-        <ThemeSwitcherProvider>{/* component tree */}</ThemeSwitcherProvider>
-    );
-}
-```
+# ActivityTypeContext
 
-**Access theme context**: the `useThemeSwitcherContext` hook is used to access the `ThemeSwitcherContext`:
-
-```jsx
-function MyComponent() {
-    const myState = useThemeSwitcherContext());
-    // ...
-}
-```
+In this app, a context is used to share activity type state. Details can be found in {@tutorial activity-type-state}.
