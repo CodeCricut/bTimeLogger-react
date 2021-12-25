@@ -16,7 +16,9 @@
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "mongodb-memory-server": "^8.0.4",
-        "mongoose": "^5.13.7"
+        "mongoose": "^5.13.7",
+        "swagger-jsdoc": "5.0.1",
+        "swagger-ui-express": "^4.3.0"
     },
     "type": "module",
     "devDependencies": {

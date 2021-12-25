@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import typesRouter from "./routers/types.js";
 import activitiesRouter from "./routers/activities.js";
+import docsRouter from "./routers/docs.js";
 import cors from "cors";
 
 import mongoose from "mongoose";
@@ -26,6 +27,7 @@ const setUpServerApp = (port) => {
 const setAppRoutes = (app) => {
     app.use("/types", typesRouter);
     app.use("/activities", activitiesRouter);
+    app.use("/docs", docsRouter);
 };
 
 try {
