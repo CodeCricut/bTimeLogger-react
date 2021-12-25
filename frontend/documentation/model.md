@@ -16,4 +16,9 @@ The `ActivityTypeModel` relates very closely to the [`ActivityType` schema/model
 
 ## Search Params
 
-TODO
+The [`SearchParams`](../src/model/SearchParams.js) class contains fields pertaining
+to filtering the search for activities. It is used by components such as the search
+bar and filtered activity list.
+
+`SearchParams` have an associated query string in the format of
+`selectedType={selected type}&fromDate={from date}&toDate={to date}&searchTerm={search term}`.
