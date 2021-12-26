@@ -1,0 +1,147 @@
+paths:
+    /types:
+        get:
+            summary: "Get an array of all activity types"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypesResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+        post:
+            summary: "Post a new activity type"
+            requestBody:
+                $ref: "#/components/requestBodies/PostType"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypeResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+
+    /types/{id}:
+        get:
+            summary: "Get a single activity type by its ID"
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypeResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+        delete:
+            summary: "Delete a single activity type by its ID"
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypeResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+components:
+    requestBodies:
+        PostType:
+            description: "Body for posting an activity type"
+            content:
+                application/json:
+                    schema:
+                        type: "object"
+                        properties:
+                            name:
+                                type: "string"
+    responses:
+        ActivityTypesResponse:
+            description: "Array of activity types"
+            content:
+                application/json:
+                    schema:
+                        type: "array"
+                        items:
+                            $ref: "#/components/schemas/Activity"
+        ActivityTypeResponse:
+            description: "Single activity type"
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Activity"
+        InternalServerErrorResponse:
+            description: "Internal server error"
+            content:
+                text/html:
+                    schema:
+                        type: "string"
+        InvalidIdFormatResponse:
+            description: "Invalid ID format"
+            content:
+                text/html:
+                    schema:
+                        type: "string"
+        ActivityTypeNotFoundResponse:
+            description: "Activity type not found."
+            content:
+                text/html:
+                    schema:
+                        type: "string"
+        BadRequestResponse:
+            description: "Bad request"
+            content:
+                text/html:
+                    schema:
+                        type: "string"
+    schemas:
+        Id:
+            type: "string"
+            description: "A unique idenfitier."
+        Type:
+            type: "object"
+            properties:
+                _id:
+                    type: "string"
+                name:
+                    type: "string"
+                    description: "The name of type."
+                __v:
+                    type: "integer"
+        Activity:
+            type: "object"
+            required:
+                - _id
+                - type
+                - trashed
+            properties:
+                _id:
+                    type: "string"
+                type:
+                    type: "string"
+                    description: "The ID of the activity type associated with this activity."
+                comment:
+                    type: "string"
+                    description: "Optional user comment associated with this activity."
+                startTime:
+                    type: "string"
+                    format: "date-time"
+                    description: "When the activity was started."
+                endTime:
+                    type: "string"
+                    format: "date-time"
+                    description: "When the activity was ended."
+                trashed:
+                    type: "boolean"
+                __v:
+                    type: "integer"
