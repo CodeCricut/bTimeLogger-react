@@ -23,7 +23,9 @@ const useActivityFormState = (activityModel = defaultActivityModel) => {
     const [fromDate, setFromDate] = useState(activity.startTimeDate);
     const [toDate, setToDate] = useState(activity.endTimeDate);
 
-    const [isActivityRunning, setIsActivityRunning] = useState(true);
+    const [isActivityRunning, setIsActivityRunning] = useState(
+        !activity.endTimeDate
+    );
 
     const [invalidState, setInvalidState] = useState(false);
 
