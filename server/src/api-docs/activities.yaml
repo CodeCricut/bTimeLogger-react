@@ -1,0 +1,189 @@
+paths:
+    /activities:
+        get:
+            tags:
+                - activities
+            summary: "Get an array of all activities"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivitiesResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/{id}:
+        get:
+            tags:
+                - activities
+            summary: "Get a single activity by its ID"
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/start-new:
+        post:
+            tags:
+                - activities
+            summary: "Start a new activity"
+            description: "Start a new activity and return it. Started activities will have their `startTime` populated with the current date and time; will have a null `endTime`; and will have their `trashed` property set to false."
+            requestBody:
+                $ref: "#/components/requestBodies/StartNewActivity"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/create-completed:
+        post:
+            tags:
+                - activities
+            summary: "Create a completed activity"
+            description: "Create a completed activity and return it. A completed activity must have its `startTime` populated; its `endTime` populated; and will have its `trashed` set to false."
+            requestBody:
+                $ref: "#/components/requestBodies/CreateCompletedActivity"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/stop/{id}:
+        patch:
+            tags:
+                - activities
+            summary: "Stop an activity"
+            description: "Stop an activity with the given ID. A stopped activity will have its `endTime` set to the current date and time."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/resume/{id}:
+        patch:
+            tags:
+                - activities
+            summary: "Resume an activity"
+            description: "Resume an activity and return it. A resumed activity will have its `startTime` set to the current date and time; and its `endTime` reset."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/trash/{id}:
+        patch:
+            tags:
+                - activities
+            summary: "Trash an activity"
+            description: "Trash an activity and return it. Trashed activities are not removed from the database, but will have their `trashed` property set to true."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/untrash/{id}:
+        patch:
+            tags:
+                - activities
+            summary: "Untrash an activity"
+            description: "Untrash an activity and return it. Untrashed activities will have their `trashed` property set to false."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/update/{id}:
+        put:
+            tags:
+                - activities
+            summary: "Update an activity"
+            description: "Update an activity and return it. You may update the activity's `type`, `startTime`, `endTime`, `comment`, and `trashed` properties."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            requestBody:
+                $ref: "#/components/requestBodies/UpdateActivity"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /activities/remove/{id}:
+        delete:
+            tags:
+                - activities
+            summary: "Remove an activity"
+            description: "Completely remove an activity from the database."
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    description: "Successfully removed activity."
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"

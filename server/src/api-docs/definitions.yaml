@@ -1,59 +1,3 @@
-paths:
-    /types:
-        get:
-            summary: "Get an array of all activity types"
-            responses:
-                200:
-                    $ref: "#/components/responses/ActivityTypesResponse"
-                500:
-                    $ref: "#/components/responses/InternalServerErrorResponse"
-        post:
-            summary: "Post a new activity type"
-            requestBody:
-                $ref: "#/components/requestBodies/PostType"
-            responses:
-                200:
-                    $ref: "#/components/responses/ActivityTypeResponse"
-                400:
-                    $ref: "#/components/responses/BadRequestResponse"
-                500:
-                    $ref: "#/components/responses/InternalServerErrorResponse"
-
-    /types/{id}:
-        get:
-            summary: "Get a single activity type by its ID"
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      $ref: "#/components/schemas/Id"
-            responses:
-                200:
-                    $ref: "#/components/responses/ActivityTypeResponse"
-                400:
-                    $ref: "#/components/responses/BadRequestResponse"
-                404:
-                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
-                500:
-                    $ref: "#/components/responses/InternalServerErrorResponse"
-        delete:
-            summary: "Delete a single activity type by its ID"
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      $ref: "#/components/schemas/Id"
-            responses:
-                200:
-                    $ref: "#/components/responses/ActivityTypeResponse"
-                400:
-                    $ref: "#/components/responses/BadRequestResponse"
-                404:
-                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
-                500:
-                    $ref: "#/components/responses/InternalServerErrorResponse"
 components:
     requestBodies:
         PostType:
@@ -65,7 +9,68 @@ components:
                         properties:
                             name:
                                 type: "string"
+        StartNewActivity:
+            description: "Body for starting a new activity"
+            content:
+                application/json:
+                    schema:
+                        type: "object"
+                        properties:
+                            type:
+                                type: "string"
+                            comment:
+                                type: "string"
+        CreateCompletedActivity:
+            description: "Body for creating a new activity"
+            content:
+                application/json:
+                    schema:
+                        type: "object"
+                        properties:
+                            type:
+                                type: "string"
+                            comment:
+                                type: "string"
+                            startTime:
+                                type: "string"
+                                format: "date-time"
+                            endTime:
+                                type: "string"
+                                format: "date-time"
+        UpdateActivity:
+            description: "Body for updating existing activity."
+            content:
+                application/json:
+                    schema:
+                        type: "object"
+                        properties:
+                            type:
+                                type: "string"
+                            comment:
+                                type: "string"
+                            startTime:
+                                type: "string"
+                                format: "date-time"
+                            endTime:
+                                type: "string"
+                                format: "date-time"
+                            trashed:
+                                type: "boolean"
     responses:
+        ActivitiesResponse:
+            description: "Array of activities"
+            content:
+                application/json:
+                    schema:
+                        type: "array"
+                        items:
+                            $ref: "#/components/schemas/Activity"
+        ActivityResponse:
+            description: "Single activity"
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/Activity"
         ActivityTypesResponse:
             description: "Array of activity types"
             content:
@@ -73,13 +78,13 @@ components:
                     schema:
                         type: "array"
                         items:
-                            $ref: "#/components/schemas/Activity"
+                            $ref: "#/components/schemas/Type"
         ActivityTypeResponse:
             description: "Single activity type"
             content:
                 application/json:
                     schema:
-                        $ref: "#/components/schemas/Activity"
+                        $ref: "#/components/schemas/Type"
         InternalServerErrorResponse:
             description: "Internal server error"
             content:

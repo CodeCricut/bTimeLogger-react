@@ -1,0 +1,63 @@
+paths:
+    /types:
+        get:
+            tags:
+                - types
+            summary: "Get an array of all activity types"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypesResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+        post:
+            tags:
+                - types
+            summary: "Post a new activity type"
+            requestBody:
+                $ref: "#/components/requestBodies/PostType"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypeResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+    /types/{id}:
+        get:
+            tags:
+                - types
+            summary: "Get a single activity type by its ID"
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    $ref: "#/components/responses/ActivityTypeResponse"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
+        delete:
+            tags:
+                - types
+            summary: "Delete a single activity type by its ID"
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: "#/components/schemas/Id"
+            responses:
+                200:
+                    description: "Successfully deleted type"
+                400:
+                    $ref: "#/components/responses/BadRequestResponse"
+                404:
+                    $ref: "#/components/responses/ActivityTypeNotFoundResponse"
+                500:
+                    $ref: "#/components/responses/InternalServerErrorResponse"
