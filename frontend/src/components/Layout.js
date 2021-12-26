@@ -16,6 +16,7 @@ import MakeActivityDialog from "./MakeActivityDialog";
 import FilteredActivityList from "./FilteredActivityList";
 import TuneSearchDialog from "./TuneSearchDialog";
 import LoadingStatus from "./LoadingStatus";
+import SettingsDialog from "./SettingsDialog.js";
 
 const styles = {
     layoutContainer: {},
@@ -41,6 +42,8 @@ const Layout = () => {
 
     const [isTuneSearchDialogOpen, setIsTuneSearchDialogOpen] = useState(false);
 
+    const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
+
     const [queryString, setQueryString] = useState("");
 
     return (
@@ -50,6 +53,7 @@ const Layout = () => {
                 queryString={queryString}
                 setQueryString={setQueryString}
                 onOpenTuneDialog={() => setIsTuneSearchDialogOpen(true)}
+                onOpenSettingsDialog={() => setIsSettingsDialogOpen(true)}
             />
             <AppDrawer
                 open={isDrawerOpen}
@@ -66,6 +70,10 @@ const Layout = () => {
                 onClose={() => setIsTuneSearchDialogOpen(false)}
                 queryString={queryString}
                 setQueryString={setQueryString}
+            />
+            <SettingsDialog
+                isOpen={isSettingsDialogOpen}
+                onClose={() => setIsSettingsDialogOpen(false)}
             />
             <Container sx={styles.layoutContainer}>
                 <Box sx={styles.startActivityContainer}>

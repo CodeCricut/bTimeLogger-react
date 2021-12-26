@@ -54,6 +54,7 @@ const SearchAppBar = ({
     queryString,
     setQueryString,
     onOpenTuneDialog,
+    onOpenSettingsDialog,
 }) => {
     return (
         <AppBar position="static">
@@ -72,9 +73,7 @@ const SearchAppBar = ({
                     />
                 </Box>
                 <Box sx={styles.rightSideContainer}>
-                    <SettingsButton
-                        onClick={() => console.log("open settings")}
-                    />
+                    <SettingsButton onClick={onOpenSettingsDialog} />
                 </Box>
             </Toolbar>
         </AppBar>
