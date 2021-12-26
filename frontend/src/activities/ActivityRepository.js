@@ -145,8 +145,9 @@ class ActivityRepository {
      */
     async updateActivity(id, activity) {
         if (!id) throw new Error("Tried updating activity with null id.");
-        if (!id) throw new Error("Tried updating activity with null activity.");
-        const response = await axios.put(`/activities/update/${id}`);
+        if (!activity)
+            throw new Error("Tried updating activity with null activity.");
+        const response = await axios.put(`/activities/update/${id}`, activity);
         if (response.status !== 200) throw new Error(response.error);
         return await this.#mapActivityResponseToModel(response);
     }
