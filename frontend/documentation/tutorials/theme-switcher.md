@@ -19,22 +19,20 @@ function App() {
 **Use theme switcher hook**:
 
 ```jsx
-const setTheme = useThemeSwitcherContext();
+const [theme, setTheme] = useThemeSwitcherContext();
 ```
 
 The `useThemeSwitcherProvider` hook should be used when a component needs to change
-the theme, OR when a component needs to explicitly access the theme object (this is usually not necessary, as it is provided by the `ThemeProvider`.
+the theme or access the type of theme (either `DARK` or `LIGHT`).
 
 **Change theme**:
 
 ```jsx
-import { useTheme } from "@mui/styles";
 import { useThemeSwitcherContext } from "../style/ThemeSwitcherContext";
 import { DARK, LIGHT } from "../style/theme";
 
 const MyComponent = () => {
-    const theme = useTheme();
-    const setTheme = useThemeSwitcherContext();
+    const [theme, setTheme] = useThemeSwitcherContext();
 
     const handleThemeChange = () => {
         if (theme === DARK) setTheme(LIGHT);

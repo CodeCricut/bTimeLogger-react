@@ -15,7 +15,7 @@ const ThemeSwitcherProvider = ({ children }) => {
     const appTheme = theme === DARK ? { ...darkTheme } : { ...lightTheme };
 
     return (
-        <ThemeSwitcherContext.Provider value={setTheme}>
+        <ThemeSwitcherContext.Provider value={[theme, setTheme]}>
             <ThemeProvider theme={appTheme}>{children}</ThemeProvider>
         </ThemeSwitcherContext.Provider>
     );
