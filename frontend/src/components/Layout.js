@@ -1,22 +1,11 @@
 import React, { useState } from "react";
-import { Container, Box, ListItem, ListItemText } from "@mui/material";
-import AppDrawer from "./AppDrawer";
+import { Container, Box } from "@mui/material";
 
-import { useActivityRepository } from "../activities/useActivityRepository.js";
-import { useTypeRepository } from "../activity-types/useTypeRepository.js";
+import AppDrawer from "./AppDrawer";
 import SearchAppBar from "./SearchAppBar";
-import AppBarHeader from "./AppBarHeader";
-import AppBarSearchBox from "./AppBarSearchBox";
-import SettingsButton from "./SettingsButton";
 import InlineStartActivity from "./InlineStartActivity";
-import ActivityTypeSelect from "./ActivityTypeSelect";
-import ActivityList from "./ActivityList.js";
 import AppDrawerItems from "./AppDrawerItems";
-import MakeActivityDialog from "./MakeActivityDialog";
 import FilteredActivityList from "./FilteredActivityList";
-import TuneSearchDialog from "./TuneSearchDialog";
-import LoadingStatus from "./LoadingStatus";
-import SettingsDialog from "./SettingsDialog.js";
 
 const styles = {
     layoutContainer: {},
@@ -36,14 +25,6 @@ const styles = {
 
 const Layout = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-    const [isMakeActivityDialogOpen, setIsMakeActivityDialogOpen] =
-        useState(false);
-
-    const [isTuneSearchDialogOpen, setIsTuneSearchDialogOpen] = useState(false);
-
-    const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
-
     const [queryString, setQueryString] = useState("");
 
     return (
@@ -52,8 +33,6 @@ const Layout = () => {
                 openDrawer={() => setIsDrawerOpen(true)}
                 queryString={queryString}
                 setQueryString={setQueryString}
-                onOpenTuneDialog={() => setIsTuneSearchDialogOpen(true)}
-                onOpenSettingsDialog={() => setIsSettingsDialogOpen(true)}
             />
             <AppDrawer
                 open={isDrawerOpen}
@@ -61,27 +40,9 @@ const Layout = () => {
             >
                 <AppDrawerItems />
             </AppDrawer>
-            <MakeActivityDialog
-                isOpen={isMakeActivityDialogOpen}
-                onClose={() => setIsMakeActivityDialogOpen(false)}
-            />
-            <TuneSearchDialog
-                isOpen={isTuneSearchDialogOpen}
-                onClose={() => setIsTuneSearchDialogOpen(false)}
-                queryString={queryString}
-                setQueryString={setQueryString}
-            />
-            <SettingsDialog
-                isOpen={isSettingsDialogOpen}
-                onClose={() => setIsSettingsDialogOpen(false)}
-            />
             <Container sx={styles.layoutContainer}>
                 <Box sx={styles.startActivityContainer}>
-                    <InlineStartActivity
-                        openMakeActivityDialog={() =>
-                            setIsMakeActivityDialogOpen(true)
-                        }
-                    />
+                    <InlineStartActivity />
                 </Box>
                 <Box sx={styles.activityList}>
                     <FilteredActivityList queryString={queryString} />

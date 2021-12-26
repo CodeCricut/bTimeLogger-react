@@ -5,6 +5,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 import { ThemeSwitcherProvider } from "../style/ThemeSwitcherContext";
+import { ModalProvider } from "../modals/ModalProvider.js";
 
 import Layout from "./Layout";
 import { ActivityProvider } from "../activities/ActivityContext";
@@ -16,8 +17,10 @@ function App() {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <ActivityProvider>
                     <ActivityTypeProvider>
-                        <CssBaseline />
-                        <Layout />
+                        <ModalProvider>
+                            <CssBaseline />
+                            <Layout />
+                        </ModalProvider>
                     </ActivityTypeProvider>
                 </ActivityProvider>
             </LocalizationProvider>

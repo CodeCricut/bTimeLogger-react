@@ -14,8 +14,9 @@ import { ActivityTypeModel } from "../activity-types/ActivityTypeModel.js";
 import useActivityFormState from "../hooks/useActivityFormState.js";
 import { useActivityRepository } from "../activities/useActivityRepository.js";
 import { useTypeRepository } from "../activity-types/useTypeRepository.js";
+import { useModalContext } from "../modals/ModalProvider.js";
 
-const MakeActivityDialog = ({ isOpen, onClose }) => {
+const MakeActivityDialog = () => {
     const [typeState, { addType }] = useTypeRepository();
     const [activityState, { startNewActivity, createCompletedActivity }] =
         useActivityRepository();
@@ -38,15 +39,17 @@ const MakeActivityDialog = ({ isOpen, onClose }) => {
         setIsActivityRunning,
     } = activityFormDispatch;
 
+    const [setModal, unsetModal] = useModalContext();
+
     async function handleCreate() {
         if (isActivityRunning) await handleCreateRunningActivity();
         else await handleCreateCompletedActivity();
 
-        onClose();
+        unsetModal();
     }
 
     return (
-        <Dialog open={isOpen}>
+        <Dialog open>
             <DialogTitle>Start Activity</DialogTitle>
             <DialogContent>
                 <ActivityForm
@@ -55,7 +58,7 @@ const MakeActivityDialog = ({ isOpen, onClose }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={unsetModal}>Cancel</Button>
                 <Button
                     disabled={invalidState}
                     onClick={handleCreate}

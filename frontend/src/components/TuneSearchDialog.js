@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import useTuneFormState from "../hooks/useTuneFormState";
 import TuneSearchForm from "./TuneSearchForm";
+import { useModalContext } from "../modals/ModalProvider";
 
 /**
  * @param {object} props
@@ -22,22 +23,25 @@ import TuneSearchForm from "./TuneSearchForm";
  * @param {string} props.queryString The query string to base the search on.
  * @param {string} props.setQueryString Callback to be called when the user has confirmed their search settings.
  */
-const TuneSearchDialog = ({ isOpen, onClose, queryString, setQueryString }) => {
+const TuneSearchDialog = ({ queryString, setQueryString }) => {
     const [tuneFormState, tuneFormDispatch] = useTuneFormState(queryString);
     const { searchParams, invalidState } = tuneFormState;
+    const [setModal, unsetModal] = useModalContext();
 
     function handleCancel() {
         // TODO: reset form state
-        onClose();
+        unsetModal();
+        // onClose();
     }
 
     function handleSearch() {
         setQueryString(searchParams.queryString);
-        onClose();
+        unsetModal();
+        // onClose();
     }
 
     return (
-        <Dialog open={isOpen}>
+        <Dialog open={true}>
             <DialogTitle>Search</DialogTitle>
             <DialogContent>
                 <TuneSearchForm

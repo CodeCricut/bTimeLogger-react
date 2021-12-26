@@ -13,6 +13,9 @@ import AppBarSearchBox from "./AppBarSearchBox";
 import SettingsButton from "./SettingsButton";
 import InlineStartActivity from "./InlineStartActivity";
 import ActivityTypeSelect from "./ActivityTypeSelect";
+import { useModalContext } from "../modals/ModalProvider";
+import TuneSearchDialog from "./TuneSearchDialog";
+import SettingsDialog from "./SettingsDialog";
 
 const styles = {
     toolbar: {
@@ -49,13 +52,9 @@ const styles = {
  * @param {function} props.setQueryString Callback when the user searches for something.
  * @param {function} props.onOpenTuneDialog Callback whent the user chooses to open the tune search dialog.
  */
-const SearchAppBar = ({
-    openDrawer,
-    queryString,
-    setQueryString,
-    onOpenTuneDialog,
-    onOpenSettingsDialog,
-}) => {
+const SearchAppBar = ({ openDrawer, queryString, setQueryString }) => {
+    const [setModal, unsetModal] = useModalContext();
+
     return (
         <AppBar position="static">
             <Toolbar sx={styles.toolbar}>
@@ -68,12 +67,21 @@ const SearchAppBar = ({
                 <Box sx={styles.searchContainer}>
                     <AppBarSearchBox
                         handleSearch={(term) => setQueryString(term)}
-                        handleTune={onOpenTuneDialog}
+                        handleTune={() =>
+                            setModal(
+                                <TuneSearchDialog
+                                    queryString={queryString}
+                                    setQueryString={setQueryString}
+                                />
+                            )
+                        }
                         originalTerm={queryString}
                     />
                 </Box>
                 <Box sx={styles.rightSideContainer}>
-                    <SettingsButton onClick={onOpenSettingsDialog} />
+                    <SettingsButton
+                        onClick={() => setModal(<SettingsDialog />)}
+                    />
                 </Box>
             </Toolbar>
         </AppBar>

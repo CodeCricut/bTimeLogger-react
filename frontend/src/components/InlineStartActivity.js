@@ -8,6 +8,8 @@ import { useTypeRepository } from "../activity-types/useTypeRepository";
 import { useActivityRepository } from "../activities/useActivityRepository";
 import { ActivityModel } from "../activities/ActivityModel";
 import { ActivityTypeModel } from "../activity-types/ActivityTypeModel";
+import { useModalContext } from "../modals/ModalProvider";
+import MakeActivityDialog from "./MakeActivityDialog";
 
 const styles = {
     outline: {
@@ -32,11 +34,12 @@ const styles = {
     menuButton: {},
 };
 
-const InlineStartActivity = ({ openMakeActivityDialog }) => {
+const InlineStartActivity = () => {
     const [typeState, { addType }] = useTypeRepository();
     const [activityState, { startNewActivity }] = useActivityRepository();
     const [selectedType, setSelectedType] = useState("");
     const [invalidType, setInvalidType] = useState(false);
+    const [setModal, unsetModal] = useModalContext();
 
     async function startActivity() {
         // TODO: it is pretty messy to have to add a type just to add an activity. Ideally, we would have some nice function like startNewActivity(selectedTypeName).
@@ -48,7 +51,7 @@ const InlineStartActivity = ({ openMakeActivityDialog }) => {
     }
 
     function tuneActivity() {
-        openMakeActivityDialog();
+        setModal(<MakeActivityDialog />);
     }
 
     useEffect(() => {

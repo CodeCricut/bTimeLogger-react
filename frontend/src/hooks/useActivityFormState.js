@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import { ActivityModel } from "../activities/ActivityModel.js";
 import { ActivityTypeModel } from "../activity-types/ActivityTypeModel.js";
 
+const defaultActivityModel = new ActivityModel(
+    "",
+    new ActivityTypeModel("", ""),
+    "",
+    new Date(),
+    new Date(),
+    false
+);
+
 /**
  * @param {ActivityModel} activity The original activity.
  * @returns {Array<{activity: ActivityModel, invalidState:boolean, isActivityRunning: boolean}|{setComment, setFromDate, setToDate, setType}>} Array where the first element is the form state object, and the second is an object with functions for modifying the form state.
  */
-const useActivityFormState = () => {
-    const [activity, setActivity] = useState(
-        new ActivityModel(
-            "",
-            new ActivityTypeModel("", ""),
-            "",
-            new Date(),
-            new Date(),
-            false
-        )
-    );
+const useActivityFormState = (activityModel = defaultActivityModel) => {
+    const [activity, setActivity] = useState(activityModel);
 
     const [typeName, setTypeName] = useState(activity.type.name);
     const [comment, setComment] = useState(activity.comment);

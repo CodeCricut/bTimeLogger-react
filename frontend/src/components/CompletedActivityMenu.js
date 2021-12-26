@@ -7,6 +7,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import { useModalContext } from "../modals/ModalProvider.js";
+import EditActivityDialog from "./EditActivityDialog";
 
 const style = {
     container: {
@@ -24,14 +26,19 @@ const style = {
         },
     },
 };
-const CompletedActivityMenu = ({ activity, onEdit }) => {
+const CompletedActivityMenu = ({ activity }) => {
     const [_, { resumeActivity, trashActivity, untrashActivity }] =
         useActivityRepository();
+    const [setModal, unsetModal] = useModalContext();
+
+    const handleEdit = () => {
+        setModal(<EditActivityDialog activity={activity} />);
+    };
 
     return (
         <Box sx={style.container}>
             <MenuDropdown tooltipText={"Options"} sx={style.menu}>
-                <MenuItem onClick={onEdit}>
+                <MenuItem onClick={handleEdit}>
                     <EditIcon />
                     Edit
                 </MenuItem>
