@@ -6,25 +6,12 @@ import {
     selectActivitiesBeforeDate,
     selectActivitiesWithText,
 } from "./activity-selectors.js";
+import { allActivities } from "../test-helpers/fixtures/activities.js";
 
 const COMMENT_TEXT = "COMMENT_TEXT",
     TYPE_NAME_TEXT = "TYPE_NAME_TEXT",
     OTHER_TEXT = "OTHER_TEXT";
 
-const activities = [
-    {
-        type: { name: TYPE_NAME_TEXT },
-        comment: OTHER_TEXT,
-        startTime: new Date(2021, 8, 21),
-        endTime: new Date(2021, 8, 22),
-    },
-    {
-        type: { name: OTHER_TEXT },
-        comment: COMMENT_TEXT,
-        startTime: new Date(2000, 1, 1),
-        endTime: new Date(2010, 1, 1),
-    },
-];
 const END_TIME = new Date(2005, 1, 1);
 const END_TIME_ACTIVITIES = [activities[1]]; // the activity which should be selected by selectActivitiesBeforeDate(_, END_TIME);
 const START_TIME = new Date(2015, 1, 1);

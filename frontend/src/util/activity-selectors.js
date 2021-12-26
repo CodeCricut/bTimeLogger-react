@@ -135,14 +135,14 @@ function pushUniqueElementsIntoArr(sourceArr, recieverArr) {
 function selectActivitiesBeforeDate(activities, endTime) {
     if (!endTime) return [...activities];
     return activities.filter((act) =>
-        act.startTime ? act.startTime < endTime : true
+        act.startTimeDate ? act.startTimeDate < endTime : true
     );
 }
 
 function selectActivitiesAfterDate(activities, startTime) {
     if (!startTime) return [...activities];
     return activities.filter((act) =>
-        act.endTime ? act.endTime > startTime : true
+        act.endTimeDate ? act.endTimeDate > startTime : true
     );
 }
 
@@ -153,11 +153,15 @@ function selectActivitesBetweenDates(activities, startTime, endTime) {
 }
 
 function sortActivitiesByNewest(activities) {
-    return activities.sort((act1, act2) => act2.startTime - act1.startTime);
+    return activities.sort(
+        (act1, act2) => act2.startTimeDate - act1.startTimeDate
+    );
 }
 
 function sortActivitiesByOldest(activities) {
-    return activities.sort((act1, act2) => act1.startTime - act2.startTime);
+    return activities.sort(
+        (act1, act2) => act1.startTimeDate - act2.startTimeDate
+    );
 }
 
 export {
