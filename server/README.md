@@ -106,3 +106,8 @@ After that, run
 ```
 npm run generate-docs
 ```
+
+### Swagger API Specification
+
+[Swagger](https://swagger.io/) is used to document the API specification. You can
+view the Swagger UI at the `/docs` endpoint of the app.
