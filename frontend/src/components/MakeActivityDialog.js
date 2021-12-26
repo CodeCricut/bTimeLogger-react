@@ -72,7 +72,6 @@ const MakeActivityDialog = () => {
     );
 
     async function handleCreateRunningActivity() {
-        console.log("create running");
         // TODO: it is pretty messy to have to add a type just to add an activity. Ideally, we would have some nice function like startNewActivity(selectedTypeName, comment).
         if (invalidState) return;
         const type = await addType(new ActivityTypeModel("", typeName));
@@ -82,8 +81,6 @@ const MakeActivityDialog = () => {
     }
 
     async function handleCreateCompletedActivity() {
-        console.log("create completed");
-
         // TODO: it is pretty messy to have to add a type just to add an activity. Ideally, we would have some nice function like
         // createCompletedActivity(typeName, comment, startTime, endTime)
         if (invalidState) return;
