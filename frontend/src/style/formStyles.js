@@ -4,7 +4,10 @@ export default {
             width: 1,
             marginBottom: "5px",
         },
-        minWidth: "50vw",
+        minWidth: {
+            xs: "50vw",
+            md: "30vw",
+        },
     },
     labeledInput: {
         display: "grid",
