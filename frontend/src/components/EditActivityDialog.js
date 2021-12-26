@@ -20,6 +20,10 @@ const EditActivityDialog = ({ activity }) => {
         useActivityFormState(activity);
     const [setModal, unsetModal] = useModalContext();
 
+    const [typeState, { addType }] = useTypeRepository();
+    const [activityState, { updateActivity, resumeActivity }] =
+        useActivityRepository();
+
     const {
         typeName,
         comment,
@@ -28,14 +32,6 @@ const EditActivityDialog = ({ activity }) => {
         isActivityRunning,
         invalidState,
     } = activityFormState;
-
-    const {
-        setTypeName,
-        setComment,
-        setFromDate,
-        setToDate,
-        setIsActivityRunning,
-    } = activityFormDispatch;
 
     return (
         <Dialog open>
@@ -61,14 +57,24 @@ const EditActivityDialog = ({ activity }) => {
     );
 
     async function handleEdit() {
-        if (isActivityRunning) await handleEditAsRunningActivity();
-        else await handleEditAsCompletedActivity();
+        if (invalidState) return;
+
+        const type = await addType(new ActivityTypeModel("", typeName));
+        const act = new ActivityModel(
+            activity._id,
+            type._id,
+            comment,
+            fromDate,
+            toDate
+        );
+        await updateActivity(act);
+
+        if (isActivityRunning) {
+            await resumeActivity(activity._id);
+        }
 
         unsetModal();
     }
-
-    async function handleEditAsRunningActivity() {}
-    async function handleEditAsCompletedActivity() {}
 };
 
 export default EditActivityDialog;
