@@ -1,9 +1,8 @@
 import React from "react";
 import { Box, FormControl, FormControlLabel, Switch } from "@mui/material";
 import formStyles from "../style/formStyles.js";
-// import { useTheme } from "@mui/";
-// import { useThemeSwitcherContext } from "../style/ThemeSwitcherContext";
-// import { DARK, LIGHT } from "../style/theme";
+import { useThemeSwitcherContext } from "../style/ThemeSwitcherContext";
+import { DARK, LIGHT } from "../style/theme";
 
 const settingsStyles = {
     content: {
@@ -12,18 +11,16 @@ const settingsStyles = {
 };
 
 const SettingsForm = () => {
-    // const theme = useTheme();
-    // const setTheme = useThemeSwitcherContext();
+    const [theme, setTheme] = useThemeSwitcherContext();
 
-    // const isDarkTheme = theme === DARK;
-    const isDarkTheme = false;
+    const isDarkTheme = theme === DARK;
 
     const handleDarkThemeChange = (e) => {
-        // if (e.target.checked) {
-        //     setTheme(DARK);
-        // } else {
-        //     setTheme(LIGHT);
-        // }
+        if (e.target.checked) {
+            setTheme(DARK);
+        } else {
+            setTheme(LIGHT);
+        }
     };
 
     return (
