@@ -9,7 +9,7 @@
         "client": "cd frontend && npm run start",
         "heroku-postbuild": "cd frontend && npm install && npm run build",
         "test": "jest --runInBand --detectOpenHandles",
-        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./server/documentation/tutorials\""
+        "generate-docs": "node_modules/.bin/jsdoc --configure server/.jsdoc.json --verbose -u \"./server/documentation/tutorials\""
     },
     "author": "",
     "license": "ISC",

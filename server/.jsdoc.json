@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["src", "README.md"],
+        "include": ["server/src", "server/README.md"],
         "includePattern": "\\.js$"
     },
     "plugins": ["plugins/markdown"],
