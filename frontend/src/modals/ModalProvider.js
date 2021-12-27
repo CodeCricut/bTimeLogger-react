@@ -20,9 +20,6 @@ const ModalProvider = ({ children }) => {
     );
 };
 
-/**
- * @returns {[setModal: function, unsetModal: function]}
- */
 const useModalContext = () => {
     return useContext(ModalContext);
 };
