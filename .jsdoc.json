@@ -10,7 +10,7 @@
         "disableSort": false
     },
     "opts": {
-        "destination": "./docs/",
+        "destination": "./server/documentation/jsdocs/",
         "encoding": "utf8",
         "private": true,
         "recurse": true
