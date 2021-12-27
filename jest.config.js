@@ -8,6 +8,7 @@ const config = {
         "^.+\\.mjs$": "babel-jest",
     },
     testRegex: "((\\.|/*.)(test))\\.js?$",
+    rootDir: "server",
 };
 
 export default config;
