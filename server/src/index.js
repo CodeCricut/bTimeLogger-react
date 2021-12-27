@@ -3,12 +3,12 @@ import express from "express";
 import typesRouter from "./routers/types.js";
 import activitiesRouter from "./routers/activities.js";
 import docsRouter from "./routers/docs.js";
+import frontendRouter from "./routers/frontend.js";
+
 import cors from "cors";
-import path from "path";
 import mongoose from "mongoose";
 
 dotenv.config();
-const baseDirectory = path.resolve();
 
 try {
     await connectToDatabase();
@@ -16,7 +16,7 @@ try {
 
     const app = express();
     setupAppMiddleware(app);
-    setAppRoutes(app);
+    setupAppRoutes(app);
 
     app.listen(port, () =>
         console.log(`Listening on http://localhost:${port}`)
@@ -29,7 +29,6 @@ try {
 function setupAppMiddleware(app) {
     app.use(cors());
     app.use(express.json());
-    app.use(express.static(getClientBuildPath()));
     return app;
 }
 
@@ -40,15 +39,11 @@ async function connectToDatabase() {
     });
 }
 
-function setAppRoutes(app) {
+function setupAppRoutes(app) {
+    app.use("/", frontendRouter);
     app.use("/types", typesRouter);
     app.use("/activities", activitiesRouter);
     app.use("/docs", docsRouter);
-
-    // Setup React routing
-    app.get("/*", (req, res) => {
-        res.sendFile(path.join(getClientBuildPath(), "index.html"));
-    });
 }
 
 function getPort() {
@@ -59,16 +54,6 @@ function getPort() {
         );
     }
     return port;
-}
-
-function getClientBuildPath() {
-    const clientBuildPath = path.join(baseDirectory, "frontend/build");
-    if (!clientBuildPath) {
-        throw new Error(
-            `Could not resolve client build path.\tBase directory:${baseDirectory}`
-        );
-    }
-    return clientBuildPath;
 }
 
 function getMongoConnection() {
