@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "../../swagger.config.js";
+import { swaggerSpec } from "../../../swagger.config.js";
 
 const baseDirectory = path.resolve();
 
