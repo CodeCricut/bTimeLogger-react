@@ -57,7 +57,7 @@ The entry point of the application is [src/index.js](./src/index.js). It is resp
 
 **Model objects can be found in the [model](./src/model) directory.**
 
-Mongoose is used to connect the application to a Mongo database. More information on Mongoose can be found in [our Mongoose database documentation](./documentation/mongoose-database.md).
+Mongoose is used to connect the application to a Mongo database. More information on Mongoose can be found in [our Mongoose database documentation](./documentation/tutorials/mongoose-database.md).
 
 ### Routing and Routers
 
@@ -65,7 +65,7 @@ Mongoose is used to connect the application to a Mongo database. More informatio
 
 Routing refers to "determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on)" (expressjs.com).
 
-Routing is done with the help of the [Express.js](expressjs.com) framework. Additional details can be found in [our Express routing documentation](./documentation/express-routing.md).
+Routing is done with the help of the [Express.js](expressjs.com) framework. Additional details can be found in [our Express routing documentation](./documentation/tutorials/express-routing.md).
 
 ### Database interaction
 
@@ -81,33 +81,16 @@ The server has been fully tested using automated unit and integration tests.
 
 **Run all tests**: Run all tests with `npm run test`.
 
-More information on test design and running the test suite can be found in [`documentation/jest-testing.md`](./documentation/jest-testing.md).
-
-### Unit Tests
-
-Automated unit tests for the database repositories (which contain most business logic of the app) are found in [`tests/repositories/`](./tests/repositories/).
-
-### Integration Tests
-
-Automated integration tests which exercise the API and underlying interaction with the other layers of the app are found in [`tests/routers/`](./tests/routers/).
+More information on test design and running the test suite can be found in
+our [jest testing documentation](./documentation/tutorials/jest-testing.md).
 
 ## Documentation
 
-[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/docs/index.html`.
+[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/documentation/jsdocs/index.html`.
 
-To generate updated docs, you must first have `jsdoc` installed:
-
-```
-npm install -g jsdoc
-```
-
-After that, run
-
-```
-npm run generate-docs
-```
+Alternatively, the documentation can be found at the `/docs/server` endpoint of the app.
 
 ### Swagger API Specification
 
 [Swagger](https://swagger.io/) is used to document the API specification. You can
-view the Swagger UI at the `/docs` endpoint of the app.
+view the Swagger UI at the `/docs/api` endpoint of the app.

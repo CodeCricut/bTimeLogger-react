@@ -13,26 +13,9 @@ The app interacts with a custom REST API found in the `server` project. For more
 
 ## Running the Website
 
-**Prerequisites**:
+The server must be running before you can use the frontend app.
 
-The following softwares must be installed before the server can run:
-
--   [Node.js](https://nodejs.org/en/)
--   [Node Package Manager (NPM)](https://www.npmjs.com/)
-
-The server must be running before you can use the frontend app. For detailed instructions on starting the server, see the server project's [README](../server/README.md).
-
-**Installing dependencies**: The first time you run the app, you will have to install dependencies first with
-
-```
-npm install
-```
-
-**Starting the app**: To run the app, run
-
-```
-npm run start
-```
+For more information on running the app, see the [root project's README](../README.md).
 
 **Debugging**:
 
@@ -69,7 +52,7 @@ The main component is the `App` component.
 
 ### State Management
 
-Details about local and global state management can be found in [`state-management.md`](./documentation/state-management.md)
+Details about local and global state management can be found in [`state-management.md`](./documentation/tutorials/state-management.md)
 
 ### API interaction
 
@@ -77,7 +60,7 @@ API interaction is done through the "repository" classes (`ActivityRepository` a
 
 ### Style
 
-Information about styling can be found in our [MUI documentation](./documentation/mui.md).
+Information about styling can be found in our [MUI documentation](./documentation/tutorials/mui.md).
 
 ## Testing & Test Results
 
@@ -88,20 +71,10 @@ to achieve near 100% coverage and passing rate.
 
 **Run all tests**: Run all tests with `npm run test`.
 
-More information on test design and running the test suite can be found in [`documentation/testing.md`](./documentation/testing.md)
+More information on test design and running the test suite can be found in [`documentation/tutorials/testing.md`](./documentation/tutorials/testing.md)
 
 ## Documentation
 
-[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/docs/index.html`.
+[JSDoc 3](https://jsdoc.app/about-getting-started.html) is used to document the app. The generated documentation website can be found at `/documentation/jsdocs/index.html`.
 
-To generate updated docs, you must first have `jsdoc` installed:
-
-```
-npm install -g jsdoc
-```
-
-After that, run
-
-```
-npm run generate-docs
-```
+Alternatively, the documentation can be found at the `/docs/frontend` endpoint of the app.
