@@ -7,7 +7,7 @@
         "start": "node server/src/index.js",
         "debug": "node server/src/index.js --inspect",
         "client": "cd frontend && npm run start",
-        "heroku-postbuild": "cd frontend && npm install --only=production && npm run build",
+        "heroku-postbuild": "npm run generate-docs && cd frontend && npm install --only=production && npm run build",
         "test": "jest --runInBand --detectOpenHandles --config ./jest.config.js",
         "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./server/documentation/tutorials\" && cd frontend && npm run generate-docs"
     },
