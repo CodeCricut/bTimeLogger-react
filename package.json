@@ -2,12 +2,14 @@
     "name": "server",
     "version": "1.0.0",
     "description": "",
-    "main": "src/index.js",
+    "main": "server/src/index.js",
     "scripts": {
-        "start": "node src/index.js",
-        "debug": "node src/index.js --inspect",
+        "start": "node server/src/index.js",
+        "debug": "node server/src/index.js --inspect",
+        "client": "cd frontend && npm run start",
+        "heroku-postbuild": "cd frontend && npm install && npm run build",
         "test": "jest --runInBand --detectOpenHandles",
-        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./documentation/tutorials\""
+        "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose -u \"./server/documentation/tutorials\""
     },
     "author": "",
     "license": "ISC",
